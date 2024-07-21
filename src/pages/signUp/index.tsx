@@ -1,23 +1,26 @@
-import useInput from "@/hook/useInput";
 import { registerSchema } from "@/validators/auth";
-import React from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import { ErrorMessage } from "@hookform/error-message";
-
-interface AuthType {
-  email: string;
-  password: string;
-  checkPassword: string;
-  nickName: string;
-}
+import Eye from "@/assets/Eye.svg";
+import EyeInvisible from "@/assets/EyeInvisible.svg";
+import { AuthType, RegisterInput } from "@/types/authType";
+import useToggle from "@/hook/useToggle";
+import { CommonButton } from "@/styles/commonButton";
 
 const SignUp = () => {
-  type registerInput = z.infer<typeof registerSchema>;
-  const { register, handleSubmit, formState: {errors} } = useForm<registerInput>({
+  const [showPassword, handlePasswordToggle] = useToggle(false);
+  const [showCheckPassword, handleCheckPasswordToggle] = useToggle(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
@@ -27,11 +30,11 @@ const SignUp = () => {
     },
   });
 
-  const signupHandleSubmit = (data: AuthType) => {
+  const signupHandleSubmit: SubmitHandler<RegisterInput> = (data: AuthType) => {
     console.log(data);
-    console.log(errors)
+    console.log(errors.email);
   };
-  console.log(errors)
+
   return (
     <S.SignUpContainer>
       <S.SignUpInner>
@@ -43,30 +46,81 @@ const SignUp = () => {
         <S.SignUpForm onSubmit={handleSubmit(signupHandleSubmit)}>
           <S.SignUpFormInner>
             <S.SignUpListItem>
-              {/* <label>아이디</label> */}
               <S.SignUpInput placeholder="이메일 주소" {...register("email")} />
-              <p>{errors.email?.message}</p>
-            </S.SignUpListItem>
-            <S.SignUpListItem>
-              {/* <label>비밀번호</label> */}
-              <S.SignUpInput
-                placeholder="비밀번호 (숫자+영문자+특수문자 8자리 이상)"
-                {...register("password")}
+              <ErrorMessage
+                errors={errors}
+                name="email"
+                render={({ message }) => (
+                  <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
+                )}
               />
             </S.SignUpListItem>
             <S.SignUpListItem>
-              {/* <label>비밀번호 확인</label> */}
-              <S.SignUpInput
-                placeholder="비밀번호 재입력"
-                {...register("checkPassword")}
+              <S.InputContainer>
+                <S.SignUpInput
+                  type={showPassword ? "text" : "password"}
+                  placeholder="비밀번호 (숫자+영문자+특수문자 8자리 이상)"
+                  {...register("password")}
+                />
+                <S.ShowPasswordToggle
+                  type="button"
+                  onClick={handlePasswordToggle}
+                >
+                  {showPassword ? (
+                    <Eye width="20px" height="auto" fill="#a0a0a0" />
+                  ) : (
+                    <EyeInvisible width="20px" height="auto" fill="#a0a0a0" />
+                  )}
+                </S.ShowPasswordToggle>
+              </S.InputContainer>
+              <ErrorMessage
+                errors={errors}
+                name="password"
+                render={({ message }) => (
+                  <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
+                )}
               />
             </S.SignUpListItem>
             <S.SignUpListItem>
-              {/* <label>닉네임</label> */}
+              <S.InputContainer>
+                <S.SignUpInput
+                  type={showCheckPassword ? "text" : "password"}
+                  placeholder="비밀번호 재입력"
+                  {...register("checkPassword")}
+                />
+                <S.ShowPasswordToggle
+                  type="button"
+                  onClick={handleCheckPasswordToggle}
+                >
+                  {showCheckPassword ? (
+                    <Eye width="20px" height="auto" fill="#a0a0a0" />
+                  ) : (
+                    <EyeInvisible width="20px" height="auto" fill="#a0a0a0" />
+                  )}
+                </S.ShowPasswordToggle>
+              </S.InputContainer>
+              <ErrorMessage
+                errors={errors}
+                name="checkPassword"
+                render={({ message }) => (
+                  <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
+                )}
+              />
+            </S.SignUpListItem>
+            <S.SignUpListItem>
               <S.SignUpInput placeholder="닉네임" {...register("nickName")} />
+              <ErrorMessage
+                errors={errors}
+                name="nickName"
+                render={({ message }) => (
+                  <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
+                )}
+              />
             </S.SignUpListItem>
           </S.SignUpFormInner>
-          <Button variant="contained">회원가입</Button>
+          <CommonButton type="submit" variant="contained" disableFocusRipple={true} fullWidth>
+            회원가입
+          </CommonButton>
         </S.SignUpForm>
       </S.SignUpInner>
     </S.SignUpContainer>
@@ -80,34 +134,56 @@ const S = {
     position: relative;
   `,
   SignUpInner: styled.div`
-  width: 360px;
+    width: 360px;
     position: absolute;
     transform: translate(50%, 50%);
     border: solid 1px #000;
     border-radius: 4px;
-    padding: 40px;
+    padding: 30px;
   `,
   SignUpTitle: styled.h1`
-    font-size: 34px;
+    font-size: 38px;
     font-weight: bold;
-    line-height: 40px;
+    line-height: 50px;
     letter-spacing: -2px;
   `,
-  SignUpForm: styled.form`
-  `,
+  SignUpForm: styled.form``,
   SignUpFormInner: styled.ul`
-    margin: 30px 0px;
+    margin: 50px 0px 10px 0px;
   `,
   SignUpListItem: styled.li`
-    margin-bottom: 14px;
+    margin-bottom: 13px;
     &:last-child {
       margin-bottom: 0px;
     }
   `,
+  InputContainer: styled.div`
+    position: relative;
+    left: 0;
+    top: 0;
+  `,
   SignUpInput: styled.input`
-  width: 100%;
-    padding: 16px 0px;
+    width: 100%;
+    padding: 18px 0px;
+    margin-bottom: 7px;
     text-indent: 6px;
+    border: solid 1px #a0a0a0;
+    border-radius: 3px;
     outline: none;
+    &::placeholder {
+      font-size: 14px;
+      color: #a0a0a0;
+    }
+  `,
+  ShowPasswordToggle: styled.button`
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -13px;
+  `,
+  SignUpErrorMessage: styled.p`
+    color: red;
+    font-size: 14px;
   `,
 };

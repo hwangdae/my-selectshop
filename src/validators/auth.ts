@@ -21,4 +21,7 @@ export const registerSchema = z.object({
       "영문, 숫자, 특수문자를 포함해야 합니다."
     ),
     nickName:z.string().min(3,{message:"3자리 이상 입력해주세요."}).max(6,{message:"6자리 이하로 입력해주세요."})
-});
+}).refine((passwordConfirm)=> passwordConfirm.password === passwordConfirm.checkPassword,{
+  message:'비밀번호가 일치하지 않습니다.',
+  path:['checkPassword']
+})
