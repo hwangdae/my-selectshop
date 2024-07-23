@@ -1,10 +1,10 @@
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import { PlaceType } from "@/types/type";
 import { useState } from "react";
 import styled from "styled-components";
 import Indent from "@/assets/Indent.svg"
 import Star from "@/assets/Star.svg"
+import { PlaceType } from "@/types/placeType";
 
 
 interface PropsType {
@@ -103,11 +103,10 @@ const S = {
   `,
   DetailSelectshopInfo: styled.div``,
   DetailSelectshopName: styled.h1`
-    /* text-align: center; */
     text-indent: 6px;
     padding: 14px 0px;
     ${styleFont.textLarge}
-    background-color: ${styleColor.BROWN[100]};
+    background-color: ${styleColor.INDIGO[100]};
   `,
   DetailImage: styled.h2`
     width: 100%;

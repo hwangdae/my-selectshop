@@ -4,17 +4,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 import { ErrorMessage } from "@hookform/error-message";
 import Eye from "@/assets/Eye.svg";
 import EyeInvisible from "@/assets/EyeInvisible.svg";
 import { AuthType, RegisterInput } from "@/types/authType";
 import useToggle from "@/hook/useToggle";
 import { CommonButton } from "@/styles/commonButton";
+import { useRouter } from "next/router";
 
 const SignUp = () => {
   const [showPassword, handlePasswordToggle] = useToggle(false);
   const [showCheckPassword, handleCheckPasswordToggle] = useToggle(false);
+
+  const router = useRouter()
+  console.log(router)
 
   const {
     register,
@@ -36,120 +40,143 @@ const SignUp = () => {
   };
 
   return (
-    <S.SignUpContainer>
-      <S.SignUpInner>
-        <S.SignUpTitle>
-          Welcome,
-          <br />
-          mySelectshop :)
-        </S.SignUpTitle>
-        <S.SignUpForm onSubmit={handleSubmit(signupHandleSubmit)}>
-          <S.SignUpFormInner>
-            <S.SignUpListItem>
-              <S.SignUpInput placeholder="이메일 주소" {...register("email")} />
-              <ErrorMessage
-                errors={errors}
-                name="email"
-                render={({ message }) => (
-                  <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
-                )}
-              />
-            </S.SignUpListItem>
-            <S.SignUpListItem>
-              <S.InputContainer>
-                <S.SignUpInput
-                  type={showPassword ? "text" : "password"}
-                  placeholder="비밀번호 (숫자+영문자+특수문자 8자리 이상)"
-                  {...register("password")}
-                />
-                <S.ShowPasswordToggle
-                  type="button"
-                  onClick={handlePasswordToggle}
-                >
-                  {showPassword ? (
-                    <Eye width="20px" height="auto" fill="#a0a0a0" />
-                  ) : (
-                    <EyeInvisible width="20px" height="auto" fill="#a0a0a0" />
-                  )}
-                </S.ShowPasswordToggle>
-              </S.InputContainer>
-              <ErrorMessage
-                errors={errors}
-                name="password"
-                render={({ message }) => (
-                  <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
-                )}
-              />
-            </S.SignUpListItem>
-            <S.SignUpListItem>
-              <S.InputContainer>
-                <S.SignUpInput
-                  type={showCheckPassword ? "text" : "password"}
-                  placeholder="비밀번호 재입력"
-                  {...register("checkPassword")}
-                />
-                <S.ShowPasswordToggle
-                  type="button"
-                  onClick={handleCheckPasswordToggle}
-                >
-                  {showCheckPassword ? (
-                    <Eye width="20px" height="auto" fill="#a0a0a0" />
-                  ) : (
-                    <EyeInvisible width="20px" height="auto" fill="#a0a0a0" />
-                  )}
-                </S.ShowPasswordToggle>
-              </S.InputContainer>
-              <ErrorMessage
-                errors={errors}
-                name="checkPassword"
-                render={({ message }) => (
-                  <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
-                )}
-              />
-            </S.SignUpListItem>
-            <S.SignUpListItem>
-              <S.SignUpInput placeholder="닉네임" {...register("nickName")} />
-              <ErrorMessage
-                errors={errors}
-                name="nickName"
-                render={({ message }) => (
-                  <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
-                )}
-              />
-            </S.SignUpListItem>
-          </S.SignUpFormInner>
-          <CommonButton type="submit" variant="contained" disableFocusRipple={true} fullWidth>
+    <>
+      <S.SignUpContainer>
+        <S.SignUpInner>
+          <S.SignUpTitle>
             회원가입
-          </CommonButton>
-        </S.SignUpForm>
-      </S.SignUpInner>
-    </S.SignUpContainer>
+          </S.SignUpTitle>
+          <S.SignUpForm onSubmit={handleSubmit(signupHandleSubmit)}>
+            <S.SignUpFormInner>
+              <S.SignUpListItem>
+                <S.SignUpInput
+                  placeholder="이메일 주소"
+                  {...register("email")}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="email"
+                  render={({ message }) => (
+                    <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
+                  )}
+                />
+              </S.SignUpListItem>
+              <S.SignUpListItem>
+                <S.InputContainer>
+                  <S.SignUpInput
+                    type={showPassword ? "text" : "password"}
+                    placeholder="비밀번호 (숫자+영문자+특수문자 8자리 이상)"
+                    {...register("password")}
+                  />
+                  <S.ShowPasswordToggle
+                    type="button"
+                    onClick={handlePasswordToggle}
+                  >
+                    {showPassword ? (
+                      <Eye width="20px" height="auto" fill="#a0a0a0" />
+                    ) : (
+                      <EyeInvisible width="20px" height="auto" fill="#a0a0a0" />
+                    )}
+                  </S.ShowPasswordToggle>
+                </S.InputContainer>
+                <ErrorMessage
+                  errors={errors}
+                  name="password"
+                  render={({ message }) => (
+                    <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
+                  )}
+                />
+              </S.SignUpListItem>
+              <S.SignUpListItem>
+                <S.InputContainer>
+                  <S.SignUpInput
+                    type={showCheckPassword ? "text" : "password"}
+                    placeholder="비밀번호 재입력"
+                    {...register("checkPassword")}
+                  />
+                  <S.ShowPasswordToggle
+                    type="button"
+                    onClick={handleCheckPasswordToggle}
+                  >
+                    {showCheckPassword ? (
+                      <Eye width="20px" height="auto" fill="#a0a0a0" />
+                    ) : (
+                      <EyeInvisible width="20px" height="auto" fill="#a0a0a0" />
+                    )}
+                  </S.ShowPasswordToggle>
+                </S.InputContainer>
+                <ErrorMessage
+                  errors={errors}
+                  name="checkPassword"
+                  render={({ message }) => (
+                    <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
+                  )}
+                />
+              </S.SignUpListItem>
+              <S.SignUpListItem>
+                <S.SignUpInput placeholder="닉네임" {...register("nickName")} />
+                <ErrorMessage
+                  errors={errors}
+                  name="nickName"
+                  render={({ message }) => (
+                    <S.SignUpErrorMessage>{message}</S.SignUpErrorMessage>
+                  )}
+                />
+              </S.SignUpListItem>
+            </S.SignUpFormInner>
+            <CommonButton
+              type="submit"
+              variant="contained"
+              color="secondary"
+              disableFocusRipple={true}
+              fullWidth
+            >
+              회원가입
+            </CommonButton>
+          </S.SignUpForm>
+        </S.SignUpInner>
+      </S.SignUpContainer>
+      <S.BackgroundColor onClick={() => router.push(`${router.query.path}`)}></S.BackgroundColor>
+    </>
   );
 };
 
 export default SignUp;
 
 const S = {
-  SignUpContainer: styled.div`
-    position: relative;
-  `,
-  SignUpInner: styled.div`
-    width: 360px;
+  BackgroundColor: styled.div`
+    width: 100%;
+    height: 100%;
     position: absolute;
-    transform: translate(50%, 50%);
+    left: 0;
+    top: 0;
+    /* background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px); */
+  `,
+  SignUpContainer: styled.div`
+    width: 360px;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
     border: solid 1px #000;
     border-radius: 4px;
     padding: 30px;
+    z-index: 999;
+  `,
+  SignUpInner: styled.div`
+
   `,
   SignUpTitle: styled.h1`
     font-size: 38px;
-    font-weight: bold;
     line-height: 50px;
     letter-spacing: -2px;
   `,
   SignUpForm: styled.form``,
   SignUpFormInner: styled.ul`
-    margin: 50px 0px 10px 0px;
+    margin: 20px 0px 20px 0px;
   `,
   SignUpListItem: styled.li`
     margin-bottom: 13px;
@@ -167,12 +194,12 @@ const S = {
     padding: 18px 0px;
     margin-bottom: 7px;
     text-indent: 6px;
-    border: solid 1px #a0a0a0;
+    border: solid 1px #d9dfeb;
     border-radius: 3px;
     outline: none;
     &::placeholder {
       font-size: 14px;
-      color: #a0a0a0;
+      color: #d9dfeb;
     }
   `,
   ShowPasswordToggle: styled.button`

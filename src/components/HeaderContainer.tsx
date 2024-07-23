@@ -1,11 +1,14 @@
 import MySelectShop from "@/pages/mySelectShop";
 import SearchResults from "@/pages/searchResults";
 import { styleFont } from "@/styles/styleFont";
-import { TabMenuType } from "@/types/type";
 import { useState } from "react";
 import styled from "styled-components";
-import Search from "@/assets/Search.svg"
-
+import Search from "@/assets/Search.svg";
+import { TabMenuType } from "@/types/utilType";
+import { styleColor } from "@/styles/styleColor";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { Button } from "@mui/material";
 
 const TABNAV = [
   {
@@ -16,19 +19,36 @@ const TABNAV = [
   { id: 1, name: "내 셀렉샵", href: "/mySelectshop" },
 ];
 
-const SearchContainer = () => {
+const HeaderContainer = () => {
   const [step, setStep] = useState<number>(0);
   const [searchName, setSearchName] = useState("");
-  const [searchResult,setSearchResult] = useState([])
+  const [searchResult, setSearchResult] = useState([]);
 
-  const searchSelectshopButton = async(e:any) => {
+  const router = useRouter();
+  console.log(router);
 
-  }
+  const searchSelectshopButton = async (e: any) => {};
 
   return (
-    <S.SearchContainer>
-      <S.SearchInner>
-        <S.Logo>MySelectshop</S.Logo>
+    <S.HeaderContainer>
+      <S.HeaderInner>
+        <S.HeaderTop>
+          <S.Logo>MySelectshop</S.Logo>
+          <Button
+            variant="contained"
+            onClick={() =>
+              router.push(
+                {
+                  pathname: "/login",
+                  query: { path: router.pathname },
+                },
+                "/login"
+              )
+            }
+          >
+            로그인
+          </Button>
+        </S.HeaderTop>
         <S.SearchForm onSubmit={searchSelectshopButton}>
           <S.SearchInput
             type="text"
@@ -57,30 +77,35 @@ const SearchContainer = () => {
             );
           })}
         </S.SearchTabMenu>
-      </S.SearchInner>
+      </S.HeaderInner>
       <S.SearchResultsContainer>
-        {step === 0 ? <SearchResults/> : <MySelectShop/>}
+        {step === 0 ? <SearchResults /> : <MySelectShop />}
       </S.SearchResultsContainer>
-    </S.SearchContainer>
+    </S.HeaderContainer>
   );
 };
 
-export default SearchContainer;
+export default HeaderContainer;
 
 const S = {
-  SearchContainer: styled.div`
+  HeaderContainer: styled.div`
     width: 100%;
     height: 100vh;
     position: absolute;
     left: 0;
     top: 0;
   `,
-  SearchInner: styled.div`
+  HeaderInner: styled.div`
     padding: 20px;
-    background-color: #d1bb9e;
+    background-color: #b76371;
   `,
-  Logo :styled.h1`
+  HeaderTop: styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
+  `,
+  Logo: styled.h1`
     ${styleFont.textLarge}
     font-weight: bold;
     color: #fff;
@@ -131,9 +156,11 @@ const S = {
     padding: 10px 0px;
     border-radius: 22px;
     background-color: ${(props) =>
-      props.step === props.id ? "#a79277" : "none"};
+      props.step === props.id ? `${styleColor.BROWN[100]}` : "none"};
     color: ${(props) => (props.step === props.id ? "#fff" : "#111")};
-    font-weight: ${(props) => (props.step === props.id ? "bold" : "nomal")};
+    /* font-weight: ${(props) =>
+      props.step === props.id ? "bold" : "nomal"}; */
+    font-weight: bold;
   `,
   SearchResultsContainer: styled.div`
     width: 100%;

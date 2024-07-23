@@ -1,10 +1,11 @@
 "use client";
-import SearchContainer from "@/components/SearchContainer";
-import { selectShopsState } from "@/globalState/recoilState";
+import HeaderContainer from "@/components/HeaderContainer";
+import { selectShopsState} from "@/globalState/recoilState";
 import React, { useEffect, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import MyLocation from "@/assets/MyLocation.svg";
 
 declare global {
   interface Window {
@@ -29,8 +30,10 @@ const Main = () => {
     isLoading: true,
   });
   const [map, setMap] = useState<any>();
-  const [markers, setMarkers] = useState<any>();
-  const [selectShops, setSelectShops] = useRecoilState(selectShopsState);
+  const [markers, setMarkers] = useState<MarkersType[]>([]);
+  const [selectShops, setSelectShops] = useRecoilState<any[]>(selectShopsState);
+
+  console.log(myLocation)
 
   useEffect(() => {
     kakao.maps.load(() => {
@@ -57,29 +60,37 @@ const Main = () => {
             myLocation.center.lng
           ),
           sort: kakao.maps.services.SortBy.DISTANCE,
+          // page: page, 
         };
         ps.keywordSearch(keyword, placesSearchCB, options);
       };
+
       const placesSearchCB = (data: any, status: string, pagination: any) => {
         if (status === kakao.maps.services.Status.OK) {
-          setSelectShops(data);
+          console.log(data)
+          setSelectShops((prev) => [...prev, ...data]); // 기존 데이터에 추가
           displayPlaces(data);
+          // if (pagination.hasNextPage) {
+          //   pagination.nextPage(); // 다음 페이지 요청
+          // }
         }
       };
-      const displayPlaces = (data: any) => {
+
+      const displayPlaces = (data: any[]) => {
         const bounds = new kakao.maps.LatLngBounds();
-        let markers: any = [];
-        data.forEach((place: any) => {
-          markers.push({
+        let newMarkers: MarkersType[] = [];
+        data.forEach((place) => {
+          newMarkers.push({
             position: {
-              lat: place.y,
-              lng: place.x,
+              lat: place.lat,
+              lng: place.lng,
             },
           });
         });
-        setMarkers(markers);
+        setMarkers((prev) => [...prev, ...newMarkers]);
         // map.setBounds(bounds);
       };
+
       searchPlaces();
     }
   }, [map, myLocation]);
@@ -87,7 +98,7 @@ const Main = () => {
   return (
     <S.Container>
       <S.SideContainer>
-        <SearchContainer />
+        <HeaderContainer />
       </S.SideContainer>
       <main>
         <Map
@@ -95,19 +106,17 @@ const Main = () => {
           style={{ width: "100%", height: "100vh" }}
           onCreate={setMap}
         >
-          {markers?.map((marker: MarkersType) => {
-            return (
-              <MapMarker
-                key={`marker-${marker.position.lat},${marker.position.lng}`}
-                position={marker.position}
-              />
-            );
-          })}
+          {markers?.map((marker, index) => (
+            <MapMarker
+              key={`marker-${marker.position.lat},${marker.position.lng}-${index}`}
+              position={marker.position}
+            />
+          ))}
           {!myLocation.isLoading && (
             <MapMarker
               position={myLocation.center}
               image={{
-                src: "/myPositionMarker.png",
+                src: MyLocation,
                 size: {
                   width: 50,
                   height: 50,
