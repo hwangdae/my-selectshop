@@ -36,6 +36,7 @@ const HeaderContainer = () => {
           <S.Logo>MySelectshop</S.Logo>
           <Button
             variant="contained"
+            sx={{padding: "5px 30px"}}
             onClick={() =>
               router.push(
                 {

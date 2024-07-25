@@ -12,6 +12,7 @@ import { AuthType, RegisterInput } from "@/types/authType";
 import useToggle from "@/hook/useToggle";
 import { CommonButton } from "@/styles/commonButton";
 import { useRouter } from "next/router";
+import supabase from "@/lib/supabaseClient";
 
 const SignUp = () => {
   const [showPassword, handlePasswordToggle] = useToggle(false);
@@ -34,9 +35,16 @@ const SignUp = () => {
     },
   });
 
-  const signupHandleSubmit: SubmitHandler<RegisterInput> = (data: AuthType) => {
-    console.log(data);
-    console.log(errors.email);
+  const signupHandleSubmit: SubmitHandler<RegisterInput> = async({email,password,nickName}: AuthType) => {
+    const {data, error} = await supabase.auth.signUp({
+      email,
+      password
+    })
+    const { data: { user } } = await supabase.auth.getUser()
+    console.log(data)
+    console.log(user)
+    console.log(error)
+
   };
 
   return (
@@ -170,7 +178,7 @@ const S = {
 
   `,
   SignUpTitle: styled.h1`
-    font-size: 38px;
+    font-size: 30px;
     line-height: 50px;
     letter-spacing: -2px;
   `,
