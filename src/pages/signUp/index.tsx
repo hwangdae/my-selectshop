@@ -1,4 +1,4 @@
-import { registerSchema } from "@/validators/auth";
+import { registerSignUpSchema } from "@/validators/auth";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -18,15 +18,15 @@ const SignUp = () => {
   const [showPassword, handlePasswordToggle] = useToggle(false);
   const [showCheckPassword, handleCheckPasswordToggle] = useToggle(false);
 
-  const router = useRouter()
-  console.log(router)
+  const router = useRouter();
+  console.log(router);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(registerSignUpSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -35,25 +35,38 @@ const SignUp = () => {
     },
   });
 
-  const signupHandleSubmit: SubmitHandler<RegisterInput> = async({email,password,nickName}: AuthType) => {
-    const {data, error} = await supabase.auth.signUp({
+  const signupHandleSubmit: SubmitHandler<RegisterInput> = async ({
+    email,
+    password,
+    nickName,
+  }: AuthType) => {
+    const { data, error } = await supabase.auth.signUp({
       email,
-      password
-    })
-    const { data: { user } } = await supabase.auth.getUser()
-    console.log(data)
-    console.log(user)
-    console.log(error)
-
+      password,
+      options: {
+        data: {
+          nickName,
+        },
+      },
+    });
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    console.log(user);
+    const newUser = {
+      id: user?.id,
+      email: user?.email,
+    };
+    await supabase.from("users").insert(newUser);
+    alert("회원가입이 완료되었습니다.");
+    router.push("/");
   };
 
   return (
     <>
       <S.SignUpContainer>
         <S.SignUpInner>
-          <S.SignUpTitle>
-            회원가입
-          </S.SignUpTitle>
+          <S.SignUpTitle>회원가입</S.SignUpTitle>
           <S.SignUpForm onSubmit={handleSubmit(signupHandleSubmit)}>
             <S.SignUpFormInner>
               <S.SignUpListItem>
@@ -144,7 +157,9 @@ const SignUp = () => {
           </S.SignUpForm>
         </S.SignUpInner>
       </S.SignUpContainer>
-      <S.BackgroundColor onClick={() => router.push(`${router.query.path}`)}></S.BackgroundColor>
+      <S.BackgroundColor
+        onClick={() => router.push(`${router.query.path}`)}
+      ></S.BackgroundColor>
     </>
   );
 };
@@ -174,9 +189,7 @@ const S = {
     padding: 30px;
     z-index: 999;
   `,
-  SignUpInner: styled.div`
-
-  `,
+  SignUpInner: styled.div``,
   SignUpTitle: styled.h1`
     font-size: 30px;
     line-height: 50px;

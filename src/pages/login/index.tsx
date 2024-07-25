@@ -1,6 +1,7 @@
+import supabase from "@/lib/supabaseClient";
 import { CommonButton } from "@/styles/commonButton";
 import { AuthType, RegisterInput } from "@/types/authType";
-import { registerSchema } from "@/validators/auth";
+import { registerLoginSchema} from "@/validators/auth";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -17,16 +18,28 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(registerLoginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const loginHandleSubmit: SubmitHandler<RegisterInput> = (data: AuthType) => {
-    console.log(data);
-    console.log(errors.email);
+  const loginHandleSubmit: SubmitHandler<RegisterInput> = async ({ email, password }) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      const {data:user} = await supabase.auth.getUser()
+
+      console.log("사용자 데이터:", data); // 중간 로그
+      console.log(user)
+      console.log("오류:", error); // 중간 로그
+    } catch (err) {
+      console.error("로그인 도중 오류 발생:", err);
+
+    }
   };
 
   return (
@@ -40,10 +53,7 @@ const Login = () => {
           <S.LoginForm onSubmit={handleSubmit(loginHandleSubmit)}>
             <S.LoginFormInner>
               <S.LoginListItem>
-                <S.LoginInput
-                  placeholder="이메일 주소"
-                  {...register("email")}
-                />
+                <S.LoginInput placeholder="이메일 주소" {...register("email")} />
                 <ErrorMessage
                   errors={errors}
                   name="email"
@@ -84,9 +94,7 @@ const Login = () => {
           회원이 아니신가요? <Link href={"/signUp"}>회원가입</Link>
         </S.SignUpLinkContainer>
       </S.LoginContainer>
-      <S.BackgroundColor
-        onClick={() => router.push(`${router.query.path}`)}
-      ></S.BackgroundColor>
+      <S.BackgroundColor onClick={() => router.push(`/`)}></S.BackgroundColor>
     </>
   );
 };
