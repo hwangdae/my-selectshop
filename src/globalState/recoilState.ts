@@ -8,7 +8,19 @@ export interface Shop {
   lng: number;
 }
 
+export interface User {
+  id :string;
+  created_at : string;
+  email :string;
+  nickName : string;
+}
+
 export const selectShopsState = atom<any[]>({
   key: "selectShopsState",
   default: [],
 });
+
+export const userState = atom<User | null>({
+  key : "userState",
+  default : null,
+})

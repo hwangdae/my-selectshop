@@ -40,7 +40,7 @@ const SignUp = () => {
     password,
     nickName,
   }: AuthType) => {
-    const { data, error } = await supabase.auth.signUp({
+    await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -52,12 +52,13 @@ const SignUp = () => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    console.log(user);
+
     const newUser = {
       id: user?.id,
       email: user?.email,
+      nickName: user?.user_metadata.nickName,
     };
-    await supabase.from("users").insert(newUser);
+    supabase.from("users").insert(newUser);
     alert("회원가입이 완료되었습니다.");
     router.push("/");
   };

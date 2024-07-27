@@ -1,16 +1,20 @@
+import { userState } from "@/globalState/recoilState";
 import supabase from "@/lib/supabaseClient";
 import { CommonButton } from "@/styles/commonButton";
+import { styleFont } from "@/styles/styleFont";
 import { AuthType, RegisterInput } from "@/types/authType";
-import { registerLoginSchema} from "@/validators/auth";
+import { registerLoginSchema } from "@/validators/auth";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 const Login = () => {
+  const [, setuserLogin] = useRecoilState(userState);
   const router = useRouter();
 
   const {
@@ -25,20 +29,40 @@ const Login = () => {
     },
   });
 
-  const loginHandleSubmit: SubmitHandler<RegisterInput> = async ({ email, password }) => {
+  const loginHandleSubmit: SubmitHandler<RegisterInput> = async ({
+    email,
+    password,
+  }) => {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.signInWithPassword({
         email,
-        password
+        password,
       });
-      const {data:user} = await supabase.auth.getUser()
+      const {
+        data,
+      } = await supabase.auth.getUser();
+      console.log(data)
+      if (user) {
+        const { data: userLogin, error } = await supabase
+          .from("users")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+          console.log(user)
+          console.log(userLogin)
 
-      console.log("사용자 데이터:", data); // 중간 로그
-      console.log(user)
-      console.log("오류:", error); // 중간 로그
+        setuserLogin(userLogin);
+        alert("로그인이 완료 되었습니다.")
+        router.push("/")
+      }
+      if (error) {
+        alert("이메일과 비밀번호를 확인해 주세요.");
+      }
     } catch (err) {
-      console.error("로그인 도중 오류 발생:", err);
-
+      console.error(err);
     }
   };
 
@@ -53,7 +77,10 @@ const Login = () => {
           <S.LoginForm onSubmit={handleSubmit(loginHandleSubmit)}>
             <S.LoginFormInner>
               <S.LoginListItem>
-                <S.LoginInput placeholder="이메일 주소" {...register("email")} />
+                <S.LoginInput
+                  placeholder="이메일 주소"
+                  {...register("email")}
+                />
                 <ErrorMessage
                   errors={errors}
                   name="email"
@@ -174,6 +201,7 @@ const S = {
     font-size: 14px;
   `,
   SignUpLinkContainer: styled.div`
+    ${styleFont.textsmall}
     color: #28323c;
     text-align: center;
     margin-top: 24px;
