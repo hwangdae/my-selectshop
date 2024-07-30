@@ -1,6 +1,6 @@
 import SelectshopInfo from "@/components/SelectshopInfo";
 import { selectShopsState } from "@/globalState/recoilState";
-import { PlaceType } from "@/types/type";
+import { PlaceType } from "@/types/placeType";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";

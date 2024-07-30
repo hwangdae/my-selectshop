@@ -29,30 +29,19 @@ const Login = () => {
     },
   });
 
-  const loginHandleSubmit: SubmitHandler<RegisterInput> = async ({
-    email,
-    password,
-  }) => {
+  const loginHandleSubmit: SubmitHandler<RegisterInput> = async ({email,password}) => {
     try {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.signInWithPassword({
+      const {data: { user },error} = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      const {
-        data,
-      } = await supabase.auth.getUser();
-      console.log(data)
+
       if (user) {
         const { data: userLogin, error } = await supabase
           .from("users")
           .select("*")
           .eq("id", user.id)
           .single();
-          console.log(user)
-          console.log(userLogin)
 
         setuserLogin(userLogin);
         alert("로그인이 완료 되었습니다.")

@@ -9,6 +9,8 @@ import { styleColor } from "@/styles/styleColor";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Button } from "@mui/material";
+import useLoginUserId from "@/hook/useLoginUserId";
+import supabase from "@/lib/supabaseClient";
 
 const TABNAV = [
   {
@@ -18,14 +20,30 @@ const TABNAV = [
   },
   { id: 1, name: "내 셀렉샵", href: "/mySelectshop" },
 ];
+const CONTENTSTABNAV = [
+  { id: 0, name: "편집샵 보기", href: "/selectshop" },
+  { id: 1, name: "방문한 편집샵 보기", href: "/selectshop" },
+  { id: 2, name: "방문하지 못한 편집샵 보기", href: "/selectshop" },
+  { id: 3, name: "즐겨찾기", href: "/selectshop" },
+];
 
 const HeaderContainer = () => {
   const [step, setStep] = useState<number>(0);
   const [searchName, setSearchName] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  const loginUser = useLoginUserId();
 
   const router = useRouter();
   console.log(router);
+
+  const logoutHandleSubmit = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      alert("로그아웃 되었습니다.");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const searchSelectshopButton = async (e: any) => {};
 
@@ -34,21 +52,31 @@ const HeaderContainer = () => {
       <S.HeaderInner>
         <S.HeaderTop>
           <S.Logo>MySelectshop</S.Logo>
-          <Button
-            variant="contained"
-            sx={{padding: "5px 30px"}}
-            onClick={() =>
-              router.push(
-                {
-                  pathname: "/login",
-                  query: { path: router.pathname },
-                },
-                "/login"
-              )
-            }
-          >
-            로그인
-          </Button>
+          {!loginUser ? (
+            <Button
+              variant="contained"
+              sx={{ padding: "5px 30px" }}
+              onClick={() =>
+                router.push(
+                  {
+                    pathname: "/login",
+                    query: { path: router.pathname },
+                  },
+                  "/login"
+                )
+              }
+            >
+              로그인
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              sx={{ padding: "5px 30px" }}
+              onClick={logoutHandleSubmit}
+            >
+              로그아웃
+            </Button>
+          )}
         </S.HeaderTop>
         <S.SearchForm onSubmit={searchSelectshopButton}>
           <S.SearchInput
@@ -61,7 +89,7 @@ const HeaderContainer = () => {
             <Search fill="#919191" />
           </S.SearchButton>
         </S.SearchForm>
-        <S.SearchTabMenu>
+        {/* <S.SearchTabMenu>
           {TABNAV.map((item: TabMenuType) => {
             return (
               <S.TabMenuItem key={item.id}>
@@ -77,11 +105,22 @@ const HeaderContainer = () => {
               </S.TabMenuItem>
             );
           })}
-        </S.SearchTabMenu>
+        </S.SearchTabMenu> */}
       </S.HeaderInner>
-      <S.SearchResultsContainer>
-        {step === 0 ? <SearchResults /> : <MySelectShop />}
-      </S.SearchResultsContainer>
+      <S.ContentsContainer>
+        {loginUser && <div>
+          </div>}
+        <S.ContentsInner>
+          {/* {step === 0 ? <SearchResults /> : <MySelectShop />} */}
+          {CONTENTSTABNAV.map((content) => {
+            return (
+              <S.Content key={content.id}>
+                <S.ContentButton>{content.name}</S.ContentButton>
+              </S.Content>
+            );
+          })}
+        </S.ContentsInner>
+      </S.ContentsContainer>
     </S.HeaderContainer>
   );
 };
@@ -97,7 +136,7 @@ const S = {
     top: 0;
   `,
   HeaderInner: styled.div`
-    padding: 20px;
+    padding: 20px 12px;
     background-color: #b76371;
   `,
   HeaderTop: styled.div`
@@ -163,13 +202,31 @@ const S = {
       props.step === props.id ? "bold" : "nomal"}; */
     font-weight: bold;
   `,
-  SearchResultsContainer: styled.div`
+  ContentsContainer: styled.ul`
     width: 100%;
-    height: calc(100vh - 183px);
+
+    /* height: calc(100vh - 183px);
     overflow-y: scroll;
     &::-webkit-scrollbar {
       display: none;
-    }
+    } */
+  `,
+  ContentsInner: styled.div`
+    padding: 20px 12px;
+  `,
+  Content: styled.li`
+    /* width: 100%; */
+    margin-bottom: 8px;
+  `,
+  ContentButton: styled.button`
+    cursor: pointer;
+    width: 100%;
+    border: solid 1px ${styleColor.RED[0]};
+    border-radius: 4px;
+    padding: 12px 0px;
+    ${styleFont.textMedium}
+    text-align: left;
+    text-indent: 10px;
   `,
   Aaaa: styled.div`
     position: absolute;

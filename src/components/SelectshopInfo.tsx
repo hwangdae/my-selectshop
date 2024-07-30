@@ -1,11 +1,11 @@
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
-import Indent from "@/assets/Indent.svg"
-import Star from "@/assets/Star.svg"
+import Indent from "@/assets/Indent.svg";
+import Star from "@/assets/Star.svg";
 import { PlaceType } from "@/types/placeType";
-
+import { Button } from "@mui/material";
 
 interface PropsType {
   Selectshop: PlaceType;
@@ -13,11 +13,12 @@ interface PropsType {
 
 const SelectshopInfo = ({ Selectshop }: PropsType) => {
   const { id, place_name, address_name, phone } = Selectshop;
-  const [detailSelectshopInfoToggle, setDetailSelectshopInfoToggle] = useState(false);
+  const [detailSelectshopInfoToggle, setDetailSelectshopInfoToggle] = useState<string | null>(null);
   const [favoritesToggle, setFavoritesToggle] = useState(false);
+  // const prevIdRef = useRef<string>("");
 
-  const detailSelectshopInfoHandler = () => {
-    setDetailSelectshopInfoToggle(!detailSelectshopInfoToggle);
+  const detailSelectshopInfoHandler = (id: string) => {
+    setDetailSelectshopInfoToggle(id);
   };
 
   return (
@@ -29,7 +30,11 @@ const SelectshopInfo = ({ Selectshop }: PropsType) => {
           <S.SelectshopPhone>{phone}</S.SelectshopPhone>
         </S.SelectshopInfo>
         <S.SelectshopFn>
-          <S.SelectshopMoreInfoButton onClick={detailSelectshopInfoHandler}>
+          <S.SelectshopMoreInfoButton
+            onClick={() => {
+              detailSelectshopInfoHandler(id);
+            }}
+          >
             <Indent />
           </S.SelectshopMoreInfoButton>
 
@@ -42,7 +47,7 @@ const SelectshopInfo = ({ Selectshop }: PropsType) => {
           </S.SelectshopFavoritesButton>
         </S.SelectshopFn>
       </S.Selectshop>
-      {detailSelectshopInfoToggle && (
+      {detailSelectshopInfoToggle === id && (
         <S.DetailContainer>
           <S.DetailSelectshopInfo>
             <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
@@ -53,7 +58,7 @@ const SelectshopInfo = ({ Selectshop }: PropsType) => {
             <S.SelectshopReviewTitle>나의 후기</S.SelectshopReviewTitle>
             <S.MySelectshopReview>
               <S.NoReview>등록된 후기가 없습니다.</S.NoReview>
-              <S.WriteReview>후기 작성하기</S.WriteReview>
+              <Button variant="contained" sx={{padding: "5px 30px"}}>후기 등록하기</Button>
             </S.MySelectshopReview>
           </S.SelectshopReviewContainer>
         </S.DetailContainer>
@@ -91,7 +96,7 @@ const S = {
   SelectshopFavoritesButton: styled.button`
     cursor: pointer;
   `,
-  //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  //디테일 부분
   DetailContainer: styled.div`
     position: absolute;
     left: 360px;
@@ -106,7 +111,7 @@ const S = {
     text-indent: 6px;
     padding: 14px 0px;
     ${styleFont.textLarge}
-    background-color: ${styleColor.INDIGO[100]};
+    background-color: ${styleColor.RED[0]};
   `,
   DetailImage: styled.h2`
     width: 100%;
@@ -119,8 +124,16 @@ const S = {
   `,
   SelectshopReviewTitle: styled.h1`
     ${styleFont.textLarge}
+    margin-bottom: 30px;
   `,
-  MySelectshopReview: styled.div``,
-  NoReview: styled.p``,
-  WriteReview: styled.button``,
+  MySelectshopReview: styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `,
+  NoReview: styled.p`
+    ${styleFont.textMedium}
+    margin-bottom: 10px;
+  `,
+  WriteReviewButton: styled.button``,
 };
