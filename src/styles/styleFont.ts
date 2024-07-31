@@ -18,7 +18,7 @@ export const styleFont = {
     textsmall: css`
     font-size: 14px;
     color: #111;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 17px;
     letter-spacing: -1px;
   `,

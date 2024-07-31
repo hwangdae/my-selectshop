@@ -20,12 +20,7 @@ const TABNAV = [
   },
   { id: 1, name: "내 셀렉샵", href: "/mySelectshop" },
 ];
-const CONTENTSTABNAV = [
-  { id: 0, name: "편집샵 보기", href: "/selectshop" },
-  { id: 1, name: "방문한 편집샵 보기", href: "/selectshop" },
-  { id: 2, name: "방문하지 못한 편집샵 보기", href: "/selectshop" },
-  { id: 3, name: "즐겨찾기", href: "/selectshop" },
-];
+
 
 const HeaderContainer = () => {
   const [step, setStep] = useState<number>(0);
@@ -34,7 +29,6 @@ const HeaderContainer = () => {
   const loginUser = useLoginUserId();
 
   const router = useRouter();
-  console.log(router);
 
   const logoutHandleSubmit = async () => {
     try {
@@ -46,6 +40,8 @@ const HeaderContainer = () => {
   };
 
   const searchSelectshopButton = async (e: any) => {};
+
+
 
   return (
     <S.HeaderContainer>
@@ -89,38 +85,8 @@ const HeaderContainer = () => {
             <Search fill="#919191" />
           </S.SearchButton>
         </S.SearchForm>
-        {/* <S.SearchTabMenu>
-          {TABNAV.map((item: TabMenuType) => {
-            return (
-              <S.TabMenuItem key={item.id}>
-                <S.TabMenuButton
-                  step={step}
-                  id={item.id}
-                  onClick={() => {
-                    item.id === 0 ? setStep(0) : setStep(1);
-                  }}
-                >
-                  {item.name}
-                </S.TabMenuButton>
-              </S.TabMenuItem>
-            );
-          })}
-        </S.SearchTabMenu> */}
       </S.HeaderInner>
-      <S.ContentsContainer>
-        {loginUser && <div>
-          </div>}
-        <S.ContentsInner>
-          {/* {step === 0 ? <SearchResults /> : <MySelectShop />} */}
-          {CONTENTSTABNAV.map((content) => {
-            return (
-              <S.Content key={content.id}>
-                <S.ContentButton>{content.name}</S.ContentButton>
-              </S.Content>
-            );
-          })}
-        </S.ContentsInner>
-      </S.ContentsContainer>
+      
     </S.HeaderContainer>
   );
 };
@@ -130,8 +96,8 @@ export default HeaderContainer;
 const S = {
   HeaderContainer: styled.div`
     width: 100%;
-    height: 100vh;
-    position: absolute;
+    /* height: 100vh; */
+    /* position: absolute; */
     left: 0;
     top: 0;
   `,
@@ -202,32 +168,7 @@ const S = {
       props.step === props.id ? "bold" : "nomal"}; */
     font-weight: bold;
   `,
-  ContentsContainer: styled.ul`
-    width: 100%;
-
-    /* height: calc(100vh - 183px);
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-      display: none;
-    } */
-  `,
-  ContentsInner: styled.div`
-    padding: 20px 12px;
-  `,
-  Content: styled.li`
-    /* width: 100%; */
-    margin-bottom: 8px;
-  `,
-  ContentButton: styled.button`
-    cursor: pointer;
-    width: 100%;
-    border: solid 1px ${styleColor.RED[0]};
-    border-radius: 4px;
-    padding: 12px 0px;
-    ${styleFont.textMedium}
-    text-align: left;
-    text-indent: 10px;
-  `,
+ 
   Aaaa: styled.div`
     position: absolute;
     left: 360px;

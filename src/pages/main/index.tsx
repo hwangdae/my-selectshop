@@ -6,6 +6,7 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import MyLocation from "@/assets/MyLocation.svg";
+import ContentsContainer from "@/components/ContentsContainer";
 
 declare global {
   interface Window {
@@ -99,6 +100,7 @@ const Main = () => {
     <S.Container>
       <S.SideContainer>
         <HeaderContainer />
+        <ContentsContainer/>
       </S.SideContainer>
       <main>
         <Map
