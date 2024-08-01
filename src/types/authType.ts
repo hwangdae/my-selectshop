@@ -1,4 +1,4 @@
-import { registerSchema } from "@/validators/auth";
+import { registerLoginSchema, registerSignUpSchema } from "@/validators/auth";
 import { z } from "zod";
 
 export interface AuthType {
@@ -8,4 +8,6 @@ export interface AuthType {
     nickName: string;
   }
   
-  export type RegisterInput = z.infer<typeof registerSchema>;
+  export type RegisterLoginInput = z.infer<typeof registerLoginSchema>;
+
+  export type RegisterSignUpInput = z.infer<typeof registerSignUpSchema>;

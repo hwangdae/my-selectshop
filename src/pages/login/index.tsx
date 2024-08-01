@@ -2,7 +2,7 @@ import { userState } from "@/globalState/recoilState";
 import supabase from "@/lib/supabaseClient";
 import { CommonButton } from "@/styles/commonButton";
 import { styleFont } from "@/styles/styleFont";
-import { AuthType, RegisterInput } from "@/types/authType";
+import { RegisterLoginInput } from "@/types/authType";
 import { registerLoginSchema } from "@/validators/auth";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,7 +21,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterInput>({
+  } = useForm<RegisterLoginInput>({
     resolver: zodResolver(registerLoginSchema),
     defaultValues: {
       email: "",
@@ -29,7 +29,7 @@ const Login = () => {
     },
   });
 
-  const loginHandleSubmit: SubmitHandler<RegisterInput> = async ({email,password}) => {
+  const loginHandleSubmit: SubmitHandler<RegisterLoginInput> = async ({email,password}) => {
     try {
       const {data: { user },error} = await supabase.auth.signInWithPassword({
         email,

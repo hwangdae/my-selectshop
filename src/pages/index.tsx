@@ -1,7 +1,28 @@
-import Main from "./main";
+import styled from "styled-components";
+import Sidebar from "@/components/Sidebar";
+import MapComponent from "@/components/Map";
 
 const Home = () => {
-  return <Main />;
+  return (
+    <S.Container>
+      <Sidebar />
+      <S.MapContainer>
+        <MapComponent />
+      </S.MapContainer>
+    </S.Container>
+  );
 };
 
 export default Home;
+
+const S = {
+  Container: styled.div`
+    display: flex;
+    width: 100%;
+    height: 100vh;
+  `,
+  MapContainer: styled.div`
+    flex: 1;
+    position: relative;
+  `,
+};

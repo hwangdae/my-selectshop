@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import MyLocation from "@/assets/MyLocation.svg";
 import ContentsContainer from "@/components/ContentsContainer";
+import { MarkersType, PlaceType } from "@/types/placeType";
 
 declare global {
   interface Window {
@@ -14,12 +15,7 @@ declare global {
   }
 }
 
-interface MarkersType {
-  position: {
-    lat: number;
-    lng: number;
-  };
-}
+
 
 const Main = () => {
   const [myLocation, setMyLocation] = useState({
@@ -32,7 +28,7 @@ const Main = () => {
   });
   const [map, setMap] = useState<any>();
   const [markers, setMarkers] = useState<MarkersType[]>([]);
-  const [selectShops, setSelectShops] = useRecoilState<any[]>(selectShopsState);
+  const [selectShops, setSelectShops] = useRecoilState<PlaceType[]>(selectShopsState);
 
   console.log(myLocation)
 
@@ -49,52 +45,6 @@ const Main = () => {
       }
     });
   }, []);
-
-  useEffect(() => {
-    if (map && myLocation.center.lat && myLocation.center.lng) {
-      const searchPlaces = () => {
-        const ps = new kakao.maps.services.Places();
-        const keyword = "의류판매";
-        const options = {
-          location: new kakao.maps.LatLng(
-            myLocation.center.lat,
-            myLocation.center.lng
-          ),
-          sort: kakao.maps.services.SortBy.DISTANCE,
-          // page: page, 
-        };
-        ps.keywordSearch(keyword, placesSearchCB, options);
-      };
-
-      const placesSearchCB = (data: any, status: string, pagination: any) => {
-        if (status === kakao.maps.services.Status.OK) {
-          console.log(data)
-          setSelectShops((prev) => [...prev, ...data]); // 기존 데이터에 추가
-          displayPlaces(data);
-          // if (pagination.hasNextPage) {
-          //   pagination.nextPage(); // 다음 페이지 요청
-          // }
-        }
-      };
-
-      const displayPlaces = (data: any[]) => {
-        const bounds = new kakao.maps.LatLngBounds();
-        let newMarkers: MarkersType[] = [];
-        data.forEach((place) => {
-          newMarkers.push({
-            position: {
-              lat: place.lat,
-              lng: place.lng,
-            },
-          });
-        });
-        setMarkers((prev) => [...prev, ...newMarkers]);
-        // map.setBounds(bounds);
-      };
-
-      searchPlaces();
-    }
-  }, [map, myLocation]);
 
   return (
     <S.Container>
@@ -118,7 +68,7 @@ const Main = () => {
             <MapMarker
               position={myLocation.center}
               image={{
-                src: MyLocation,
+                src: `${<MyLocation/>}`,
                 size: {
                   width: 50,
                   height: 50,

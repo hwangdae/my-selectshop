@@ -1,3 +1,4 @@
+import { PlaceType } from "@/types/placeType";
 import { atom } from "recoil";
 
 export interface Shop {
@@ -15,7 +16,7 @@ export interface User {
   nickName : string;
 }
 
-export const selectShopsState = atom<any[]>({
+export const selectShopsState = atom<PlaceType[]>({
   key: "selectShopsState",
   default: [],
 });
@@ -23,4 +24,16 @@ export const selectShopsState = atom<any[]>({
 export const userState = atom<User | null>({
   key : "userState",
   default : null,
+})
+
+export const myLocationState = atom({
+  key : "myLocationState",
+  default : {
+    center: {
+      lat: 33.450701,
+      lng: 126.570667,
+    },
+    errMsg: null,
+    isLoading: true,
+  }
 })

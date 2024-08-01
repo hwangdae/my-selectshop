@@ -8,65 +8,31 @@ import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import ProfileUpdate from "@/assets/ProfileUpdate.svg";
+import ProfileContainer from "./ProfileContainer";
 
 const CONTENTSTABNAV = [
-  { id: 0, name: "편집샵 보기", href: "/mySelectShop" },
-  { id: 1, name: "방문한 편집샵 보기", href: "/visitedSelectshop" },
-  { id: 2, name: "방문하지 못한 편집샵 보기", href: "/notVisiteSelectshop" },
-  { id: 3, name: "즐겨찾기", href: "/BookmarkSelectshop" },
+  { id: "searchResults", name: "편집샵 보기" },
+  { id: "visitedSelectshop", name: "방문한 편집샵 보기" },
+  { id: "notVisiteSelectshop", name: "방문하지 못한 편집샵 보기" },
+  { id: "BookmarkSelectshop", name: "즐겨찾기" },
 ];
 
 const ContentsContainer = () => {
-  const loginUser = useLoginUserId();
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getUser(loginUser),
-  });
   const router = useRouter();
-  console.log(loginUser);
-  console.log(user);
-  const viewSelectShopHandle = (href: string) => {
-    router.push(href);
+  console.log(router,"라우터")
+  const viewSelectShopHandle = (id: string) => {
+    router.push(`/?tab=${id}`);
   };
 
   return (
     <S.ContentsContainer>
-      {loginUser && (
-        <S.ProfileContainer>
-          <S.UserNickName>안녕하세요 {user?.nickName}님 👋</S.UserNickName>
-          <S.ProfileInfoContainer>
-            <S.ProfileImageContainer>
-              <S.ProfileImage></S.ProfileImage>
-              <S.ProfileUpdateButton>
-                <ProfileUpdate width={"15px"} height={"15px"} fill={`${styleColor.GRAY[700]}`} />
-              </S.ProfileUpdateButton>
-            </S.ProfileImageContainer>
-            <S.ProfileInfo>
-              <S.UserEmail>{user?.email}</S.UserEmail>
-              <S.UserActivity>
-                <S.Activity>
-                  <h3>리뷰수</h3>
-                  <p>0</p>
-                </S.Activity>
-                <S.Activity>
-                  <h3>팔로워</h3>
-                  <p>0</p>
-                </S.Activity>
-                <S.Activity>
-                  <h3>팔로잉</h3>
-                  <p>0</p>
-                </S.Activity>
-              </S.UserActivity>
-            </S.ProfileInfo>
-          </S.ProfileInfoContainer>
-        </S.ProfileContainer>
-      )}
+      <ProfileContainer />
       <S.ContentsInner>
         {CONTENTSTABNAV.map((content) => {
           return (
             <S.Content key={content.id}>
               <S.ContentButton
-                onClick={() => viewSelectShopHandle(content.href)}
+                onClick={() => viewSelectShopHandle(content.id)}
               >
                 {content.name}
               </S.ContentButton>
@@ -90,73 +56,7 @@ const S = {
       display: none;
     } */
   `,
-  ProfileContainer: styled.div`
-    padding: 20px 12px;
-  `,
-  UserNickName: styled.h1`
-    ${styleFont.textLarge}
-    margin-bottom: 14px;
-  `,
 
-  ProfileInfoContainer: styled.div`
-    display: flex;
-    /* justify-content: space-between; */
-    gap: 10px;
-  `,
-  ProfileImageContainer: styled.div`
-    position: relative;
-    left: 0;
-    top: 0;
-  `,
-  ProfileImage: styled.img`
-    width: 60px;
-    height: 60px;
-    background-color: #eee;
-    border-radius:70%;
-    object-fit: cover;
-  `,
-  ProfileUpdateButton: styled.button`
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 26px;
-    height: 26px;
-    background-color: ${styleColor.GRAY[200]};
-    border-radius: 100%;
-  `,
-  ProfileInfo: styled.div`
-    width: 70%;
-  `,
-  UserEmail: styled.h2`
-    ${styleFont.textMedium}
-    margin-bottom: 8px;
-  `,
-  UserActivity: styled.ul`
-    display: flex;
-    justify-content: space-between;
-    :first-child {
-      padding-left: 0px;
-    }
-    :last-child {
-      border-right: none;
-    }
-  `,
-  Activity: styled.li`
-    width: 33.3%;
-    border-right: solid 1px #eee;
-    padding-left: 10px;
-    h3 {
-      ${styleFont.textsmall}
-      color: ${styleColor.GRAY[600]};
-    }
-    p {
-      ${styleFont.textsmall}
-      color: ${styleColor.GRAY[600]};
-    }
-  `,
   ContentsInner: styled.div`
     padding: 20px 12px;
   `,

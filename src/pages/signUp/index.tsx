@@ -8,7 +8,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { ErrorMessage } from "@hookform/error-message";
 import Eye from "@/assets/Eye.svg";
 import EyeInvisible from "@/assets/EyeInvisible.svg";
-import { AuthType, RegisterInput } from "@/types/authType";
+import { AuthType, RegisterSignUpInput } from "@/types/authType";
 import useToggle from "@/hook/useToggle";
 import { CommonButton } from "@/styles/commonButton";
 import { useRouter } from "next/router";
@@ -25,7 +25,7 @@ const SignUp = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterInput>({
+  } = useForm<RegisterSignUpInput>({
     resolver: zodResolver(registerSignUpSchema),
     defaultValues: {
       email: "",
@@ -35,7 +35,7 @@ const SignUp = () => {
     },
   });
 
-  const signupHandleSubmit: SubmitHandler<RegisterInput> = async ({
+  const signupHandleSubmit: SubmitHandler<RegisterSignUpInput> = async ({
     email,
     password,
     nickName,

@@ -16,3 +16,10 @@ export interface PlaceType {
     x: string;
     y: string;
   }
+
+export interface MarkersType {
+  position: {
+    lat: number;
+    lng: number;
+  };
+}
