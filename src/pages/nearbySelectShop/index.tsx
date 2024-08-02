@@ -1,17 +1,19 @@
 import SelectshopInfo from "@/components/SelectshopInfo";
-import { myLocationState, selectShopsState } from "@/globalState/recoilState";
+import { mapState, markersState, myLocationState, selectShopsState } from "@/globalState/recoilState";
 import { MarkersType, PlaceType } from "@/types/placeType";
 import React, { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 
-const SearchResults = () => {
+const NearbySelectShop = () => {
+  const map = useRecoilValue(mapState)
   const myLocation = useRecoilValue(myLocationState)
-  const [markers, setMarkers] = useState<MarkersType[]>([]);
+  const [_, setMarkers] = useRecoilState<MarkersType[]>(markersState)
   const [selectShops, setSelectShops] = useState([]);
 
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.kakao && window.kakao.maps && window.kakao.maps.services) {
     if (myLocation.center.lat && myLocation.center.lng) {
       const searchPlaces = () => {
         const ps = new kakao.maps.services.Places();
@@ -44,17 +46,18 @@ const SearchResults = () => {
         data.forEach((place) => {
           newMarkers.push({
             position: {
-              lat: place.lat,
-              lng: place.lng,
+              lat: place.y,
+              lng: place.x,
             },
           });
         });
-        setMarkers((prev) => [...prev, ...newMarkers]);
+        setMarkers(newMarkers);
         // map.setBounds(bounds);
       };
 
       searchPlaces();
     }
+  }
   }, [myLocation]);
 
   return (
@@ -68,7 +71,7 @@ const SearchResults = () => {
   );
 };
 
-export default SearchResults;
+export default NearbySelectShop;
 
 const S = {
   SearchResultsContainer: styled.div`

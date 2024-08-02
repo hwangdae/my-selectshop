@@ -11,7 +11,7 @@ import ProfileUpdate from "@/assets/ProfileUpdate.svg";
 import ProfileContainer from "./ProfileContainer";
 
 const CONTENTSTABNAV = [
-  { id: "searchResults", name: "편집샵 보기" },
+  { id: "nearbySelectShop", name: "편집샵 보기" },
   { id: "visitedSelectshop", name: "방문한 편집샵 보기" },
   { id: "notVisiteSelectshop", name: "방문하지 못한 편집샵 보기" },
   { id: "BookmarkSelectshop", name: "즐겨찾기" },

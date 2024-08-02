@@ -2,27 +2,29 @@ import React from "react";
 import styled from "styled-components";
 import HeaderContainer from "./HeaderContainer";
 import ContentsContainer from "./ContentsContainer";
-import SearchResults from "@/pages/searchResults";
+import NearbySelectShop from "@/pages/nearbySelectShop";
 import { useRouter } from "next/router";
 
 const Sidebar = () => {
-    const router = useRouter();
-    const { tab } = router.query;
+  const router = useRouter();
+  const { tab } = router.query;
 
-    const renderContent = () => {
-        switch (tab) {
-            case 'searchResults':
-                return <SearchResults/>;
-            // case 'visitedSelectshop':
-            //     return <VisitedSelectshop/>;
-            default:
-                return <ContentsContainer />
-        }
+  const renderContent = () => {
+    switch (tab) {
+      case "nearbySelectShop":
+        return <NearbySelectShop />;
+      // case 'visitedSelectshop':
+      //     return <VisitedSelectshop/>;
+      default:
+        return <ContentsContainer />;
     }
+  };
   return (
     <S.SideContainer>
-      <HeaderContainer />
-      {renderContent()}
+      <S.StyleHeader>
+        <HeaderContainer />
+      </S.StyleHeader>
+      <S.StyleContent>{renderContent()}</S.StyleContent>
     </S.SideContainer>
   );
 };
@@ -38,10 +40,20 @@ const S = {
     height: 100vh;
     z-index: 999;
     background-color: #fff;
-    overflow-y: auto;
+    /* overflow-y: auto; */
+
   `,
-  SearchResultsContainer: styled.div`
-    flex: 1;
-    overflow-y: auto;
+  StyleHeader : styled.div`
+    position: absolute; left: 0; top: 0;
+    width: 100%;
+  `,
+  StyleContent: styled.div`
+    /* flex: 1; */
+    margin-top: 137.5px;
+    height: calc(100vh - 137.5px);
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   `,
 };

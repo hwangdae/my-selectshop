@@ -1,4 +1,4 @@
-import { PlaceType } from "@/types/placeType";
+import { MarkersType, PlaceType } from "@/types/placeType";
 import { atom } from "recoil";
 
 export interface Shop {
@@ -26,7 +26,19 @@ export const userState = atom<User | null>({
   default : null,
 })
 
-export const myLocationState = atom({
+export const mapState = atom<any>({
+  key:"mapState",
+  default : null
+})
+export interface MyLocationType {
+  center : {
+    lat : number;
+    lng: number;
+  },
+  errMsg: null;
+  isLoading : boolean;
+}
+export const myLocationState = atom<MyLocationType>({
   key : "myLocationState",
   default : {
     center: {
@@ -36,4 +48,9 @@ export const myLocationState = atom({
     errMsg: null,
     isLoading: true,
   }
+})
+
+export const markersState = atom<MarkersType[]>({
+  key : "markersState",
+  default : []
 })

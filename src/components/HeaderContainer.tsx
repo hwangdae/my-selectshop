@@ -1,5 +1,5 @@
 import MySelectShop from "@/pages/mySelectShop";
-import SearchResults from "@/pages/searchResults";
+import SearchResults from "@/pages/nearbySelectShop";
 import { styleFont } from "@/styles/styleFont";
 import { useState } from "react";
 import styled from "styled-components";
