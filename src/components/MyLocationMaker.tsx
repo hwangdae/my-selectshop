@@ -11,10 +11,10 @@ const MyLocationMaker = ({myLocation}:Props) => {
 <MapMarker
           position={myLocation.center}
           image={{
-            src: "/assets/MyLocation.svg",
+            src: "/MyLocation.png",
             size: {
-              width: 50,
-              height: 50,
+              width: 60,
+              height: 60,
             },
           }}
         />

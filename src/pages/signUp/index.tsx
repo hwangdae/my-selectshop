@@ -1,5 +1,5 @@
 import { registerSignUpSchema } from "@/validators/auth";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -17,7 +17,8 @@ import supabase from "@/lib/supabaseClient";
 const SignUp = () => {
   const [showPassword, handlePasswordToggle] = useToggle(false);
   const [showCheckPassword, handleCheckPasswordToggle] = useToggle(false);
-
+  const passwordToggleRef = useRef(null);
+  const checkPasswordToggleRef = useRef(null);
   const router = useRouter();
   console.log(router);
 
@@ -92,6 +93,8 @@ const SignUp = () => {
                   />
                   <S.ShowPasswordToggle
                     type="button"
+                    ref={passwordToggleRef}
+                    tabIndex={-1}
                     onClick={handlePasswordToggle}
                   >
                     {showPassword ? (
@@ -118,6 +121,8 @@ const SignUp = () => {
                   />
                   <S.ShowPasswordToggle
                     type="button"
+                    ref={checkPasswordToggleRef}
+                    tabIndex={-1}
                     onClick={handleCheckPasswordToggle}
                   >
                     {showCheckPassword ? (
