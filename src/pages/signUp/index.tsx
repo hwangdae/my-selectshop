@@ -17,10 +17,7 @@ import supabase from "@/lib/supabaseClient";
 const SignUp = () => {
   const [showPassword, handlePasswordToggle] = useToggle(false);
   const [showCheckPassword, handleCheckPasswordToggle] = useToggle(false);
-  const passwordToggleRef = useRef(null);
-  const checkPasswordToggleRef = useRef(null);
   const router = useRouter();
-  console.log(router);
 
   const {
     register,
@@ -93,7 +90,6 @@ const SignUp = () => {
                   />
                   <S.ShowPasswordToggle
                     type="button"
-                    ref={passwordToggleRef}
                     tabIndex={-1}
                     onClick={handlePasswordToggle}
                   >
@@ -121,7 +117,6 @@ const SignUp = () => {
                   />
                   <S.ShowPasswordToggle
                     type="button"
-                    ref={checkPasswordToggleRef}
                     tabIndex={-1}
                     onClick={handleCheckPasswordToggle}
                   >

@@ -6,6 +6,10 @@ import Indent from "@/assets/Indent.svg";
 import Star from "@/assets/Star.svg";
 import { PlaceType } from "@/types/placeType";
 import { Button } from "@mui/material";
+import useLoginUserId from "@/hook/useLoginUserId";
+import supabase from "@/lib/supabaseClient";
+import { useQuery } from "@tanstack/react-query";
+import { getSelectShopBookmark } from "@/api/selectShopBookmark";
 
 interface PropsType {
   Selectshop: PlaceType;
@@ -13,12 +17,36 @@ interface PropsType {
 
 const SelectshopInfo = ({ Selectshop }: PropsType) => {
   const { id, place_name, address_name, phone } = Selectshop;
-  const [detailSelectshopInfoToggle, setDetailSelectshopInfoToggle] = useState<string | null>(null);
+  const [detailSelectshopInfoToggle, setDetailSelectshopInfoToggle] = useState<
+    string | null
+  >(null);
   const [favoritesToggle, setFavoritesToggle] = useState(false);
-  // const prevIdRef = useRef<string>("");
+  const loginUser = useLoginUserId();
+  const {data: selectShopData } = useQuery({
+    queryKey : ['selectShop_bookmark'],
+    queryFn : () => getSelectShopBookmark(id)
+  })
 
   const detailSelectshopInfoHandler = (id: string) => {
     setDetailSelectshopInfoToggle(id);
+  };
+
+  const favoritesButtonHandler = async(selectShopId:string) => {
+    if (!loginUser) {
+      alert("로그인이 필요한 서비스 입니다.");
+      return ;
+    }
+    if(!favoritesToggle && id !== loginUser){
+      const a = {
+        id,
+        userId : loginUser
+      }
+      await supabase.from('selectShop_bookmark').insert(a)
+      setFavoritesToggle(!favoritesToggle);
+    }else{
+      await supabase.from('selectShop_bookmark').delete().eq('id',id)
+      setFavoritesToggle(!favoritesToggle);
+    }
   };
 
   return (
@@ -37,10 +65,7 @@ const SelectshopInfo = ({ Selectshop }: PropsType) => {
           >
             <Indent />
           </S.SelectshopMoreInfoButton>
-
-          <S.SelectshopFavoritesButton
-            onClick={() => setFavoritesToggle(!favoritesToggle)}
-          >
+          <S.SelectshopFavoritesButton onClick={()=>favoritesButtonHandler(id)}>
             <Star
               fill={favoritesToggle ? `${styleColor.BROWN[0]}` : "current"}
             />
@@ -58,7 +83,9 @@ const SelectshopInfo = ({ Selectshop }: PropsType) => {
             <S.SelectshopReviewTitle>나의 후기</S.SelectshopReviewTitle>
             <S.MySelectshopReview>
               <S.NoReview>등록된 후기가 없습니다.</S.NoReview>
-              <Button variant="contained" sx={{padding: "5px 30px"}}>후기 등록하기</Button>
+              <Button variant="contained" sx={{ padding: "5px 30px" }}>
+                후기 등록하기
+              </Button>
             </S.MySelectshopReview>
           </S.SelectshopReviewContainer>
         </S.DetailContainer>
