@@ -63,8 +63,8 @@ const NearbySelectShop = () => {
   return (
     <S.SearchResultsContainer>
       <S.SearchResultsInner>
-        {selectShops?.map((Selectshop: PlaceType) => {
-          return <SelectshopInfo key={Selectshop.id} Selectshop={Selectshop} />;
+        {selectShops?.map((selectShop: PlaceType) => {
+          return <SelectshopInfo key={selectShop.id} selectShop={selectShop} />;
         })}
       </S.SearchResultsInner>
     </S.SearchResultsContainer>

@@ -21,7 +21,6 @@ const TABNAV = [
   { id: 1, name: "내 셀렉샵", href: "/mySelectshop" },
 ];
 
-
 const HeaderContainer = () => {
   const [step, setStep] = useState<number>(0);
   const [searchName, setSearchName] = useState("");
@@ -41,13 +40,13 @@ const HeaderContainer = () => {
 
   const searchSelectshopButton = async (e: any) => {};
 
-
-
   return (
     <S.HeaderContainer>
       <S.HeaderInner>
         <S.HeaderTop>
-          <S.Logo>MySelectshop</S.Logo>
+          <S.Logo>
+            <Link href={"/"}>MySelectshop</Link>
+          </S.Logo>
           {!loginUser ? (
             <Button
               variant="contained"
@@ -86,7 +85,6 @@ const HeaderContainer = () => {
           </S.SearchButton>
         </S.SearchForm>
       </S.HeaderInner>
-      
     </S.HeaderContainer>
   );
 };
@@ -112,9 +110,12 @@ const S = {
     margin-bottom: 20px;
   `,
   Logo: styled.h1`
+  a{
     ${styleFont.textLarge}
     font-weight: bold;
     color: #fff;
+  }
+
   `,
   SearchForm: styled.form`
     position: relative;
@@ -168,7 +169,7 @@ const S = {
       props.step === props.id ? "bold" : "nomal"}; */
     font-weight: bold;
   `,
- 
+
   Aaaa: styled.div`
     position: absolute;
     left: 360px;
