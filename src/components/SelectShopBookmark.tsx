@@ -7,6 +7,7 @@ import { styleColor } from "@/styles/styleColor";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Star from "@/assets/Star.svg";
+import FullfillStar from "@/assets/FullfillStar.svg";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { useQuery } from "@tanstack/react-query";
 interface PropsType {
@@ -49,7 +50,8 @@ const SelectShopBookmark = ({ id }: PropsType) => {
 
   return (
     <S.SelectshopFavoritesButton onClick={favoritesButtonHandler}>
-      <Star fill={favoritesToggle ? `${styleColor.BROWN[0]}` : "current"} />
+      {favoritesToggle ? <FullfillStar fill={`${styleColor.BROWN[0]}`}/>:<Star/>}
+      
     </S.SelectshopFavoritesButton>
   );
 };

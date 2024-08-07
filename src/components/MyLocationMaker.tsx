@@ -11,7 +11,7 @@ const MyLocationMaker = ({myLocation}:Props) => {
 <MapMarker
           position={myLocation.center}
           image={{
-            src: "/MyLocation.png",
+            src: "images/MyLocation.png",
             size: {
               width: 60,
               height: 60,

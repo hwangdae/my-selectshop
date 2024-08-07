@@ -1,18 +1,42 @@
-import { getUser } from '@/api/user'
-import useLoginUserId from '@/hook/useLoginUserId'
-import { styleColor } from '@/styles/styleColor'
-import { styleFont } from '@/styles/styleFont'
-import { useQuery } from '@tanstack/react-query'
-import React from 'react'
-import styled from 'styled-components'
+import { getUser } from "@/api/user";
+import useLoginUserId from "@/hook/useLoginUserId";
+import { styleColor } from "@/styles/styleColor";
+import { styleFont } from "@/styles/styleFont";
+import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+import styled from "styled-components";
 import ProfileUpdate from "@/assets/ProfileUpdate.svg";
+import ProfileBasicImage from "@/assets/ProfileBasicImage.svg";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { AuthType } from "@/types/authType";
+import { useRouter } from "next/router";
 
 const ProfileContainer = () => {
-    const loginUser = useLoginUserId();
-    const { data: user } = useQuery({
-      queryKey: ["user"],
-      queryFn: () => getUser(loginUser),
-    });
+  const loginUser = useLoginUserId();
+  const router = useRouter()
+  console.log(loginUser);
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUser(loginUser),
+  });
+
+
+
+  const updateProfileButtonhandle = () => {
+    router.push('?modal=profile', undefined, { shallow: true });
+  };
+
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (error) {
+    return <div>오류 발생: {error.message}</div>;
+  }
   return (
     <div>
       {loginUser && (
@@ -20,10 +44,15 @@ const ProfileContainer = () => {
           <S.UserNickName>안녕하세요 {user?.nickName}님 👋</S.UserNickName>
           <S.ProfileInfoContainer>
             <S.ProfileImageContainer>
-              <S.ProfileImage></S.ProfileImage>
-              <S.ProfileUpdateButton>
-                <ProfileUpdate width={"15px"} height={"15px"} fill={`${styleColor.GRAY[700]}`} />
+              <S.ProfileImage src="/images/basicUserImage.png" />
+              <S.ProfileUpdateButton onClick={updateProfileButtonhandle}>
+                <ProfileUpdate
+                  width={"15px"}
+                  height={"15px"}
+                  fill={`${styleColor.GRAY[700]}`}
+                />
               </S.ProfileUpdateButton>
+            
             </S.ProfileImageContainer>
             <S.ProfileInfo>
               <S.UserEmail>{user?.email}</S.UserEmail>
@@ -46,13 +75,13 @@ const ProfileContainer = () => {
         </S.ProfileContainer>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ProfileContainer
+export default ProfileContainer;
 
 const S = {
-    ProfileContainer: styled.div`
+  ProfileContainer: styled.div`
     padding: 20px 12px;
   `,
   UserNickName: styled.h1`
@@ -73,10 +102,11 @@ const S = {
     width: 60px;
     height: 60px;
     background-color: #eee;
-    border-radius:70%;
+    border-radius: 70%;
     object-fit: cover;
   `,
   ProfileUpdateButton: styled.button`
+    cursor: pointer;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -118,4 +148,4 @@ const S = {
       color: ${styleColor.GRAY[600]};
     }
   `,
-}
+};

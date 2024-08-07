@@ -19,7 +19,6 @@ const CONTENTSTABNAV = [
 
 const ContentsContainer = () => {
   const router = useRouter();
-  console.log(router,"라우터")
   const viewSelectShopHandle = (id: string) => {
     router.push(`/?tab=${id}`);
   };

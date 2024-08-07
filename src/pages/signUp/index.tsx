@@ -13,6 +13,7 @@ import useToggle from "@/hook/useToggle";
 import { CommonButton } from "@/styles/commonButton";
 import { useRouter } from "next/router";
 import supabase from "@/lib/supabaseClient";
+import { signUp } from "@/api/user";
 
 const SignUp = () => {
   const [showPassword, handlePasswordToggle] = useToggle(false);
@@ -38,15 +39,7 @@ const SignUp = () => {
     password,
     nickName,
   }: AuthType) => {
-    await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          nickName,
-        },
-      },
-    });
+    signUp(email,password,nickName)
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -56,7 +49,7 @@ const SignUp = () => {
       email: user?.email,
       nickName: user?.user_metadata.nickName,
     };
-    supabase.from("users").insert(newUser);
+    await supabase.from("users").insert(newUser);
     alert("회원가입이 완료되었습니다.");
     router.push("/");
   };
