@@ -12,15 +12,6 @@ import { Button } from "@mui/material";
 import useLoginUserId from "@/hook/useLoginUserId";
 import supabase from "@/lib/supabaseClient";
 
-const TABNAV = [
-  {
-    id: 0,
-    name: "검색",
-    href: "/searchResults",
-  },
-  { id: 1, name: "내 셀렉샵", href: "/mySelectshop" },
-];
-
 const HeaderContainer = () => {
   const [step, setStep] = useState<number>(0);
   const [searchName, setSearchName] = useState("");
@@ -53,11 +44,7 @@ const HeaderContainer = () => {
               sx={{ padding: "5px 30px" }}
               onClick={() =>
                 router.push(
-                  {
-                    pathname: "/login",
-                    query: { path: router.pathname },
-                  },
-                  "/login"
+                  '?modal=login',
                 )
               }
             >

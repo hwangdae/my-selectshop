@@ -14,8 +14,10 @@ import { CommonButton } from "@/styles/commonButton";
 import { useRouter } from "next/router";
 import supabase from "@/lib/supabaseClient";
 import { signUp } from "@/api/user";
+import { modal, modalContent } from "@/styles/modal";
+import { ModalProps } from "@/components/ModalMap";
 
-const SignUp = () => {
+const SignUp = ({ onClose }:ModalProps) => {
   const [showPassword, handlePasswordToggle] = useToggle(false);
   const [showCheckPassword, handleCheckPasswordToggle] = useToggle(false);
   const router = useRouter();
@@ -39,7 +41,7 @@ const SignUp = () => {
     password,
     nickName,
   }: AuthType) => {
-    signUp(email,password,nickName)
+    signUp(email, password, nickName);
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -54,9 +56,15 @@ const SignUp = () => {
     router.push("/");
   };
 
+  const modalClose = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
     <>
-      <S.SignUpContainer>
+      <S.SignUpContainer onClick={modalClose}>
         <S.SignUpInner>
           <S.SignUpTitle>회원가입</S.SignUpTitle>
           <S.SignUpForm onSubmit={handleSubmit(signupHandleSubmit)}>
@@ -151,9 +159,6 @@ const SignUp = () => {
           </S.SignUpForm>
         </S.SignUpInner>
       </S.SignUpContainer>
-      <S.BackgroundColor
-        onClick={() => router.push(`${router.query.path}`)}
-      ></S.BackgroundColor>
     </>
   );
 };
@@ -170,20 +175,8 @@ const S = {
     /* background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px); */
   `,
-  SignUpContainer: styled.div`
-    width: 360px;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: solid 1px #000;
-    border-radius: 4px;
-    padding: 30px;
-    z-index: 999;
-  `,
-  SignUpInner: styled.div``,
+  SignUpContainer: styled(modal)``,
+  SignUpInner: styled(modalContent)``,
   SignUpTitle: styled.h1`
     font-size: 30px;
     line-height: 50px;

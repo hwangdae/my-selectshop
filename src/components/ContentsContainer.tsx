@@ -1,13 +1,9 @@
 "use client";
-import { getUser } from "@/api/user";
-import useLoginUserId from "@/hook/useLoginUserId";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
-import ProfileUpdate from "@/assets/ProfileUpdate.svg";
 import ProfileContainer from "./ProfileContainer";
 
 const CONTENTSTABNAV = [
@@ -19,6 +15,7 @@ const CONTENTSTABNAV = [
 
 const ContentsContainer = () => {
   const router = useRouter();
+  
   const viewSelectShopHandle = (id: string) => {
     router.push(`/?tab=${id}`);
   };

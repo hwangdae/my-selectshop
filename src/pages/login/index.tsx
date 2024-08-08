@@ -1,6 +1,9 @@
+import { getUser } from "@/api/user";
+import { ModalProps } from "@/components/ModalMap";
 import { userState } from "@/globalState/recoilState";
 import supabase from "@/lib/supabaseClient";
 import { CommonButton } from "@/styles/commonButton";
+import { modal, modalContent } from "@/styles/modal";
 import { styleFont } from "@/styles/styleFont";
 import { RegisterLoginInput } from "@/types/authType";
 import { registerLoginSchema } from "@/validators/auth";
@@ -13,7 +16,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-const Login = () => {
+const Login = ({ onClose }: ModalProps) => {
   const [, setuserLogin] = useRecoilState(userState);
   const router = useRouter();
 
@@ -29,23 +32,24 @@ const Login = () => {
     },
   });
 
-  const loginHandleSubmit: SubmitHandler<RegisterLoginInput> = async ({email,password}) => {
+  const loginHandleSubmit: SubmitHandler<RegisterLoginInput> = async ({
+    email,
+    password,
+  }) => {
     try {
-      const {data: { user },error} = await supabase.auth.signInWithPassword({
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (user) {
-        const { data: userLogin, error } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", user.id)
-          .single();
-
+        const userLogin = await getUser(user.id);
         setuserLogin(userLogin);
-        alert("로그인이 완료 되었습니다.")
-        router.push("/")
+        alert("로그인이 완료 되었습니다.");
+        router.push("/");
       }
       if (error) {
         alert("이메일과 비밀번호를 확인해 주세요.");
@@ -55,92 +59,71 @@ const Login = () => {
     }
   };
 
+  const modalClose = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <>
-      <S.LoginContainer>
-        <S.LoginInner>
-          <S.LoginTitle>
-            시간 날 때 쇼핑하는 사람들,
-            <span>마이 셀렉트샵</span>
-          </S.LoginTitle>
-          <S.LoginForm onSubmit={handleSubmit(loginHandleSubmit)}>
-            <S.LoginFormInner>
-              <S.LoginListItem>
+    <S.LoginContainer onClick={modalClose}>
+      <S.LoginInner>
+        <S.LoginTitle>
+          시간 날 때 쇼핑하는 사람들,
+          <span>마이 셀렉트샵</span>
+        </S.LoginTitle>
+        <S.LoginForm onSubmit={handleSubmit(loginHandleSubmit)}>
+          <S.LoginFormInner>
+            <S.LoginListItem>
+              <S.LoginInput placeholder="이메일 주소" {...register("email")} />
+              <ErrorMessage
+                errors={errors}
+                name="email"
+                render={({ message }) => (
+                  <S.LoginErrorMessage>{message}</S.LoginErrorMessage>
+                )}
+              />
+            </S.LoginListItem>
+            <S.LoginListItem>
+              <S.InputContainer>
                 <S.LoginInput
-                  placeholder="이메일 주소"
-                  {...register("email")}
+                  type="password"
+                  placeholder="비밀번호 (숫자+영문자+특수문자 8자리 이상)"
+                  {...register("password")}
                 />
-                <ErrorMessage
-                  errors={errors}
-                  name="email"
-                  render={({ message }) => (
-                    <S.LoginErrorMessage>{message}</S.LoginErrorMessage>
-                  )}
-                />
-              </S.LoginListItem>
-              <S.LoginListItem>
-                <S.InputContainer>
-                  <S.LoginInput
-                    type="password"
-                    placeholder="비밀번호 (숫자+영문자+특수문자 8자리 이상)"
-                    {...register("password")}
-                  />
-                </S.InputContainer>
-                <ErrorMessage
-                  errors={errors}
-                  name="password"
-                  render={({ message }) => (
-                    <S.LoginErrorMessage>{message}</S.LoginErrorMessage>
-                  )}
-                />
-              </S.LoginListItem>
-            </S.LoginFormInner>
-            <CommonButton
-              type="submit"
-              variant="contained"
-              color="secondary"
-              disableFocusRipple={true}
-              fullWidth
-            >
-              로그인
-            </CommonButton>
-          </S.LoginForm>
-        </S.LoginInner>
+              </S.InputContainer>
+              <ErrorMessage
+                errors={errors}
+                name="password"
+                render={({ message }) => (
+                  <S.LoginErrorMessage>{message}</S.LoginErrorMessage>
+                )}
+              />
+            </S.LoginListItem>
+          </S.LoginFormInner>
+          <CommonButton
+            type="submit"
+            variant="contained"
+            color="secondary"
+            disableFocusRipple={true}
+            fullWidth
+          >
+            로그인
+          </CommonButton>
+        </S.LoginForm>
         <S.SignUpLinkContainer>
           회원이 아니신가요? <Link href={"/signUp"}>회원가입</Link>
         </S.SignUpLinkContainer>
-      </S.LoginContainer>
-      <S.BackgroundColor onClick={() => router.push(`/`)}></S.BackgroundColor>
-    </>
+      </S.LoginInner>
+    </S.LoginContainer>
   );
 };
 
 export default Login;
 
 const S = {
-  BackgroundColor: styled.div`
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    /* background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(10px); */
-  `,
-  LoginContainer: styled.div`
-    width: 360px;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: solid 1px #000;
-    border-radius: 4px;
-    padding: 30px;
-    z-index: 999;
-  `,
-  LoginInner: styled.div``,
+  LoginContainer: styled(modal)``,
+  LoginInner: styled(modalContent)``,
   LoginTitle: styled.h1`
     font-size: 30px;
     line-height: 50px;

@@ -1,12 +1,12 @@
 import supabase from "@/lib/supabaseClient";
 
 const getUser = async (id: string) => {
-  const { data } = await supabase
+  const { data : userLogin } = await supabase
     .from("users")
     .select("*")
     .eq("id", id)
     .single();
-  return data;
+  return userLogin;
 };
 
 const signUp = async (email: string, password: string, nickName: string) => {
