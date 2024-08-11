@@ -14,17 +14,17 @@ import { useRouter } from "next/router";
 const ProfileContainer = () => {
   const loginUser = useLoginUserId();
   const router = useRouter()
-  console.log(loginUser);
+
   const {
     data: user,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["user",loginUser],
     queryFn: () => getUser(loginUser),
   });
 
-
+console.log(user,"유저")
 
   const updateProfileButtonhandle = () => {
     router.push('?modal=profile', undefined, { shallow: true });

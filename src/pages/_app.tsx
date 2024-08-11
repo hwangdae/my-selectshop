@@ -18,8 +18,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(()=>{
     const handleRouteChange = (url:string) => {
-    const modalQueryParam = new URLSearchParams(url.split('?')[1]).get('modal');
-    setModalType(modalQueryParam)
+      console.log(url)
+    const modalQueryParam = new URLSearchParams(url.split('?')[1]) // size는 쿼리 스트링의 갯수를 나타냄
+    const param = modalQueryParam?.get('modal')
+    console.log(modalQueryParam)
+    console.log(param)
+ 
+    setModalType(param)
     }
     router.events.on('routeChangeStart',handleRouteChange);
     return () => {
