@@ -6,9 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import styled from "styled-components";
 import ProfileUpdate from "@/assets/ProfileUpdate.svg";
-import ProfileBasicImage from "@/assets/ProfileBasicImage.svg";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { AuthType } from "@/types/authType";
 import { useRouter } from "next/router";
 
 const ProfileContainer = () => {
@@ -44,7 +41,7 @@ console.log(user,"유저")
           <S.UserNickName>안녕하세요 {user?.nickName}님 👋</S.UserNickName>
           <S.ProfileInfoContainer>
             <S.ProfileImageContainer>
-              <S.ProfileImage src="/images/basicUserImage.png" />
+              <S.ProfileImage src={user?.profileImage !== null ? `${user?.profileImage}` : "/images/basicUserImage.png"} />
               <S.ProfileUpdateButton onClick={updateProfileButtonhandle}>
                 <ProfileUpdate
                   width={"15px"}

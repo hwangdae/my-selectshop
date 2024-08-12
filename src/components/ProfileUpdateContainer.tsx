@@ -7,7 +7,10 @@ import supabase from "@/lib/supabaseClient";
 import { Button } from "@mui/material";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { useQuery } from "@tanstack/react-query";
-import { getUser } from "@/api/user";
+import { getUser, userProfileUpdate } from "@/api/user";
+import Camera from "@/assets/Camera.svg";
+import shortId from "shortid";
+import { styleColor } from "@/styles/styleColor";
 
 const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [uploadImageFile, setUploadImageFile] = useState<File | null>();
@@ -26,52 +29,48 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   });
 
   useEffect(() => {
-    // onchangeImageUpload(user?.profileImg)
+    // onchangeImageUpload(user?.profileImage)
     setNickName(`${user?.nickName}`);
   }, [user]);
   console.log(user);
-
-  const logoutHandleSubmit = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      alert("로그아웃 되었습니다.");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const onchangeImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const uploadImageFile = e.target.files![0];
     const uploadImageName = uploadImageFile.name;
+    const fileExtension = uploadImageName.split(".").pop();
+    const randomFileName = `${shortId.generate()}.${fileExtension}`;
     setUploadImageFile(uploadImageFile);
-    setUploadImage(uploadImageName);
+    setUploadImage(randomFileName);
   };
 
-  const profileUpdateHandle = async (e: any) => {
+  const profileUpdateHandle = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const url = [];
-
+      let url: string | undefined = "";
       if (uploadImageFile) {
         const { data, error } = await supabase.storage
           .from("images")
           .upload(`profileImages/${uploadImage}`, uploadImageFile);
         console.log(data, "이미지데이터");
-        url.push(data?.path);
+        url = data?.path.split("/")[1];
       }
       const updateProfile = {
-        profileImage: url,
+        profileImage: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_PROFILEIMAGES}/${url}`,
         nickName,
       };
-
-      await supabase
-        .from("users")
-        .update(updateProfile)
-        .eq("id", user?.id)
-        .select();
+      userProfileUpdate(updateProfile, user?.id);
       alert("수정완료");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const logoutHandleSubmit = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      alert("로그아웃 되었습니다.");
     } catch (error) {
       console.log(error);
     }
@@ -90,11 +89,23 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
         <S.ProfileFormContainer onSubmit={profileUpdateHandle}>
           <S.ProfileImageContainer>
             <S.ProfileImage
-              src={user?.profileImage === null ? "/basicUserImage.png" : ""}
+              src={
+                user?.profileImage === null
+                  ? "/basicUserImage.png"
+                  : user?.profileImage
+              }
             />
+            <S.ImageLabel htmlFor="profileImg">
+              <Camera
+                width={"25px"}
+                height={"25px"}
+                fill={`${styleColor.GRAY[700]}`}
+              />
+            </S.ImageLabel>
             <S.ImageInput
               type="file"
               accept="image/*"
+              id="profileImg"
               onChange={onchangeImageUpload}
             ></S.ImageInput>
           </S.ProfileImageContainer>
@@ -141,19 +152,35 @@ const S = {
     text-align: center;
   `,
   ProfileImageContainer: styled.div`
+    position: relative;
+    right: 0px;
+    top: 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
   `,
   ProfileImage: styled.img`
     display: block;
+
     width: 100px;
     height: 100px;
     border: solid 1px #000;
     border-radius: 100%;
     object-fit: cover;
   `,
-  ImageInput: styled.input``,
+  ImageLabel: styled.label`
+    display: block;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 25px;
+    height: 25px;
+    border: solid 1px #eee;
+    border-radius: 100%;
+  `,
+  ImageInput: styled.input`
+    display: none;
+  `,
   NickNameInput: styled.input`
     width: 100%;
     padding: 12px 0px;
