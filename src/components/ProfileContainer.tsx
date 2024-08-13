@@ -98,7 +98,7 @@ const S = {
   ProfileImage: styled.img`
     width: 60px;
     height: 60px;
-    background-color: #eee;
+    border: solid 1px ${styleColor.GRAY[200]};
     border-radius: 70%;
     object-fit: cover;
   `,

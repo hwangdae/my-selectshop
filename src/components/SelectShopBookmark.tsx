@@ -10,9 +10,11 @@ import Star from "@/assets/Star.svg";
 import FullfillStar from "@/assets/FullfillStar.svg";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { useQuery } from "@tanstack/react-query";
+
 interface PropsType {
   id: string;
 }
+
 const SelectShopBookmark = ({ id }: PropsType) => {
   const [favoritesToggle, setFavoritesToggle] = useState<boolean>(false);
   const loginUser = useLoginUserId();
@@ -50,8 +52,7 @@ const SelectShopBookmark = ({ id }: PropsType) => {
 
   return (
     <S.SelectshopFavoritesButton onClick={favoritesButtonHandler}>
-      {favoritesToggle ? <FullfillStar fill={`${styleColor.BROWN[0]}`}/>:<Star/>}
-      
+      {favoritesToggle ? <FullfillStar fill={`#b76371`} /> : <Star />}
     </S.SelectshopFavoritesButton>
   );
 };

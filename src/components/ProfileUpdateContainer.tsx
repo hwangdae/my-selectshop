@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ModalProps } from "./ModalMap";
 import styled from "styled-components";
 import { modal, modalContent } from "@/styles/modal";
@@ -11,12 +11,16 @@ import { getUser, userProfileUpdate } from "@/api/user";
 import Camera from "@/assets/Camera.svg";
 import shortId from "shortid";
 import { styleColor } from "@/styles/styleColor";
+import { useRouter } from "next/router";
 
 const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
+  const [previewProfileImage, setPreviewProfileImage] = useState<
+    string | ArrayBuffer | null
+  >("");
   const [uploadImageFile, setUploadImageFile] = useState<File | null>();
   const [uploadImage, setUploadImage] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
-
+  const router = useRouter()
   const loginUser = useLoginUserId();
 
   const {
@@ -29,8 +33,8 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   });
 
   useEffect(() => {
-    // onchangeImageUpload(user?.profileImage)
-    setNickName(`${user?.nickName}`);
+    setPreviewProfileImage(user?.profileImage as string);
+    setNickName(user?.nickName);
   }, [user]);
   console.log(user);
 
@@ -41,6 +45,12 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
     const uploadImageName = uploadImageFile.name;
     const fileExtension = uploadImageName.split(".").pop();
     const randomFileName = `${shortId.generate()}.${fileExtension}`;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(uploadImageFile);
+    reader.onloadend = () => {
+      setPreviewProfileImage(reader.result);
+    };
     setUploadImageFile(uploadImageFile);
     setUploadImage(randomFileName);
   };
@@ -57,11 +67,14 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
         url = data?.path.split("/")[1];
       }
       const updateProfile = {
-        profileImage: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_PROFILEIMAGES}/${url}`,
+        profileImage: url
+          ? `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_PROFILEIMAGES}/${url}`
+          : user?.profileImage,
         nickName,
       };
       userProfileUpdate(updateProfile, user?.id);
       alert("수정완료");
+      router.push("/")
     } catch (error) {
       console.log(error);
     }
@@ -71,6 +84,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
     try {
       const { error } = await supabase.auth.signOut();
       alert("로그아웃 되었습니다.");
+      router.push("/")
     } catch (error) {
       console.log(error);
     }
@@ -87,33 +101,30 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
       <S.ProfileUpdateInner>
         <S.ProfileTitle>프로필 수정</S.ProfileTitle>
         <S.ProfileFormContainer onSubmit={profileUpdateHandle}>
-          <S.ProfileImageContainer>
-            <S.ProfileImage
-              src={
-                user?.profileImage === null
-                  ? "/basicUserImage.png"
-                  : user?.profileImage
-              }
+          <S.ProfileContents>
+            <S.ProfileImageContainer>
+              <S.ProfileImage src={`${previewProfileImage}`} />
+              <S.ImageLabel htmlFor="profileImg">
+                <Camera
+                  width={"25px"}
+                  height={"25px"}
+                  fill={`${styleColor.GRAY[700]}`}
+                />
+              </S.ImageLabel>
+              <S.ImageInput
+                type="file"
+                accept="image/*"
+                id="profileImg"
+                onChange={onchangeImageUpload}
+              ></S.ImageInput>
+            </S.ProfileImageContainer>
+            <h1>{user?.email}</h1>
+            <S.NickNameInput
+              value={nickName}
+              type="text"
+              onChange={(e) => setNickName(e.target.value)}
             />
-            <S.ImageLabel htmlFor="profileImg">
-              <Camera
-                width={"25px"}
-                height={"25px"}
-                fill={`${styleColor.GRAY[700]}`}
-              />
-            </S.ImageLabel>
-            <S.ImageInput
-              type="file"
-              accept="image/*"
-              id="profileImg"
-              onChange={onchangeImageUpload}
-            ></S.ImageInput>
-          </S.ProfileImageContainer>
-          <S.NickNameInput
-            value={nickName}
-            type="text"
-            onChange={(e) => setNickName(e.target.value)}
-          ></S.NickNameInput>
+          </S.ProfileContents>
           <S.ProfileFn>
             <Button
               type="submit"
@@ -146,36 +157,39 @@ const S = {
     ${styleFont.textLarge}
   `,
   ProfileFormContainer: styled.form`
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
     text-align: center;
   `,
+  ProfileContents: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0px;
+  `,
   ProfileImageContainer: styled.div`
+    display: inline-block;
     position: relative;
     right: 0px;
     top: 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   `,
   ProfileImage: styled.img`
-    display: block;
-
     width: 100px;
     height: 100px;
-    border: solid 1px #000;
+    border: solid 1px ${styleColor.GRAY[200]};
     border-radius: 100%;
     object-fit: cover;
   `,
   ImageLabel: styled.label`
-    display: block;
+    cursor: pointer;
     position: absolute;
-    right: 0px;
+    right: 50%;
+    margin-right: -50px;
     bottom: 0px;
-    width: 25px;
-    height: 25px;
-    border: solid 1px #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    background-color: ${styleColor.GRAY[200]};
     border-radius: 100%;
   `,
   ImageInput: styled.input`
@@ -184,7 +198,6 @@ const S = {
   NickNameInput: styled.input`
     width: 100%;
     padding: 12px 0px;
-    margin-bottom: 7px;
     text-indent: 6px;
     border: solid 1px #d9dfeb;
     border-radius: 3px;
