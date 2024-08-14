@@ -4,6 +4,7 @@ import HeaderContainer from "./HeaderContainer";
 import ContentsContainer from "./ContentsContainer";
 import NearbySelectShop from "@/pages/nearbySelectShop";
 import { useRouter } from "next/router";
+import VisitedSelectShop from "@/pages/visitedSelectShop";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -13,8 +14,8 @@ const Sidebar = () => {
     switch (tab) {
       case "nearbySelectShop":
         return <NearbySelectShop />;
-      // case 'visitedSelectshop':
-      //     return <VisitedSelectshop/>;
+      case "visitedSelectshop":
+        return <VisitedSelectShop />;
       default:
         return <ContentsContainer />;
     }
@@ -41,10 +42,11 @@ const S = {
     z-index: 999;
     background-color: #fff;
     /* overflow-y: auto; */
-
   `,
-  StyleHeader : styled.div`
-    position: absolute; left: 0; top: 0;
+  StyleHeader: styled.div`
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
   `,
   StyleContent: styled.div`

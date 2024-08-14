@@ -20,7 +20,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [uploadImageFile, setUploadImageFile] = useState<File | null>();
   const [uploadImage, setUploadImage] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
-  const router = useRouter()
+  const router = useRouter();
   const loginUser = useLoginUserId();
 
   const {
@@ -42,15 +42,16 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const uploadImageFile = e.target.files![0];
-    const uploadImageName = uploadImageFile.name;
-    const fileExtension = uploadImageName.split(".").pop();
+    const uploadImageName = uploadImageFile?.name;
+    const fileExtension = uploadImageName?.split(".").pop();
     const randomFileName = `${shortId.generate()}.${fileExtension}`;
-
-    const reader = new FileReader();
-    reader.readAsDataURL(uploadImageFile);
-    reader.onloadend = () => {
-      setPreviewProfileImage(reader.result);
-    };
+    if (uploadImageFile) {
+      const reader = new FileReader();
+      reader.readAsDataURL(uploadImageFile);
+      reader.onloadend = () => {
+        setPreviewProfileImage(reader.result);
+      };
+    }
     setUploadImageFile(uploadImageFile);
     setUploadImage(randomFileName);
   };
@@ -74,7 +75,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
       };
       userProfileUpdate(updateProfile, user?.id);
       alert("수정완료");
-      router.push("/")
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -84,7 +85,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
     try {
       const { error } = await supabase.auth.signOut();
       alert("로그아웃 되었습니다.");
-      router.push("/")
+      router.push("/");
     } catch (error) {
       console.log(error);
     }

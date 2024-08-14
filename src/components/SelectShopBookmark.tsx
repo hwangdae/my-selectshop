@@ -52,7 +52,7 @@ const SelectShopBookmark = ({ id }: PropsType) => {
 
   return (
     <S.SelectshopFavoritesButton onClick={favoritesButtonHandler}>
-      {favoritesToggle ? <FullfillStar fill={`#b76371`} /> : <Star />}
+      {favoritesToggle ? <FullfillStar fill={`${styleColor.RED[200]}`} /> : <Star />}
     </S.SelectshopFavoritesButton>
   );
 };

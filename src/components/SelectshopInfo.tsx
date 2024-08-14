@@ -5,14 +5,6 @@ import styled from "styled-components";
 import Indent from "@/assets/Indent.svg";
 import { PlaceType } from "@/types/placeType";
 import { Button } from "@mui/material";
-import useLoginUserId from "@/hook/useLoginUserId";
-import supabase from "@/lib/supabaseClient";
-import { useQuery } from "@tanstack/react-query";
-import {
-  addSelectShopBookmark,
-  deleteSelectShopBookmark,
-  getSelectShopBookmark,
-} from "@/api/selectShopBookmark";
 import SelectShopBookmark from "./SelectShopBookmark";
 
 interface PropsType {
