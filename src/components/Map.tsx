@@ -13,8 +13,6 @@ const MapComponent = () => {
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
   const markers = useRecoilValue(markersState);
 
-  console.log(markers,"마커들")
-
   useEffect(() => {
     if (typeof window !== 'undefined' && window.kakao && window.kakao.maps) {
     kakao.maps.load(() => {

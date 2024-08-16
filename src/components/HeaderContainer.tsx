@@ -1,11 +1,7 @@
-import MySelectShop from "@/pages/mySelectShop";
-import SearchResults from "@/pages/nearbySelectShop";
 import { styleFont } from "@/styles/styleFont";
 import { useState } from "react";
 import styled from "styled-components";
 import Search from "@/assets/Search.svg";
-import { TabMenuType } from "@/types/utilType";
-import { styleColor } from "@/styles/styleColor";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Button } from "@mui/material";
@@ -13,9 +9,8 @@ import useLoginUserId from "@/hook/useLoginUserId";
 import supabase from "@/lib/supabaseClient";
 
 const HeaderContainer = () => {
-  const [step, setStep] = useState<number>(0);
+  
   const [searchName, setSearchName] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
   const loginUser = useLoginUserId();
 
   const router = useRouter();
@@ -81,8 +76,6 @@ export default HeaderContainer;
 const S = {
   HeaderContainer: styled.div`
     width: 100%;
-    /* height: 100vh; */
-    /* position: absolute; */
     left: 0;
     top: 0;
   `,
@@ -131,38 +124,5 @@ const S = {
     right: 8px;
     top: 50%;
     margin-top: -15px;
-  `,
-  SearchTabMenu: styled.ul`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-    margin-top: 20px;
-  `,
-  TabMenuItem: styled.li`
-    width: 50%;
-    display: block;
-  `,
-  TabMenuButton: styled.button<{ step: number; id: number }>`
-    cursor: pointer;
-    width: 100%;
-    padding: 10px 0px;
-    border-radius: 22px;
-    background-color: ${(props) =>
-      props.step === props.id ? `${styleColor.BROWN[100]}` : "none"};
-    color: ${(props) => (props.step === props.id ? "#fff" : "#111")};
-    /* font-weight: ${(props) =>
-      props.step === props.id ? "bold" : "nomal"}; */
-    font-weight: bold;
-  `,
-
-  Aaaa: styled.div`
-    position: absolute;
-    left: 360px;
-    top: 0;
-    width: 100px;
-    height: 100%;
-    background-color: #fff;
   `,
 };

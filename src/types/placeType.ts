@@ -23,3 +23,13 @@ export interface MarkersType {
     lng: number;
   };
 }
+
+export interface PaginationType {
+  current: number;
+  first: number;
+  last: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  nextPage: (page:number) => void;
+  prevPage: (page:number) => void;
+}

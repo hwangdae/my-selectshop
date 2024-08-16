@@ -13,16 +13,14 @@ const notoSansKr = Noto_Sans_KR({ subsets: ["latin"] });
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
-  console.log(router)
+
   const [modalType, setModalType] = useState<string | null>(null);
 
   useEffect(()=>{
     const handleRouteChange = (url:string) => {
-      console.log(url)
+
     const modalQueryParam = new URLSearchParams(url.split('?')[1]) // size는 쿼리 스트링의 갯수를 나타냄
     const param = modalQueryParam?.get('modal')
-    console.log(modalQueryParam)
-    console.log(param)
  
     setModalType(param)
     }

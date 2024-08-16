@@ -6,6 +6,9 @@ import Indent from "@/assets/Indent.svg";
 import { PlaceType } from "@/types/placeType";
 import { Button } from "@mui/material";
 import SelectShopBookmark from "./SelectShopBookmark";
+import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import { getReview } from "@/api/review";
 
 interface PropsType {
   selectShop: PlaceType;
@@ -16,6 +19,12 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
   const [detailSelectshopInfoToggle, setDetailSelectshopInfoToggle] = useState<
     string | null
   >(null);
+  const router = useRouter();
+
+  const { data: reviewData } = useQuery({
+    queryKey: ["review"],
+    queryFn: getReview,
+  });
 
   const detailSelectshopInfoHandler = (id: string) => {
     setDetailSelectshopInfoToggle(id);
@@ -51,7 +60,16 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
             <S.SelectshopReviewTitle>나의 후기</S.SelectshopReviewTitle>
             <S.MySelectshopReview>
               <S.NoReview>등록된 후기가 없습니다.</S.NoReview>
-              <Button variant="contained" sx={{ padding: "5px 30px" }}>
+              <Button
+                onClick={() =>
+                  router.push(
+                    { pathname: "/writeReview", query: { id } },
+                    "/writeReview"
+                  )
+                }
+                variant="contained"
+                sx={{ padding: "5px 30px" }}
+              >
                 후기 등록하기
               </Button>
             </S.MySelectshopReview>

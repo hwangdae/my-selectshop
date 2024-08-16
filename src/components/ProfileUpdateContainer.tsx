@@ -36,7 +36,6 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
     setPreviewProfileImage(user?.profileImage as string);
     setNickName(user?.nickName);
   }, [user]);
-  console.log(user);
 
   const onchangeImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -64,7 +63,6 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
         const { data, error } = await supabase.storage
           .from("images")
           .upload(`profileImages/${uploadImage}`, uploadImageFile);
-        console.log(data, "이미지데이터");
         url = data?.path.split("/")[1];
       }
       const updateProfile = {

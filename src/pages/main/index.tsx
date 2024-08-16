@@ -30,8 +30,6 @@ const Main = () => {
   const [markers, setMarkers] = useState<MarkersType[]>([]);
   const [selectShops, setSelectShops] = useRecoilState<PlaceType[]>(selectShopsState);
 
-  console.log(myLocation)
-
   useEffect(() => {
     kakao.maps.load(() => {
       if (navigator.geolocation) {
