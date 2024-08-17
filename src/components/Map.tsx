@@ -11,12 +11,15 @@ import MyLocationMaker from "./MyLocationMaker";
 const MapComponent = () => {
   const [_, setMap] = useRecoilState(mapState);
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
+  const [a,setA] = useState<null | undefined>()
   const markers = useRecoilValue(markersState);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.kakao && window.kakao.maps) {
     kakao.maps.load(() => {
       if (navigator.geolocation) {
+        var geocoder = new kakao.maps.services.Geocoder();
+        console.log(geocoder)
         navigator.geolocation.getCurrentPosition((position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;

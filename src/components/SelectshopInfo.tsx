@@ -9,6 +9,9 @@ import SelectShopBookmark from "./SelectShopBookmark";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import { getReview } from "@/api/review";
+import PatchCheck from "@/assets/PatchCheck.svg";
+import FullfillPatchCheck from "@/assets/FullfillPatchCheck.svg";
+
 
 interface PropsType {
   selectShop: PlaceType;
@@ -21,34 +24,50 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
   >(null);
   const router = useRouter();
 
-  const { data: reviewData } = useQuery({
-    queryKey: ["review"],
-    queryFn: getReview,
+  const { data: reviewData }: any = useQuery({
+    queryKey: ["review", id],
+    queryFn: () => getReview(id),
   });
-
+  console.log(reviewData);
   const detailSelectshopInfoHandler = (id: string) => {
     setDetailSelectshopInfoToggle(id);
   };
 
+  const review = reviewData?.find((reviews: any) => {
+    return reviews?.selectshopId === id;
+  });
+
   return (
     <>
-      <S.Selectshop>
-        <S.SelectshopInfo>
-          <S.SelectshopName>{place_name}</S.SelectshopName>
-          <S.SelectshopAddressName>{address_name}</S.SelectshopAddressName>
-          <S.SelectshopPhone>{phone}</S.SelectshopPhone>
-        </S.SelectshopInfo>
-        <S.SelectshopFn>
-          <S.SelectshopMoreInfoButton
-            onClick={() => {
-              detailSelectshopInfoHandler(id);
-            }}
-          >
-            <Indent />
-          </S.SelectshopMoreInfoButton>
-          <SelectShopBookmark id={id} />
-        </S.SelectshopFn>
-      </S.Selectshop>
+      <S.SelectshopContainer>
+        <S.SlectshopContents>
+          <S.SelectshopInfo>
+            <S.SelectshopName>{place_name}</S.SelectshopName>
+            <S.SelectshopAddressName>{address_name}</S.SelectshopAddressName>
+            <S.SelectshopPhone>{phone}</S.SelectshopPhone>
+          </S.SelectshopInfo>
+          <S.SelectshopFn>
+            <S.SelectshopMoreInfoButton
+              onClick={() => {
+                detailSelectshopInfoHandler(id);
+              }}
+            >
+              <Indent />
+              <PatchCheck width={'18px'} height={'18px'}/>
+              <FullfillPatchCheck width={'18px'} height={'18px'} fill={`${styleColor.RED[0]}`}/>
+            </S.SelectshopMoreInfoButton>
+            <SelectShopBookmark id={id} />
+          </S.SelectshopFn>
+        </S.SlectshopContents>
+        {review?.description && (
+          <S.PreviewReviewContainer>
+            <S.PreviewReviewTitle>나의 후기</S.PreviewReviewTitle>
+            <S.PreviewReviewDescription>
+              {review?.description}
+            </S.PreviewReviewDescription>
+          </S.PreviewReviewContainer>
+        )}
+      </S.SelectshopContainer>
       {detailSelectshopInfoToggle === id && (
         <S.DetailContainer>
           <S.DetailSelectshopInfo>
@@ -82,13 +101,15 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
 
 export default SelectshopInfo;
 const S = {
-  Selectshop: styled.li`
-    display: flex;
-    justify-content: space-between;
+  SelectshopContainer: styled.li`
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
     padding: 20px 18px;
     margin: 20px;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+  `,
+  SlectshopContents: styled.div`
+    display: flex;
+    justify-content: space-between;
   `,
   SelectshopInfo: styled.div`
     width: 65%;
@@ -108,6 +129,29 @@ const S = {
   `,
   SelectshopFavoritesButton: styled.button`
     cursor: pointer;
+  `,
+  //프리뷰 리뷰
+  PreviewReviewContainer: styled.div`
+    border-radius: 4px;
+    background-color: ${styleColor.GRAY[0]};
+    margin-top: 10px;
+    padding: 10px;
+  `,
+  PreviewReviewTitle: styled.h2`
+    ${styleFont.textMedium}
+    color: ${styleColor.RED[100]};
+    font-weight: bold;
+  `,
+  PreviewReviewDescription: styled.p`
+    ${styleFont.textsmall}
+    font-weight: 400;
+    border: solid 1px ${styleColor.GRAY[100]};
+    border-radius: 4px;
+    padding: 8px;
+    margin-top: 10px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
   `,
   //디테일 부분
   DetailContainer: styled.div`

@@ -199,7 +199,7 @@ const S = {
     padding: 12px 0px;
     text-indent: 6px;
     border: solid 1px #d9dfeb;
-    border-radius: 3px;
+    border-radius: 4px;
     outline: none;
     letter-spacing: -1px;
   `,

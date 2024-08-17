@@ -110,7 +110,7 @@ const S = {
     outline: none;
     border: none;
     padding: 14px;
-    border-radius: 5px;
+    border-radius: 4px;
     &::placeholder {
       font-size: 15px;
       font-weight: bold;

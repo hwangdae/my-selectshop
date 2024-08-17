@@ -21,8 +21,6 @@ const ProfileContainer = () => {
     queryFn: () => getUser(loginUser),
   });
 
-console.log(user,"유저")
-
   const updateProfileButtonhandle = () => {
     router.push('?modal=profile', undefined, { shallow: true });
   };

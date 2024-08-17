@@ -3,6 +3,14 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 
+export interface ReviewType {
+  file : File | null;
+  review : string;
+  advantage : string;
+  disAdvantage : string;
+  brand : string;
+}
+
 const WriteReview = () => {
     
   const router = useRouter()
@@ -15,7 +23,7 @@ const WriteReview = () => {
     brand : "",
   }})
 
-  const addReviewSubmit = async({file,review,advantage,disAdvantage,brand}:any) => {
+  const addReviewSubmit = async({file,review,advantage,disAdvantage,brand}:ReviewType) => {
     const newReview = {
       selectshopId : id,
       reviewImages : file,
@@ -27,7 +35,7 @@ const WriteReview = () => {
     }
     await supabase.from('review').insert(newReview)
     alert('작성이 완료 되었습니다.')
-    
+
   };
 
   return (
