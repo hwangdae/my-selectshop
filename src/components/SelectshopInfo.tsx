@@ -12,9 +12,12 @@ import { getReview } from "@/api/review";
 import PatchCheck from "@/assets/PatchCheck.svg";
 import FullfillPatchCheck from "@/assets/FullfillPatchCheck.svg";
 
-
 interface PropsType {
   selectShop: PlaceType;
+}
+
+interface ReviewType {
+  
 }
 
 const SelectshopInfo = ({ selectShop }: PropsType) => {
@@ -28,18 +31,18 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
     queryKey: ["review", id],
     queryFn: () => getReview(id),
   });
-  console.log(reviewData);
+
   const detailSelectshopInfoHandler = (id: string) => {
     setDetailSelectshopInfoToggle(id);
   };
 
-  const review = reviewData?.find((reviews: any) => {
-    return reviews?.selectshopId === id;
+  const review = reviewData?.find((review: any) => {
+    return review?.selectshopId === id;
   });
 
   return (
     <>
-      <S.SelectshopContainer>
+      <S.SelectshopContainer onClick={() => detailSelectshopInfoHandler(id)}>
         <S.SlectshopContents>
           <S.SelectshopInfo>
             <S.SelectshopName>{place_name}</S.SelectshopName>
@@ -52,11 +55,16 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
                 detailSelectshopInfoHandler(id);
               }}
             >
-              <Indent />
-              <PatchCheck width={'18px'} height={'18px'}/>
-              <FullfillPatchCheck width={'18px'} height={'18px'} fill={`${styleColor.RED[0]}`}/>
+              {review?.description ? (
+                <FullfillPatchCheck
+                  width={"18px"}
+                  height={"18px"}
+                  fill={`${styleColor.RED[0]}`}
+                />
+              ) : (
+                <PatchCheck width={"18px"} height={"18px"} />
+              )}
             </S.SelectshopMoreInfoButton>
-            <SelectShopBookmark id={id} />
           </S.SelectshopFn>
         </S.SlectshopContents>
         {review?.description && (
@@ -102,6 +110,7 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
 export default SelectshopInfo;
 const S = {
   SelectshopContainer: styled.li`
+    cursor: pointer;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
     padding: 20px 18px;
@@ -149,8 +158,8 @@ const S = {
     border-radius: 4px;
     padding: 8px;
     margin-top: 10px;
-    overflow:hidden;
-    text-overflow:ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   `,
   //디테일 부분

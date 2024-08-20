@@ -20,6 +20,9 @@ export const styleColor = {
     0: "#8F7159",
     100: "#574144",
   },
+  YELLOW:{
+    0:"#96722f"
+  },
   PURPLE: {
     0: "#8E7391",
     100: "#5C435E",

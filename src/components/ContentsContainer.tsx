@@ -7,6 +7,7 @@ import styled from "styled-components";
 import ProfileContainer from "./ProfileContainer";
 import { useRecoilValue } from "recoil";
 import { myLocationState } from "@/globalState/recoilState";
+import MyAddressContainer from "./MyAddressContainer";
 
 const CONTENTSTABNAV = [
   { id: "nearbySelectShop", name: "편집샵 보기" },
@@ -16,34 +17,9 @@ const CONTENTSTABNAV = [
 ];
 
 const ContentsContainer = () => {
-  const myLocaion = useRecoilValue(myLocationState);
-  const [myAddress,setMyAddress] = useState<string>("")
+
   const router = useRouter();
-  console.log(myLocaion);
-
-  useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      window.kakao &&
-      window.kakao.maps &&
-      window.kakao.maps.services
-    ) {
-      var geocoder = new kakao.maps.services.Geocoder();
-
-      var callback = function (result: any, status: any) {
-        if (status === kakao.maps.services.Status.OK) {
-          setMyAddress(result[0].address_name)
-          console.log(result[0].address_name);
-        }
-      };
-
-      geocoder.coord2RegionCode(
-        myLocaion.center.lng,
-        myLocaion.center.lat,
-        callback
-      );
-    }
-  }, [myLocaion]);
+  
   const viewSelectShopHandle = (id: string) => {
     router.push(`/?tab=${id}`);
   };
@@ -51,7 +27,7 @@ const ContentsContainer = () => {
   return (
     <S.ContentsContainer>
       <ProfileContainer />
-      <h1>{myAddress}</h1>
+      <MyAddressContainer/>
       <S.ContentsInner>
         {CONTENTSTABNAV.map((content) => {
           return (
