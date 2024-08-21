@@ -44,6 +44,7 @@ const NearbySelectShop = () => {
 
         const placesSearchCB = (data: any, status: string, pagination: PaginationType) => {
           if (status === kakao.maps.services.Status.OK) {
+            console.log(data)
             setSelectShops(data);
             displayPlaces(data);
             setPagination(pagination);
