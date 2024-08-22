@@ -30,7 +30,7 @@ export const styleColor = {
   GRAY: {
     0: "#f8f9fa",
     100: "#e9ecef",
-    200: " #dee2e6",
+    200: "#dee2e6",
     300: "#ced4da",
     400: "#adb5bd",
     500: "#6c757d ",

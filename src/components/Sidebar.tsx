@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import HeaderContainer from "./HeaderContainer";
 import ContentsContainer from "./ContentsContainer";
-import NearbySelectShop from "@/pages/nearbySelectshop";
 import { useRouter } from "next/router";
+import NearbySelectshop from "@/pages/nearbySelectshop";
 import VisitedSelectShop from "@/pages/visitedSelectshop";
+
 
 const Sidebar = () => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const Sidebar = () => {
   const renderContent = () => {
     switch (tab) {
       case "nearbySelectShop":
-        return <NearbySelectShop />;
+        return <NearbySelectshop />;
       case "visitedSelectshop":
         return <VisitedSelectShop />;
       default:

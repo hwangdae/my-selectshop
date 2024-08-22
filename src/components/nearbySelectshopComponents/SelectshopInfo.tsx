@@ -16,12 +16,10 @@ interface PropsType {
   selectShop: PlaceType;
 }
 
-interface ReviewType {
-  
-}
+interface ReviewType {}
 
 const SelectshopInfo = ({ selectShop }: PropsType) => {
-  const { id, place_name, address_name, phone } = selectShop;
+  const { id, place_name, address_name, phone, distance } = selectShop;
   const [detailSelectshopInfoToggle, setDetailSelectshopInfoToggle] = useState<
     string | null
   >(null);
@@ -45,7 +43,14 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
       <S.SelectshopContainer onClick={() => detailSelectshopInfoHandler(id)}>
         <S.SlectshopContents>
           <S.SelectshopInfo>
-            <S.SelectshopName>{place_name}</S.SelectshopName>
+            <S.SelectshopName>
+              {place_name}
+              <S.SelectshopDistance>
+                {distance >= 1000
+                  ? `${(distance / 1000).toFixed(1)}km`
+                  : `${distance}m`}
+              </S.SelectshopDistance>
+            </S.SelectshopName>
             <S.SelectshopAddressName>{address_name}</S.SelectshopAddressName>
             <S.SelectshopPhone>{phone}</S.SelectshopPhone>
           </S.SelectshopInfo>
@@ -124,9 +129,18 @@ const S = {
     width: 65%;
   `,
   SelectshopName: styled.h1`
-    ${styleFont.textLarge}
+    display: flex;
+    align-items: center;
+    ${styleFont.textLarge};
     margin-bottom: 14px;
   `,
+  SelectshopDistance: styled.span`
+    ${styleFont.textsmall};
+    color : ${styleColor.GRAY[400]};
+    font-weight: 400;
+    margin-left: 6px;
+  `,
+
   SelectshopAddressName: styled.h2`
     ${styleFont.textMedium}
     margin-bottom: 6px;
