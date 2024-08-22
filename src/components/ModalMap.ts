@@ -1,6 +1,7 @@
 import SignUp from "@/pages/signUp";
-import ProfileUpdateContainer from "./ProfileUpdateContainer";
 import Login from "@/pages/login";
+import ProfileUpdateContainer from "./profileComponents/ProfileUpdateContainer";
+
 
 export interface ModalProps {
     onClose: () => void;

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Indent from "@/assets/Indent.svg";
 import { PlaceType } from "@/types/placeType";
 import { Button } from "@mui/material";
-import SelectShopBookmark from "./SelectShopBookmark";
+import SelectShopBookmark from "../SelectShopBookmark";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import { getReview } from "@/api/review";

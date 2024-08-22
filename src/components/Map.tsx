@@ -11,7 +11,6 @@ import MyLocationMaker from "./MyLocationMaker";
 const MapComponent = () => {
   const [_, setMap] = useRecoilState(mapState);
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
-  const [a,setA] = useState<null | undefined>()
   const markers = useRecoilValue(markersState);
 
   useEffect(() => {

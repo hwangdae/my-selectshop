@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import HeaderContainer from "./HeaderContainer";
 import ContentsContainer from "./ContentsContainer";
-import NearbySelectShop from "@/pages/nearbySelectShop";
+import NearbySelectShop from "@/pages/nearbySelectshop";
 import { useRouter } from "next/router";
-import VisitedSelectShop from "@/pages/visitedSelectShop";
+import VisitedSelectShop from "@/pages/visitedSelectshop";
 
 const Sidebar = () => {
   const router = useRouter();
