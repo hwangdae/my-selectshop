@@ -64,7 +64,7 @@ const NearbySelectshop = () => {
             });
           });
           setMarkers(newMarkers);
-          // map.setBounds(bounds);
+          map.setBounds(bounds);
         };
         searchPlaces(currentPage);
       }
