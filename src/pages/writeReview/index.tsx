@@ -1,3 +1,4 @@
+import useLoginUserId from "@/hook/useLoginUserId";
 import supabase from "@/lib/supabaseClient";
 import { useRouter } from "next/router";
 import React from "react";
@@ -15,6 +16,8 @@ const WriteReview = () => {
     
   const router = useRouter()
   const {id} = router.query
+  const loginUser = useLoginUserId();
+
   const {register,handleSubmit} = useForm({defaultValues:{
     file: null,
     review : "",
@@ -31,7 +34,8 @@ const WriteReview = () => {
       visited : true,
       good : advantage,
       notGood : disAdvantage,
-      tags:brand
+      tags:brand,
+      userId : loginUser
     }
     await supabase.from('review').insert(newReview)
     alert('작성이 완료 되었습니다.')

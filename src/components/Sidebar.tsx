@@ -4,7 +4,7 @@ import HeaderContainer from "./HeaderContainer";
 import ContentsContainer from "./ContentsContainer";
 import { useRouter } from "next/router";
 import NearbySelectshop from "@/pages/nearbySelectshop";
-import VisitedSelectShop from "@/pages/visitedSelectshop";
+import VisitedSelectshop from "@/pages/visitedSelectshop";
 
 
 const Sidebar = () => {
@@ -13,10 +13,10 @@ const Sidebar = () => {
 
   const renderContent = () => {
     switch (tab) {
-      case "nearbySelectShop":
+      case "nearbySelectshop":
         return <NearbySelectshop />;
       case "visitedSelectshop":
-        return <VisitedSelectShop />;
+        return <VisitedSelectshop />;
       default:
         return <ContentsContainer />;
     }

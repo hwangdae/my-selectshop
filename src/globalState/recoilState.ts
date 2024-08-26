@@ -30,6 +30,7 @@ export const mapState = atom<any>({
   key:"mapState",
   default : null
 })
+
 export interface MyLocationType {
   center : {
     lat : number;

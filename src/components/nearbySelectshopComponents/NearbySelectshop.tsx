@@ -1,6 +1,5 @@
 import PaginationContainer from "@/components/nearbySelectshopComponents/PaginationContainer";
 import {
-  mapState,
   markersState,
   myLocationState,
 } from "@/globalState/recoilState";
@@ -9,14 +8,15 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import SelectshopInfo from "./SelectshopInfo";
+import { Map, MapMarker } from "react-kakao-maps-sdk"; // Kakao map import
 
 const NearbySelectshop = () => {
-  const map = useRecoilValue(mapState);
   const myLocation = useRecoilValue(myLocationState);
-  const [_, setMarkers] = useRecoilState<MarkersType[]>(markersState);
+  const [markers, setMarkers] = useRecoilState<MarkersType[]>(markersState);
   const [selectShops, setSelectShops] = useState([]);
   const [pagination, setPagination] = useState<PaginationType>();
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [map, setMap] = useState<any>(null); // 로컬 상태로 map 객체 관리
 
   useEffect(() => {
     if (
@@ -56,34 +56,62 @@ const NearbySelectshop = () => {
           const bounds = new kakao.maps.LatLngBounds();
           let newMarkers: MarkersType[] = [];
           data.forEach((place) => {
+            const position = {
+              lat: place.y,
+              lng: place.x,
+            };
             newMarkers.push({
-              position: {
-                lat: place.y,
-                lng: place.x,
-              },
+              position,
             });
+            bounds.extend(new kakao.maps.LatLng(position.lat, position.lng));
           });
           setMarkers(newMarkers);
-          map.setBounds(bounds);
+          if (map) {
+            map.setBounds(bounds);  // map 객체를 사용하여 지도의 범위를 설정합니다.
+          }
         };
+
         searchPlaces(currentPage);
       }
     }
-  }, [myLocation, currentPage]);
+  }, [myLocation, currentPage, map]);  // map을 의존성 배열에 추가합니다.
+
+  const handleShopClick = (lat: number, lng: number) => {
+    if (map) {
+      map.setCenter(new window.kakao.maps.LatLng(lat, lng));
+    }
+  };
 
   return (
-    <S.SearchResultsContainer>
-      <S.SearchResultsInner>
-        {selectShops?.map((selectShop: PlaceType) => {
-          return <SelectshopInfo key={selectShop.id} selectShop={selectShop} />;
-        })}
-      </S.SearchResultsInner>
-      <PaginationContainer
-        pagination={pagination}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-    </S.SearchResultsContainer>
+    <>
+      {/* <Map
+        center={{ lat: myLocation.center.lat, lng: myLocation.center.lng }}
+        style={{ width: "100%", height: "100%" }}
+        onCreate={setMap} // Map이 생성될 때 map 객체를 로컬 상태로 설정
+      >
+        {markers.map((marker, index) => (
+          <MapMarker
+            key={`marker-${marker.position.lat},${marker.position.lng}-${index}`}
+            position={marker.position}
+          />
+        ))}
+      </Map> */}
+      <S.SearchResultsContainer>
+        <S.SearchResultsInner>
+          {selectShops?.map((selectShop: PlaceType) => (
+            <SelectshopInfo
+              key={selectShop.id}
+              selectShop={selectShop}
+            />
+          ))}
+        </S.SearchResultsInner>
+        <PaginationContainer
+          pagination={pagination}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </S.SearchResultsContainer>
+    </>
   );
 };
 

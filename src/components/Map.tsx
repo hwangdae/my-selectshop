@@ -1,5 +1,4 @@
 import {
-  mapState,
   markersState,
   myLocationState,
 } from "@/globalState/recoilState";
@@ -9,7 +8,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import MyLocationMaker from "./MyLocationMaker";
 
 const MapComponent = () => {
-  const [_, setMap] = useRecoilState(mapState);
+  const [map, setMap] = useState<any>();
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
   const markers = useRecoilValue(markersState);
 
@@ -37,7 +36,7 @@ const MapComponent = () => {
     <Map
       center={{ lat: myLocation.center.lat, lng: myLocation.center.lng }}
       style={{ width: "100%", height: "100%" }}
-      // onCreate={setMap}
+      onCreate={setMap}
     >
       {markers.map((marker, index) => (
         <MapMarker

@@ -2,15 +2,14 @@ import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { useState } from "react";
 import styled from "styled-components";
-import Indent from "@/assets/Indent.svg";
 import { PlaceType } from "@/types/placeType";
 import { Button } from "@mui/material";
-import SelectShopBookmark from "../SelectShopBookmark";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import { getReview } from "@/api/review";
 import PatchCheck from "@/assets/PatchCheck.svg";
 import FullfillPatchCheck from "@/assets/FullfillPatchCheck.svg";
+import useLoginUserId from "@/hook/useLoginUserId";
 
 interface PropsType {
   selectShop: PlaceType;
@@ -20,9 +19,8 @@ interface ReviewType {}
 
 const SelectshopInfo = ({ selectShop }: PropsType) => {
   const { id, place_name, address_name, phone, distance } = selectShop;
-  const [detailSelectshopInfoToggle, setDetailSelectshopInfoToggle] = useState<
-    string | null
-  >(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const loginUser = useLoginUserId();
   const router = useRouter();
 
   const { data: reviewData }: any = useQuery({
@@ -30,17 +28,17 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
     queryFn: () => getReview(id),
   });
 
-  const detailSelectshopInfoHandler = (id: string) => {
-    setDetailSelectshopInfoToggle(id);
+  const detailSelectshopInfoHandler = () => {
+    setSelectedId((prev) => (prev === id ? null : id)); // 현재 선택된 ID와 클릭한 ID가 같으면 닫고, 다르면 열도록 설정
   };
 
   const review = reviewData?.find((review: any) => {
-    return review?.selectshopId === id;
+    return review?.selectshopId === id && review?.userId === loginUser;
   });
-
+  console.log(review, "리뷰");
   return (
     <>
-      <S.SelectshopContainer onClick={() => detailSelectshopInfoHandler(id)}>
+      <S.SelectshopContainer onClick={detailSelectshopInfoHandler}>
         <S.SlectshopContents>
           <S.SelectshopInfo>
             <S.SelectshopName>
@@ -55,12 +53,8 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
             <S.SelectshopPhone>{phone}</S.SelectshopPhone>
           </S.SelectshopInfo>
           <S.SelectshopFn>
-            <S.SelectshopMoreInfoButton
-              onClick={() => {
-                detailSelectshopInfoHandler(id);
-              }}
-            >
-              {review?.description ? (
+            <S.SelectshopMoreInfoButton>
+              {review ? (
                 <FullfillPatchCheck
                   width={"18px"}
                   height={"18px"}
@@ -72,7 +66,7 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
             </S.SelectshopMoreInfoButton>
           </S.SelectshopFn>
         </S.SlectshopContents>
-        {review?.description && (
+        {review && (
           <S.PreviewReviewContainer>
             <S.PreviewReviewTitle>나의 후기</S.PreviewReviewTitle>
             <S.PreviewReviewDescription>
@@ -81,31 +75,59 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
           </S.PreviewReviewContainer>
         )}
       </S.SelectshopContainer>
-      {detailSelectshopInfoToggle === id && (
+
+      {/* selectedId가 현재 선택된 ID와 일치할 때만 DetailContainer를 렌더링 */}
+      {selectedId === id && (
         <S.DetailContainer>
-          <S.DetailSelectshopInfo>
-            <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
-            <S.DetailImage></S.DetailImage>
-            <S.DetailAddress>위치 {address_name}</S.DetailAddress>
-          </S.DetailSelectshopInfo>
-          <S.SelectshopReviewContainer>
-            <S.SelectshopReviewTitle>나의 후기</S.SelectshopReviewTitle>
-            <S.MySelectshopReview>
-              <S.NoReview>등록된 후기가 없습니다.</S.NoReview>
-              <Button
-                onClick={() =>
-                  router.push(
-                    { pathname: "/writeReview", query: { id } },
-                    "/writeReview"
-                  )
-                }
-                variant="contained"
-                sx={{ padding: "5px 30px" }}
-              >
-                후기 등록하기
-              </Button>
-            </S.MySelectshopReview>
-          </S.SelectshopReviewContainer>
+          {review ? (
+            <div>
+              <img></img>
+              <ul>
+                <li>
+                  <h1>나의 후기</h1>
+                  <p></p>
+                </li>
+                <li>
+                  <h1>셀렉샵 장점</h1>
+                  <p></p>
+                </li>
+                <li>
+                  <h1>설렉샵 단점</h1>
+                  <p></p>
+                </li>
+                <li>
+                  <h1>태그</h1>
+                  <p></p>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <>
+              <S.DetailSelectshopInfo>
+                <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
+                {/* <S.DetailImage></S.DetailImage> */}
+                <S.DetailAddress>위치 {address_name}</S.DetailAddress>
+              </S.DetailSelectshopInfo>
+              <S.SelectshopReviewContainer>
+                <S.SelectshopReviewTitle>나의 후기</S.SelectshopReviewTitle>
+                <S.MySelectshopReview>
+                  <S.NoReview>등록된 후기가 없습니다.</S.NoReview>
+                  <Button
+                    onClick={() =>
+                      router.push(
+                        { pathname: "/writeReview", query: { id } },
+                        "/writeReview"
+                      )
+                    }
+                    variant="contained"
+                    sx={{ padding: "5px 30px" }}
+                  >
+                    후기 등록하기
+                  </Button>
+                </S.MySelectshopReview>
+              </S.SelectshopReviewContainer>
+            </>
+          )}
         </S.DetailContainer>
       )}
     </>
@@ -113,6 +135,7 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
 };
 
 export default SelectshopInfo;
+
 const S = {
   SelectshopContainer: styled.li`
     cursor: pointer;
@@ -126,7 +149,7 @@ const S = {
     justify-content: space-between;
   `,
   SelectshopInfo: styled.div`
-    width: 65%;
+    width: 85%;
   `,
   SelectshopName: styled.h1`
     display: flex;
@@ -136,7 +159,7 @@ const S = {
   `,
   SelectshopDistance: styled.span`
     ${styleFont.textsmall};
-    color : ${styleColor.GRAY[400]};
+    color: ${styleColor.GRAY[400]};
     font-weight: 400;
     margin-left: 6px;
   `,

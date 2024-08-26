@@ -13,8 +13,8 @@ export interface PlaceType {
     place_name: string;
     place_url: string;
     road_address_name: string;
-    x: string;
-    y: string;
+    x: number;
+    y: number;
   }
 
 export interface MarkersType {
