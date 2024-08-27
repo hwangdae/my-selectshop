@@ -79,32 +79,38 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
       {/* selectedId가 현재 선택된 ID와 일치할 때만 DetailContainer를 렌더링 */}
       {selectedId === id && (
         <S.DetailContainer>
+          <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
           {review ? (
             <div>
               <img></img>
-              <ul>
-                <li>
-                  <h1>나의 후기</h1>
-                  <p></p>
-                </li>
-                <li>
-                  <h1>셀렉샵 장점</h1>
-                  <p></p>
-                </li>
-                <li>
-                  <h1>설렉샵 단점</h1>
-                  <p></p>
-                </li>
-                <li>
-                  <h1>태그</h1>
-                  <p></p>
-                </li>
-              </ul>
+              <S.ReviewTextContainer>
+                <S.ReviewText>
+                  <S.ReviewTitle>📒나의 후기</S.ReviewTitle>
+                  <S.ReviewDescription>
+                    {review?.description}
+                  </S.ReviewDescription>
+                </S.ReviewText>
+                <S.ReviewText>
+                  <S.ReviewTitle>👍셀렉샵 장점</S.ReviewTitle>
+                  <ul>
+                    <li>{review?.good}</li>
+                  </ul>
+                </S.ReviewText>
+                <S.ReviewText>
+                  <S.ReviewTitle>👎설렉샵 단점</S.ReviewTitle>
+                  <ul>
+                    <li>{review?.notGood}</li>
+                  </ul>
+                </S.ReviewText>
+                <S.ReviewText>
+                  <S.ReviewTitle>🏷️태그</S.ReviewTitle>
+                  <p>{review?.tags}</p>
+                </S.ReviewText>
+              </S.ReviewTextContainer>
             </div>
           ) : (
             <>
               <S.DetailSelectshopInfo>
-                <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
                 {/* <S.DetailImage></S.DetailImage> */}
                 <S.DetailAddress>위치 {address_name}</S.DetailAddress>
               </S.DetailSelectshopInfo>
@@ -239,4 +245,21 @@ const S = {
     margin-bottom: 10px;
   `,
   WriteReviewButton: styled.button``,
+
+  // 나의 리뷰
+  ReviewTextContainer: styled.ul`
+    padding: 0px 12px;
+  `,
+  ReviewText: styled.li`
+    margin: 20px 0px;
+  `,
+  ReviewTitle: styled.h1`
+    ${styleFont.textLarge}
+    margin-bottom: 10px;
+  `,
+  ReviewDescription: styled.p`
+    background-color: ${styleColor.GRAY[0]};
+    padding: 10px;
+    border-radius: 4px;
+  `,
 };
