@@ -2,6 +2,7 @@ import PaginationContainer from "@/components/nearbySelectshopComponents/Paginat
 import {
   markersState,
   myLocationState,
+  selectShopsState,
 } from "@/globalState/recoilState";
 import { MarkersType, PaginationType, PlaceType } from "@/types/placeType";
 import React, { useEffect, useState } from "react";
@@ -13,10 +14,10 @@ import { Map, MapMarker } from "react-kakao-maps-sdk"; // Kakao map import
 const NearbySelectshop = () => {
   const myLocation = useRecoilValue(myLocationState);
   const [markers, setMarkers] = useRecoilState<MarkersType[]>(markersState);
-  const [selectShops, setSelectShops] = useState([]);
+  const [selectShops, setSelectShops] = useRecoilState<PlaceType[]>(selectShopsState);
   const [pagination, setPagination] = useState<PaginationType>();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [map, setMap] = useState<any>(null); // 로컬 상태로 map 객체 관리
+  const [map, setMap] = useState<any>(null);
 
   useEffect(() => {
     if (

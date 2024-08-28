@@ -84,28 +84,31 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
             <div>
               <img></img>
               <S.ReviewTextContainer>
-                <S.ReviewText>
-                  <S.ReviewTitle>📒나의 후기</S.ReviewTitle>
+                <S.ReviewTextRow>
+                  <S.ReviewTitle>📒 나의 후기</S.ReviewTitle>
                   <S.ReviewDescription>
                     {review?.description}
                   </S.ReviewDescription>
-                </S.ReviewText>
-                <S.ReviewText>
-                  <S.ReviewTitle>👍셀렉샵 장점</S.ReviewTitle>
+                </S.ReviewTextRow>
+                <S.ReviewTextRow>
+                  <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
                   <ul>
                     <li>{review?.good}</li>
+                    <li>{review?.good}</li>
                   </ul>
-                </S.ReviewText>
-                <S.ReviewText>
-                  <S.ReviewTitle>👎설렉샵 단점</S.ReviewTitle>
+                </S.ReviewTextRow>
+                <S.ReviewTextRow>
+                  <S.ReviewTitle>👎 설렉샵 단점</S.ReviewTitle>
                   <ul>
                     <li>{review?.notGood}</li>
                   </ul>
-                </S.ReviewText>
-                <S.ReviewText>
-                  <S.ReviewTitle>🏷️태그</S.ReviewTitle>
-                  <p>{review?.tags}</p>
-                </S.ReviewText>
+                </S.ReviewTextRow>
+                <S.ReviewTextRow>
+                  <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
+                  <S.TagList>
+                    <li>{review?.tags}</li>
+                  </S.TagList>
+                </S.ReviewTextRow>
               </S.ReviewTextContainer>
             </div>
           ) : (
@@ -250,16 +253,47 @@ const S = {
   ReviewTextContainer: styled.ul`
     padding: 0px 12px;
   `,
-  ReviewText: styled.li`
-    margin: 20px 0px;
+  ReviewTextRow: styled.li`
+    margin: 40px 0px;
+    ul{
+      list-style: disc;
+      margin-left: 36px;
+      li{
+       margin-bottom : 7px;
+       ${styleFont.textMedium}
+      }
+    }
   `,
   ReviewTitle: styled.h1`
     ${styleFont.textLarge}
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    
   `,
   ReviewDescription: styled.p`
     background-color: ${styleColor.GRAY[0]};
     padding: 10px;
     border-radius: 4px;
   `,
+  TagList : styled.ul`
+    list-style: none !important ;
+    li{
+      position: relative; left: 0; top: 0;
+      display: inline-block;
+      background-color: ${styleColor.INDIGO[0]};
+      padding: 4px 10px;
+      border-radius: 4px;
+      text-indent: 4px;
+      color: #fff;
+      &::before{
+        position: absolute; left: 4px; top: 50%;
+        margin-top: -3px;
+        display: block;
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 100%;
+        background-color: #ffffff;
+      }
+    }
+  `
 };
