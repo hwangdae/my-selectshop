@@ -41,15 +41,15 @@ const SignUp = ({ onClose }:ModalProps) => {
     password,
     nickName,
   }: AuthType) => {
-    signUp(email, password, nickName);
+    await signUp(email, password, nickName);
     const {
       data: { user },
     } = await supabase.auth.getUser();
-
+    console.log(user,"회원가입 유저")
     const newUser = {
       id: user?.id,
       email: user?.email,
-      nickName: user?.user_metadata.nickName,
+      nickName: user?.user_metadata?.nickName,
     };
     await supabase.from("users").insert(newUser);
     alert("회원가입이 완료되었습니다.");
@@ -95,9 +95,9 @@ const SignUp = ({ onClose }:ModalProps) => {
                     onClick={handlePasswordToggle}
                   >
                     {showPassword ? (
-                      <Eye width="20px" height="auto" fill="#a0a0a0" />
+                      <Eye width="20px" height="20px" fill="#a0a0a0" />
                     ) : (
-                      <EyeInvisible width="20px" height="auto" fill="#a0a0a0" />
+                      <EyeInvisible width="20px" height="20px" fill="#a0a0a0" />
                     )}
                   </S.ShowPasswordToggle>
                 </S.InputContainer>

@@ -20,7 +20,7 @@ const ProfileContainer = () => {
     queryKey: ["user",loginUser],
     queryFn: () => getUser(loginUser),
   });
-
+  // console.log(user,"유저")
   const updateProfileButtonhandle = () => {
     router.push('?modal=profile', undefined, { shallow: true });
   };

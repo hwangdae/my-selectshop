@@ -6,12 +6,18 @@ interface updateProfileType {
 }
 
 const getUser = async (id: string) => {
-  const { data: userLogin } = await supabase
+  try {
+    const { data: userLogin } = await supabase
     .from("users")
     .select("*")
     .eq("id", id)
     .single();
-  return userLogin;
+    return userLogin;
+  } catch (error) {
+    console.log(error)
+  }
+  
+  
 };
 
 const signUp = async (email: string, password: string, nickName: string) => {

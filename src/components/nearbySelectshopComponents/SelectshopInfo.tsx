@@ -23,16 +23,17 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
   const loginUser = useLoginUserId();
   const router = useRouter();
 
+  console.log(typeof(loginUser))
   const { data: reviewData }: any = useQuery({
     queryKey: ["review", id],
     queryFn: () => getReview(id),
   });
-
+  console.log(reviewData,"리뷰 데이터")
   const detailSelectshopInfoHandler = () => {
     setSelectedId((prev) => (prev === id ? null : id)); // 현재 선택된 ID와 클릭한 ID가 같으면 닫고, 다르면 열도록 설정
   };
 
-  const review = reviewData?.find((review: any) => {
+  const review = reviewData?.data?.find((review: any) => {
     return review?.selectshopId === id && review?.userId === loginUser;
   });
   console.log(review, "리뷰");
@@ -75,8 +76,6 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
           </S.PreviewReviewContainer>
         )}
       </S.SelectshopContainer>
-
-      {/* selectedId가 현재 선택된 ID와 일치할 때만 DetailContainer를 렌더링 */}
       {selectedId === id && (
         <S.DetailContainer>
           <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
@@ -122,12 +121,15 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
                 <S.MySelectshopReview>
                   <S.NoReview>등록된 후기가 없습니다.</S.NoReview>
                   <Button
-                    onClick={() =>
+                    onClick={() =>{
+                      if(!loginUser){
+                        alert('로그인이 필요한 서비스')
+                        return ;}
                       router.push(
                         { pathname: "/writeReview", query: { id } },
                         "/writeReview"
                       )
-                    }
+                    }}
                     variant="contained"
                     sx={{ padding: "5px 30px" }}
                   >
