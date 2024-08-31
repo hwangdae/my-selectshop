@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ModalProps } from "./ModalMap";
 import styled from "styled-components";
 import { modal, modalContent } from "@/styles/modal";
 import { styleFont } from "@/styles/styleFont";
@@ -12,6 +11,7 @@ import Camera from "@/assets/Camera.svg";
 import shortId from "shortid";
 import { styleColor } from "@/styles/styleColor";
 import { useRouter } from "next/router";
+import { ModalProps } from "../ModalMap";
 
 const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [previewProfileImage, setPreviewProfileImage] = useState<
@@ -30,6 +30,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   } = useQuery({
     queryKey: ["user", loginUser],
     queryFn: () => getUser(loginUser),
+    enabled : !!loginUser
   });
 
   useEffect(() => {

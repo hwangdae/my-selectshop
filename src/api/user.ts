@@ -1,23 +1,22 @@
 import supabase from "@/lib/supabaseClient";
 
 interface updateProfileType {
-  profileImage : string | undefined;
-  nickName : string;
+  profileImage: string | undefined;
+  nickName: string;
 }
 
 const getUser = async (id: string) => {
   try {
-    const { data: userLogin } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", id)
-    .single();
+    const { data: userLogin,error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", id)
+      .single();
+      if(error) throw error
     return userLogin;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-  
-  
 };
 
 const signUp = async (email: string, password: string, nickName: string) => {
@@ -32,11 +31,10 @@ const signUp = async (email: string, password: string, nickName: string) => {
   });
 };
 
-const userProfileUpdate = async (updateProfile:updateProfileType, id : string) => {
-  await supabase
-        .from("users")
-        .update(updateProfile)
-        .eq("id", id)
-        .select();
+const userProfileUpdate = async (
+  updateProfile: updateProfileType,
+  id: string
+) => {
+  await supabase.from("users").update(updateProfile).eq("id", id).select();
 };
 export { getUser, signUp, userProfileUpdate };

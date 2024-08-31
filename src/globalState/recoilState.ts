@@ -55,3 +55,8 @@ export const markersState = atom<MarkersType[]>({
   key : "markersState",
   default : []
 })
+
+export const reviewState = atom({
+  key : 'reviewState',
+  default :null
+})

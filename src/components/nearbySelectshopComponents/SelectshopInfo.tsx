@@ -23,20 +23,21 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
   const loginUser = useLoginUserId();
   const router = useRouter();
 
-  console.log(typeof(loginUser))
-  const { data: reviewData }: any = useQuery({
+  const { data: reviewData }:any = useQuery({
     queryKey: ["review", id],
     queryFn: () => getReview(id),
+    enabled : !!id
   });
-  console.log(reviewData,"리뷰 데이터")
+
+
   const detailSelectshopInfoHandler = () => {
-    setSelectedId((prev) => (prev === id ? null : id)); // 현재 선택된 ID와 클릭한 ID가 같으면 닫고, 다르면 열도록 설정
+    setSelectedId((prev) => (prev === id ? null : id));
   };
 
-  const review = reviewData?.data?.find((review: any) => {
+  const review = reviewData?.find((review: any) => {
     return review?.selectshopId === id && review?.userId === loginUser;
   });
-  console.log(review, "리뷰");
+
   return (
     <>
       <S.SelectshopContainer onClick={detailSelectshopInfoHandler}>

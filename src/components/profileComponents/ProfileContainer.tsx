@@ -19,6 +19,7 @@ const ProfileContainer = () => {
   } = useQuery({
     queryKey: ["user",loginUser],
     queryFn: () => getUser(loginUser),
+    enabled : !!loginUser,
   });
   // console.log(user,"유저")
   const updateProfileButtonhandle = () => {
@@ -39,7 +40,7 @@ const ProfileContainer = () => {
           <S.UserNickName>안녕하세요 {user?.nickName}님 👋</S.UserNickName>
           <S.ProfileInfoContainer>
             <S.ProfileImageContainer>
-              <S.ProfileImage src={user?.profileImage !== null ? `${user?.profileImage}` : "/images/basicUserImage.png"} />
+              <S.ProfileImage src={user?.profileImage} />
               <S.ProfileUpdateButton onClick={updateProfileButtonhandle}>
                 <ProfileUpdate
                   width={"15px"}

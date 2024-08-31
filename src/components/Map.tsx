@@ -15,20 +15,27 @@ import MyLocationMaker from "./MyLocationMaker";
 import styled from "styled-components";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
+import { useQuery } from "@tanstack/react-query";
+import { getAllReview, getReview, getReviewCount } from "@/api/review";
+import MarkerContainer from "./MarkerContainer";
 
 const MapComponent = () => {
   const [map, setMap] = useState<any>();
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
   const markers = useRecoilValue(markersState);
   const selectshops = useRecoilValue(selectShopsState);
-  console.log(markers);
-  console.log(selectshops);
+  console.log(markers,"마커스")
+  console.log(selectshops,"셀렉트샵")
+  const { data: allReviewData }: any = useQuery({
+    queryKey: ["allReview"],
+    queryFn: () => getAllReview(),
+  });
+
   useEffect(() => {
     if (typeof window !== "undefined" && window.kakao && window.kakao.maps) {
       kakao.maps.load(() => {
         if (navigator.geolocation) {
           var geocoder = new kakao.maps.services.Geocoder();
-          console.log(geocoder);
           navigator.geolocation.getCurrentPosition((position) => {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
@@ -49,17 +56,8 @@ const MapComponent = () => {
       style={{ width: "100%", height: "100%" }}
       onCreate={setMap}
     >
-      {markers.map((marker, index) => (
-        <CustomOverlayMap
-          key={`marker-${marker.position.lat},${marker.position.lng}-${index}`}
-          position={marker.position}
-        >
-          <S.MarkerWrap>
-            <S.SelectshopInfoWindow>
-              {selectshops[index]?.place_name}
-            </S.SelectshopInfoWindow>
-          </S.MarkerWrap>
-        </CustomOverlayMap>
+      {selectshops.map((v, i) => (
+        <MarkerContainer selectshop={v} index={i}/>
       ))}
       {!myLocation.isLoading && <MyLocationMaker myLocation={myLocation} />}
     </Map>
