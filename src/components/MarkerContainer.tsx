@@ -30,7 +30,7 @@ const MarkerContainer = ({selectshop,index}:Propstype) => {
       <S.MarkerWrap>
         <S.SelectshopInfoWindow>
           {place_name}
-          {reviewData.length}
+          {reviewData?.length === 0 ? "" : reviewData?.length}
         </S.SelectshopInfoWindow>
       </S.MarkerWrap>
     </CustomOverlayMap>
