@@ -3,7 +3,7 @@ import { styleFont } from "@/styles/styleFont";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import ProfileContainer from "./profileComponents/ProfileContainer";
+import ProfileContainer from "../profileComponents/ProfileContainer";
 import MyAddressContainer from "./MyAddressContainer";
 
 const CONTENTSTABNAV = [

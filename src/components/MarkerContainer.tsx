@@ -8,30 +8,29 @@ import { CustomOverlayMap } from "react-kakao-maps-sdk";
 import styled from "styled-components";
 
 interface Propstype {
-    selectshop : PlaceType;
-    index : number
+  selectshop: PlaceType;
+  index: number;
 }
 
-const MarkerContainer = ({selectshop,index}:Propstype) => {
-    const { id, place_name, address_name, phone, distance,x,y } = selectshop;
-    const position = {lat:y,lng:x}
+const MarkerContainer = ({ selectshop, index }: Propstype) => {
+  const { id, place_name, x, y } = selectshop;
+  const position = { lat: y, lng: x };
 
-    const { data: reviewData }:any = useQuery({
-        queryKey: ["review", id],
-        queryFn: () => getReview(id),
-        enabled : !!id
-      });
+  const { data: reviewData }: any = useQuery({
+    queryKey: ["review", id],
+    queryFn: () => getReview(id),
+    enabled: !!id,
+  });
 
   return (
-    <CustomOverlayMap
-      key={`marker-${y},${x}-${index}`}
-      position={position}
-    >
+    <CustomOverlayMap key={`marker-${y},${x}-${index}`} position={position}>
       <S.MarkerWrap>
-        <S.SelectshopInfoWindow>
-          {place_name}
-          {reviewData.length}
-        </S.SelectshopInfoWindow>
+        <S.SelectshopInfoWindow>{place_name}</S.SelectshopInfoWindow>
+        {reviewData?.length !== 0 ? (
+          <S.SelectshopReviewCount>
+            `+${reviewData?.length}`
+          </S.SelectshopReviewCount>
+        ) : null}
       </S.MarkerWrap>
     </CustomOverlayMap>
   );
@@ -78,8 +77,17 @@ const S = {
       z-index: -999;
     }
   `,
-  SelectshopInfoWindow: styled.p`
+  SelectshopInfoWindow: styled.h1`
     ${styleFont.textMedium}
     font-weight: 600;
+  `,
+  SelectshopReviewCount: styled.p`
+    position: absolute;
+    right: -5px;
+    top: -14px;
+    background: #fff;
+    border: solid 2px ${styleColor.RED[0]};
+    border-radius: 100%;
+    padding: 5px;
   `,
 };

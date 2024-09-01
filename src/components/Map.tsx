@@ -24,12 +24,6 @@ const MapComponent = () => {
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
   const markers = useRecoilValue(markersState);
   const selectshops = useRecoilValue(selectShopsState);
-  console.log(markers,"마커스")
-  console.log(selectshops,"셀렉트샵")
-  const { data: allReviewData }: any = useQuery({
-    queryKey: ["allReview"],
-    queryFn: () => getAllReview(),
-  });
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.kakao && window.kakao.maps) {
@@ -52,12 +46,12 @@ const MapComponent = () => {
 
   return (
     <Map
+    id="map"
       center={{ lat: myLocation.center.lat, lng: myLocation.center.lng }}
       style={{ width: "100%", height: "100%" }}
-      onCreate={setMap}
     >
-      {selectshops.map((v, i) => (
-        <MarkerContainer selectshop={v} index={i}/>
+      {selectshops.map((selectshop, index) => (
+        <MarkerContainer selectshop={selectshop} index={index}/>
       ))}
       {!myLocation.isLoading && <MyLocationMaker myLocation={myLocation} />}
     </Map>

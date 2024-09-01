@@ -60,3 +60,8 @@ export const reviewState = atom({
   key : 'reviewState',
   default :null
 })
+
+export const boundsState = atom ({
+  key : 'boundsState',
+  default : null
+})
