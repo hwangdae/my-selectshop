@@ -1,6 +1,6 @@
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { PlaceType } from "@/types/placeType";
 import { Button } from "@mui/material";
@@ -10,6 +10,8 @@ import { getReview } from "@/api/review";
 import PatchCheck from "@/assets/PatchCheck.svg";
 import FullfillPatchCheck from "@/assets/FullfillPatchCheck.svg";
 import useLoginUserId from "@/hook/useLoginUserId";
+import { useRecoilState } from "recoil";
+import { boundsState } from "@/globalState/recoilState";
 
 interface PropsType {
   selectShop: PlaceType;
@@ -18,10 +20,12 @@ interface PropsType {
 interface ReviewType {}
 
 const SelectshopInfo = ({ selectShop }: PropsType) => {
-  const { id, place_name, address_name, phone, distance } = selectShop;
+  const { id, place_name, address_name, phone, distance,x,y } = selectShop;
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [_,setBounds] = useRecoilState<any>(boundsState)
   const loginUser = useLoginUserId();
   const router = useRouter();
+  const position = { lat: y, lng: x };
 
   const { data: reviewData }:any = useQuery({
     queryKey: ["review", id],
@@ -29,6 +33,18 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
     enabled : !!id
   });
 
+  useEffect(()=>{
+    if (selectedId === id) {
+    if(typeof window !== "undefined" &&
+      window.kakao &&
+      window.kakao.maps){
+        const bounds = new kakao.maps.LatLngBounds();
+        const position = new kakao.maps.LatLng(y, x);
+      
+        bounds.extend(position);
+        setBounds(bounds);
+    }}
+  },[selectedId, id, x, y, setBounds])
 
   const detailSelectshopInfoHandler = () => {
     setSelectedId((prev) => (prev === id ? null : id));

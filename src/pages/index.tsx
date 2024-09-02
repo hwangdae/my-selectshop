@@ -23,6 +23,7 @@ const S = {
   `,
   MapContainer: styled.div`
     flex: 1;
-    position: relative;
+    position: relative; right: 0px;
+    width: 50%;
   `,
 };

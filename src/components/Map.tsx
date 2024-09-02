@@ -22,7 +22,7 @@ const MapComponent = () => {
 
   useEffect(() => {
     if (map && bounds) {
-      map.setBounds(bounds);  // bounds가 바뀔 때마다 지도의 범위를 재설정
+      map.setBounds(bounds);
     }
   }, [map, bounds]);
 
