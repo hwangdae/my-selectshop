@@ -1,22 +1,16 @@
 import {
+  boundsState,
   markersState,
   myLocationState,
   selectShopsState,
 } from "@/globalState/recoilState";
 import { useEffect, useState } from "react";
-import {
-  CustomOverlayMap,
-  Map,
-  MapInfoWindow,
-  MapMarker,
-} from "react-kakao-maps-sdk";
+import { Map } from "react-kakao-maps-sdk";
 import { useRecoilState, useRecoilValue } from "recoil";
 import MyLocationMaker from "./MyLocationMaker";
 import styled from "styled-components";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import { useQuery } from "@tanstack/react-query";
-import { getAllReview, getReview, getReviewCount } from "@/api/review";
 import MarkerContainer from "./MarkerContainer";
 
 const MapComponent = () => {
@@ -24,12 +18,13 @@ const MapComponent = () => {
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
   const markers = useRecoilValue(markersState);
   const selectshops = useRecoilValue(selectShopsState);
-  console.log(markers,"마커스")
-  console.log(selectshops,"셀렉트샵")
-  const { data: allReviewData }: any = useQuery({
-    queryKey: ["allReview"],
-    queryFn: () => getAllReview(),
-  });
+  const bounds = useRecoilValue(boundsState);
+
+  useEffect(() => {
+    if (map && bounds) {
+      map.setBounds(bounds);  // bounds가 바뀔 때마다 지도의 범위를 재설정
+    }
+  }, [map, bounds]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.kakao && window.kakao.maps) {
@@ -52,12 +47,13 @@ const MapComponent = () => {
 
   return (
     <Map
+      id="map"
       center={{ lat: myLocation.center.lat, lng: myLocation.center.lng }}
       style={{ width: "100%", height: "100%" }}
       onCreate={setMap}
     >
-      {selectshops.map((v, i) => (
-        <MarkerContainer selectshop={v} index={i}/>
+      {selectshops.map((selectshop, index) => (
+        <MarkerContainer selectshop={selectshop} index={index} />
       ))}
       {!myLocation.isLoading && <MyLocationMaker myLocation={myLocation} />}
     </Map>

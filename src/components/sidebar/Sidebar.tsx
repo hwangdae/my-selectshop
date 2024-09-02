@@ -3,8 +3,8 @@ import styled from "styled-components";
 import HeaderContainer from "./HeaderContainer";
 import ContentsContainer from "./ContentsContainer";
 import { useRouter } from "next/router";
-import NearbySelectshop from "@/pages/nearbySelectshop";
-import VisitedSelectshop from "@/pages/visitedSelectshop";
+import NearbySelectshop from "../nearbySelectshopComponents/NearbySelectshop";
+import VisitedSelectshop from "@/pages/visitedSelectShop";
 
 
 const Sidebar = () => {

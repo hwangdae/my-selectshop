@@ -21,7 +21,7 @@ const MyAddressContainer = () => {
 
       let updateAddressFromGeocode = function (data: any, status: string) {
         if (status === kakao.maps.services.Status.OK) {
-          console.log(data)
+          console.log(data);
           setMyAddress(data[0].address_name);
         }
       };
@@ -36,10 +36,14 @@ const MyAddressContainer = () => {
   return (
     <S.MyAddress>
       <LocationDot width={"16px"} fill={`${styleColor.YELLOW[0]}`} />
-      <h1>
-        {myAddress}
-        <span> 주변 탐색</span>
-      </h1>
+      {myAddress.length === 0 ? (
+        <h1>위치를 찾지 못했어요</h1>
+      ) : (
+        <h1>
+          {myAddress}
+          <span> 주변 탐색</span>
+        </h1>
+      )}
     </S.MyAddress>
   );
 };
@@ -53,8 +57,8 @@ const S = {
     gap: 5px;
     margin-top: 20px;
     padding: 0px 12px;
-    h1{
-        ${styleFont.textLarge}
+    h1 {
+      ${styleFont.textLarge}
     }
   `,
 };
