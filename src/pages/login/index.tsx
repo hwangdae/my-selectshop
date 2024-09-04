@@ -112,7 +112,7 @@ const Login = ({ onClose }: ModalProps) => {
           </CommonButton>
         </S.LoginForm>
         <S.SignUpLinkContainer>
-          회원이 아니신가요? <Link href={"/signUp"}>회원가입</Link>
+          회원이 아니신가요? <button onClick={()=>router.push('?modal=signUp')}>회원가입</button>
         </S.SignUpLinkContainer>
       </S.LoginInner>
     </S.LoginContainer>

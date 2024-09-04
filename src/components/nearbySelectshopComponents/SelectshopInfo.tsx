@@ -12,12 +12,12 @@ import FullfillPatchCheck from "@/assets/FullfillPatchCheck.svg";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { useRecoilState } from "recoil";
 import { boundsState } from "@/globalState/recoilState";
+import MyReview from "./MyReview";
+import { ReviewType } from "@/types/reviewType";
 
 interface PropsType {
   selectShop: PlaceType;
 }
-
-interface ReviewType {}
 
 const SelectshopInfo = ({ selectShop }: PropsType) => {
   const { id, place_name, address_name, phone, distance,x,y } = selectShop;
@@ -27,7 +27,7 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
   const router = useRouter();
   const position = { lat: y, lng: x };
 
-  const { data: reviewData }:any = useQuery({
+  const { data: reviewData } = useQuery({
     queryKey: ["review", id],
     queryFn: () => getReview(id),
     enabled : !!id
@@ -50,7 +50,7 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
     setSelectedId((prev) => (prev === id ? null : id));
   };
 
-  const review = reviewData?.find((review: any) => {
+  const review = reviewData?.find((review: ReviewType) => {
     return review?.selectshopId === id && review?.userId === loginUser;
   });
 
@@ -97,36 +97,7 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
         <S.DetailContainer>
           <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
           {review ? (
-            <div>
-              <img></img>
-              <S.ReviewTextContainer>
-                <S.ReviewTextRow>
-                  <S.ReviewTitle>📒 나의 후기</S.ReviewTitle>
-                  <S.ReviewDescription>
-                    {review?.description}
-                  </S.ReviewDescription>
-                </S.ReviewTextRow>
-                <S.ReviewTextRow>
-                  <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
-                  <ul>
-                    <li>{review?.good}</li>
-                    <li>{review?.good}</li>
-                  </ul>
-                </S.ReviewTextRow>
-                <S.ReviewTextRow>
-                  <S.ReviewTitle>👎 설렉샵 단점</S.ReviewTitle>
-                  <ul>
-                    <li>{review?.notGood}</li>
-                  </ul>
-                </S.ReviewTextRow>
-                <S.ReviewTextRow>
-                  <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
-                  <S.TagList>
-                    <li>{review?.tags}</li>
-                  </S.TagList>
-                </S.ReviewTextRow>
-              </S.ReviewTextContainer>
-            </div>
+            <MyReview review={review}/>
           ) : (
             <>
               <S.DetailSelectshopInfo>
@@ -269,50 +240,5 @@ const S = {
   WriteReviewButton: styled.button``,
 
   // 나의 리뷰
-  ReviewTextContainer: styled.ul`
-    padding: 0px 12px;
-  `,
-  ReviewTextRow: styled.li`
-    margin: 40px 0px;
-    ul{
-      list-style: disc;
-      margin-left: 36px;
-      li{
-       margin-bottom : 7px;
-       ${styleFont.textMedium}
-      }
-    }
-  `,
-  ReviewTitle: styled.h1`
-    ${styleFont.textLarge}
-    margin-bottom: 15px;
-    
-  `,
-  ReviewDescription: styled.p`
-    background-color: ${styleColor.GRAY[0]};
-    padding: 10px;
-    border-radius: 4px;
-  `,
-  TagList : styled.ul`
-    list-style: none !important ;
-    li{
-      position: relative; left: 0; top: 0;
-      display: inline-block;
-      background-color: ${styleColor.INDIGO[0]};
-      padding: 4px 10px;
-      border-radius: 4px;
-      text-indent: 4px;
-      color: #fff;
-      &::before{
-        position: absolute; left: 4px; top: 50%;
-        margin-top: -3px;
-        display: block;
-        content: "";
-        width: 5px;
-        height: 5px;
-        border-radius: 100%;
-        background-color: #ffffff;
-      }
-    }
-  `
+  
 };

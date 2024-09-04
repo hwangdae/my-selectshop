@@ -3,6 +3,7 @@ import supabase from "@/lib/supabaseClient";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
+import styled from "styled-components";
 
 export interface ReviewType {
   file : File | null;
@@ -52,23 +53,23 @@ const WriteReview = () => {
         <ul>
           <li>
             <label htmlFor="file-upload"></label>
-            <input id="file-upload" type="file" {...register("file")}></input>
+            <S.Input id="file-upload" type="file" {...register("file")}></S.Input>
           </li>
           <li>
             <label htmlFor="review">후기</label>
-            <input id="review"  {...register("review")}></input>
+            <S.Input id="review"  {...register("review")}></S.Input>
           </li>
           <li>
             <label htmlFor="advantage">장점</label>
-            <input id="advantage"  {...register("advantage")}></input>
+            <S.Input id="advantage"  {...register("advantage")}></S.Input>
           </li>
           <li>
             <label htmlFor="disAdvantage">단점</label>
-            <input id="disAdvantage" {...register("disAdvantage")}></input>
+            <S.Input id="disAdvantage" {...register("disAdvantage")}></S.Input>
           </li>
           <li>
             <label htmlFor="brand">추천 브랜드</label>
-            <input id="brand" {...register("brand")}></input>
+            <S.Input id="brand" placeholder="쉼표(,)로 구분하면 멋진 태그가 될거에요!" {...register("brand")}></S.Input>
           </li>
         </ul>
       </form>
@@ -77,3 +78,19 @@ const WriteReview = () => {
 };
 
 export default WriteReview;
+
+const S = {
+  Input : styled.input`
+    width: 100%;
+    padding: 18px 0px;
+    margin-bottom: 7px;
+    text-indent: 6px;
+    border: solid 1px #d9dfeb;
+    border-radius: 4px;
+    outline: none;
+    &::placeholder {
+      font-size: 14px;
+      color: #d9dfeb;
+    }
+  `
+}

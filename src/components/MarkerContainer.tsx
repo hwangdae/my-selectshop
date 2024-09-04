@@ -63,6 +63,7 @@ const S = {
       bottom: -5px;
       left: 50%;
       margin-left: -3px;
+      border-radius: 2px;
     }
     &::after {
       display: block;
@@ -87,6 +88,9 @@ const S = {
     position: absolute;
     right: -5px;
     top: -14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     ${styleFont.textMedium}
     font-weight: 500;
     width: 26px;

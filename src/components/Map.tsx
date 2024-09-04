@@ -5,7 +5,7 @@ import {
   selectShopsState,
 } from "@/globalState/recoilState";
 import { useEffect, useState } from "react";
-import { Map } from "react-kakao-maps-sdk";
+import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
 import { useRecoilState, useRecoilValue } from "recoil";
 import MyLocationMaker from "./MyLocationMaker";
 import styled from "styled-components";

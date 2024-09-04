@@ -4,7 +4,7 @@ import HeaderContainer from "./HeaderContainer";
 import ContentsContainer from "./ContentsContainer";
 import { useRouter } from "next/router";
 import NearbySelectshop from "../nearbySelectshopComponents/NearbySelectshop";
-import VisitedSelectshop from "@/pages/visitedSelectShop";
+import VisitedSelectshop from "@/pages/visitedSelectshop";
 
 
 const Sidebar = () => {
@@ -35,7 +35,7 @@ export default Sidebar;
 
 const S = {
   SideContainer: styled.aside`
-    position: absolute;
+    /* position: absolute; */
     left: 0;
     top: 0;
     width: 360px;
@@ -45,14 +45,14 @@ const S = {
     /* overflow-y: auto; */
   `,
   StyleHeader: styled.div`
-    position: absolute;
+    /* position: absolute; */
     left: 0;
     top: 0;
     width: 100%;
   `,
   StyleContent: styled.div`
     /* flex: 1; */
-    margin-top: 137.5px;
+    /* margin-top: 137.5px; */
     height: calc(100vh - 137.5px);
     overflow-y: scroll;
     &::-webkit-scrollbar {
