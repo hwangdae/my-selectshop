@@ -85,7 +85,7 @@ const S = {
       margin-right: 5px;
       &::before {
         position: absolute;
-        left: 4px;
+        left: 6px;
         top: 50%;
         margin-top: -3px;
         display: block;

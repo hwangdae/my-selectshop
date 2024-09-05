@@ -101,7 +101,6 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
           ) : (
             <>
               <S.DetailSelectshopInfo>
-                {/* <S.DetailImage></S.DetailImage> */}
                 <S.DetailAddress>위치 {address_name}</S.DetailAddress>
               </S.DetailSelectshopInfo>
               <S.SelectshopReviewContainer>
@@ -111,7 +110,7 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
                   <Button
                     onClick={() =>{
                       if(!loginUser){
-                        alert('로그인이 필요한 서비스')
+                        alert('로그인이 필요한 서비스 입니다.')
                         return ;}
                       router.push(
                         { pathname: "/writeReview", query: { id } },
