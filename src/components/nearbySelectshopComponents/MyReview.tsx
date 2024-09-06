@@ -9,7 +9,7 @@ interface PropsType {
 }
 
 const MyReview = ({review}:PropsType) => {
-
+  console.log(review,"리뷰")
   return (
     <div>
       <img></img>
@@ -21,20 +21,23 @@ const MyReview = ({review}:PropsType) => {
         <S.ReviewTextRow>
           <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
           <ul>
-            <li>{review?.good}</li>
-            <li>{review?.good}</li>
+            {review?.good.split(',').map((good)=>{
+              return <li>{good}</li>
+            })}
           </ul>
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>👎 설렉샵 단점</S.ReviewTitle>
           <ul>
-            <li>{review?.notGood}</li>
+          {review?.notGood.split(',').map((notGood)=>{
+              return <li>{notGood}</li>
+            })}
           </ul>
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
           <S.TagList>
-            {review?.tags?.split(',').map((tag: string) => {
+            {!review.tags.trim() ? "추천할 브랜드가 없어요" : review?.tags?.split(',').map((tag: string) => {
               return <li key={tag}>{tag}</li>;
             })}
           </S.TagList>

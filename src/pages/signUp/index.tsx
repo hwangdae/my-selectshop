@@ -45,7 +45,7 @@ const SignUp = ({ onClose }:ModalProps) => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    console.log(user,"회원가입 유저")
+
     const newUser = {
       id: user?.id,
       email: user?.email,

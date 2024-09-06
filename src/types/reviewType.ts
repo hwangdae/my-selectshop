@@ -1,3 +1,6 @@
+import { registerReviewSchema } from "@/validators/review";
+import { z } from "zod";
+
 export interface ReviewType {
     id :string;
     reviewImages : string;
@@ -9,3 +12,5 @@ export interface ReviewType {
     userId : string;
     selectshopId : string
   }
+
+  export type RegisterReviewInput = z.infer<typeof registerReviewSchema>;
