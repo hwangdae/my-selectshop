@@ -21,7 +21,7 @@ const MyReview = ({review}:PropsType) => {
         <S.ReviewTextRow>
           <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
           <ul>
-            {review?.good.split(',').map((good)=>{
+            {review?.good?.split(',').map((good)=>{
               return <li>{good}</li>
             })}
           </ul>
@@ -29,7 +29,7 @@ const MyReview = ({review}:PropsType) => {
         <S.ReviewTextRow>
           <S.ReviewTitle>👎 설렉샵 단점</S.ReviewTitle>
           <ul>
-          {review?.notGood.split(',').map((notGood)=>{
+          {review?.notGood?.split(',').map((notGood)=>{
               return <li>{notGood}</li>
             })}
           </ul>
@@ -37,7 +37,7 @@ const MyReview = ({review}:PropsType) => {
         <S.ReviewTextRow>
           <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
           <S.TagList>
-            {!review.tags.trim() ? "추천할 브랜드가 없어요" : review?.tags?.split(',').map((tag: string) => {
+            {review.tags === null ? "추천할 브랜드가 없어요" : review?.tags?.split(',').map((tag: string) => {
               return <li key={tag}>{tag}</li>;
             })}
           </S.TagList>

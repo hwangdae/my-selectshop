@@ -3,14 +3,18 @@ import { z } from "zod";
 
 export interface ReviewType {
     id :string;
-    reviewImages : string;
+    reviewImages : string | null;
     description : string;
     visited : boolean;
     good : string;
     notGood :string;
-    tags : string;
+    tags : string | null;
     userId : string;
-    selectshopId : string
+    selectshopId : string;
+    users : {
+      nickName : string;
+      profileImage : string;
+    }
   }
 
   export type RegisterReviewInput = z.infer<typeof registerReviewSchema>;

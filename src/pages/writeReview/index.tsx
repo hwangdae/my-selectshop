@@ -1,8 +1,10 @@
 import useLoginUserId from "@/hook/useLoginUserId";
 import supabase from "@/lib/supabaseClient";
+import { styleColor } from "@/styles/styleColor";
 import { RegisterReviewInput } from "@/types/reviewType";
 import { registerReviewSchema } from "@/validators/review";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
@@ -12,7 +14,7 @@ export interface ReviewType {
   file: File | null | undefined;
   review: string;
   advantage: { value: string }[]; // advantage를 배열로 관리
-  disAdvantage: {value :string}[];
+  disAdvantage: { value: string }[];
   brand: string;
 }
 
@@ -22,7 +24,7 @@ const WriteReview = () => {
   const loginUser = useLoginUserId();
 
   const { register, handleSubmit, control } = useForm<ReviewType>({
-    resolver:zodResolver(registerReviewSchema),
+    resolver: zodResolver(registerReviewSchema),
     defaultValues: {
       file: null,
       review: "",
@@ -50,14 +52,20 @@ const WriteReview = () => {
     name: "disAdvantage",
   });
 
-  const addReviewSubmit: SubmitHandler<ReviewType> = async ({file,review,advantage,disAdvantage,brand}: ReviewType) => {
+  const addReviewSubmit: SubmitHandler<ReviewType> = async ({
+    file,
+    review,
+    advantage,
+    disAdvantage,
+    brand,
+  }: ReviewType) => {
     const newReview = {
       selectshopId: id,
-      reviewImages:file,
+      reviewImages: file,
       description: review,
       visited: true,
       good: advantage?.map((item) => item.value).join(","),
-      notGood: disAdvantage?.map((item)=>item.value).join(","),
+      notGood: disAdvantage?.map((item) => item.value).join(","),
       tags: brand,
       userId: loginUser,
     };
@@ -70,7 +78,6 @@ const WriteReview = () => {
       <form onSubmit={handleSubmit(addReviewSubmit)}>
         <div>
           <h1>후기 등록하기</h1>
-          <button type="submit">저장</button>
         </div>
         <ul>
           <li>
@@ -88,18 +95,18 @@ const WriteReview = () => {
           <li>
             <S.Label htmlFor="advantage">
               장점
-              <button
+              <S.AddButton
                 type="button"
                 onClick={() => advantageAppend({ value: "" })}
               >
                 +
-              </button>
+              </S.AddButton>
             </S.Label>
             {advantageFields.map((field, index) => (
               <div key={field.id}>
                 <S.Input
                   id={`advantage-${index}`}
-                  {...register(`advantage.${index}.value`)} // 인덱스를 사용하여 고유한 이름으로 등록
+                  {...register(`advantage.${index}.value`)}
                 />
                 {index > 0 && (
                   <button onClick={() => advantageRemove(index)}>삭제</button>
@@ -110,12 +117,12 @@ const WriteReview = () => {
           <li>
             <S.Label htmlFor="disAdvantage">
               단점
-              <button
+              <S.AddButton
                 type="button"
                 onClick={() => disAdvantageAppend({ value: "" })}
               >
                 +
-              </button>
+              </S.AddButton>
             </S.Label>
             {disAdvantageFields.map((field, index) => {
               return (
@@ -142,6 +149,7 @@ const WriteReview = () => {
             ></S.Input>
           </li>
         </ul>
+        <Button type="submit">저장</Button>
       </form>
     </div>
   );
@@ -166,5 +174,13 @@ const S = {
       font-size: 14px;
       color: #d9dfeb;
     }
+  `,
+  AddButton: styled.button`
+    width: 20px;
+    height: 20px;
+    background-color: ${styleColor.INDIGO[0]};
+    color: #fff;
+    border-radius: 4px;
+    margin-left: 7px;
   `,
 };
