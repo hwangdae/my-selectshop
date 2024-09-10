@@ -13,9 +13,9 @@ import styled from "styled-components";
 export interface ReviewType {
   file: File | null | undefined;
   review: string;
-  advantage: { value: string }[]; // advantage를 배열로 관리
+  advantage: { value: string }[];
   disAdvantage: { value: string }[];
-  brand: string;
+  tags: string;
 }
 
 const WriteReview = () => {
@@ -30,7 +30,7 @@ const WriteReview = () => {
       review: "",
       advantage: [{ value: "" }],
       disAdvantage: [{ value: "" }],
-      brand: "",
+      tags: "",
     },
   });
 
@@ -57,7 +57,7 @@ const WriteReview = () => {
     review,
     advantage,
     disAdvantage,
-    brand,
+    tags,
   }: ReviewType) => {
     const newReview = {
       selectshopId: id,
@@ -66,7 +66,7 @@ const WriteReview = () => {
       visited: true,
       good: advantage?.map((item) => item.value).join(","),
       notGood: disAdvantage?.map((item) => item.value).join(","),
-      tags: brand,
+      tags: tags,
       userId: loginUser,
     };
     await supabase.from("review").insert(newReview);
@@ -145,7 +145,7 @@ const WriteReview = () => {
             <S.Input
               id="brand"
               placeholder="쉼표(,)로 구분하면 멋진 태그가 될거에요!"
-              {...register("brand")}
+              {...register("tags")}
             ></S.Input>
           </li>
         </ul>

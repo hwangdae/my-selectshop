@@ -3,19 +3,17 @@ import { styleFont } from "@/styles/styleFont";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { PlaceType } from "@/types/placeType";
-import { Button } from "@mui/material";
-import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
-import { getReview, getReviewAndUser } from "@/api/review";
+import {  getReviewAndUser } from "@/api/review";
 import PatchCheck from "@/assets/PatchCheck.svg";
 import FullfillPatchCheck from "@/assets/FullfillPatchCheck.svg";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { useRecoilState } from "recoil";
 import { boundsState } from "@/globalState/recoilState";
-import MyReview from "./MyReview";
 import { ReviewType } from "@/types/reviewType";
-import Shop from '@/assets/Shop.svg'
-import Phone from '@/assets/Phone.svg'
+import AllReview from "./AllReview";
+import SelectshopReviewContainer from "./SelectshopReviewContainer";
+import MyReviewContainer from "./MyReviewContainer";
 
 interface PropsType {
   selectShop: PlaceType;
@@ -26,8 +24,6 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [_, setBounds] = useRecoilState<any>(boundsState);
   const loginUser = useLoginUserId();
-  const router = useRouter();
-  const position = { lat: y, lng: x };
 
   const { data: reviewData, isLoading } = useQuery({
     queryKey: ["review", id],
@@ -58,11 +54,7 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
   const myReview = reviewData?.find((review: ReviewType) => {
     return review?.selectshopId === id && review?.userId === loginUser;
   });
-  console.log(reviewData, "리뷰데이터");
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
   return (
     <>
       <S.SelectshopContainer onClick={detailSelectshopInfoHandler}>
@@ -102,69 +94,18 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
           </S.PreviewReviewContainer>
         )}
       </S.SelectshopContainer>
+      {/* 디테일 리뷰 */}
       {selectedId === id && (
         <S.DetailContainer>
           <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
           {myReview ? (
-            <MyReview review={myReview} />
+            <MyReviewContainer review={myReview} />
           ) : (
-            <>
-              <S.DetailSelectshopInfo>
-                <S.DetailAddress><Shop/>위치 {address_name}</S.DetailAddress>
-                <p><Phone/>전화번호 {phone}</p>
-                <p>거리 <S.SelectshopDistance>
-                {distance >= 1000
-                  ? `${(distance / 1000).toFixed(1)}km`
-                  : `${distance}m`}
-              </S.SelectshopDistance></p>
-              </S.DetailSelectshopInfo>
-              <S.SelectshopReviewContainer>
-                <S.SelectshopReviewTitle>📒 나의 후기</S.SelectshopReviewTitle>
-                <S.MySelectshopReview>
-                  <S.NoReview>등록된 후기가 없습니다.</S.NoReview>
-                  <Button
-                    onClick={() => {
-                      if (!loginUser) {
-                        alert("로그인이 필요한 서비스 입니다.");
-                        return;
-                      }
-                      router.push(
-                        { pathname: "/writeReview", query: { id } },
-                        "/writeReview"
-                      );
-                    }}
-                    variant="contained"
-                    sx={{ padding: "5px 30px" }}
-                  >
-                    후기 등록하기
-                  </Button>
-                </S.MySelectshopReview>
-              </S.SelectshopReviewContainer>
-            </>
+            <SelectshopReviewContainer id={id} />
           )}
           <S.AllReviewContainer>
             {reviewData?.map((review: ReviewType) => {
-              return (
-                <S.ReviewWrap>
-                  <S.UserContainer>
-                    <S.ProfileImage src={review.users?.profileImage} />
-                    <S.writtenUser>
-                      {review?.users?.nickName}님의 후기
-                    </S.writtenUser>
-                  </S.UserContainer>
-                  <S.ReviewDescription>
-                    {review.description}
-                  </S.ReviewDescription>
-                  {/* <h2>태그</h2> */}
-                  <S.TagList>
-                    {review.tags === null
-                      ? "추천할 브랜드가 없어요"
-                      : review?.tags?.split(",").map((tag: string) => {
-                          return <li key={tag}>{tag}</li>;
-                        })}
-                  </S.TagList>
-                </S.ReviewWrap>
-              );
+              return <AllReview review={review} />;
             })}
           </S.AllReviewContainer>
         </S.DetailContainer>
@@ -247,6 +188,10 @@ const S = {
     width: 300px;
     height: 100vh;
     z-index: 999;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     /* padding: 0px 18px; */
   `,
   DetailSelectshopInfo: styled.div``,
@@ -265,91 +210,7 @@ const S = {
     display: flex;
     align-items: center;
   `,
-  SelectshopReviewContainer: styled.div`
-    border-top: solid 1px #999;
-    padding: 30px 18px;
-  `,
-  SelectshopReviewTitle: styled.h1`
-    ${styleFont.textLarge}
-    margin-bottom: 30px;
-  `,
-  MySelectshopReview: styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  `,
-  NoReview: styled.p`
-    ${styleFont.textMedium}
-    margin-bottom: 10px;
-  `,
-  WriteReviewButton: styled.button``,
-
   AllReviewContainer: styled.ul`
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-      display: none;
-    }
     padding: 0px 18px;
-  `,
-  ReviewWrap: styled.li`
-    border: solid 1px ${styleColor.GRAY[100]};
-    border-radius: 4px;
-    padding: 10px;
-    margin-bottom: 10px;
-  `,
-  UserContainer: styled.div`
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 10px;
-  `,
-  ProfileImage: styled.img`
-    width: 32px;
-    height: 32px;
-    border: solid 1px ${styleColor.GRAY[200]};
-    border-radius: 70%;
-    object-fit: cover;
-  `,
-  writtenUser: styled.p`
-    ${styleFont.textsmall}
-    font-weight: 400;
-  `,
-  ReviewDescription: styled.h1`
-    background-color: ${styleColor.GRAY[0]};
-    padding: 10px;
-    margin-bottom: 10px;
-    ${styleFont.textsmall}
-    font-weight: 400;
-  `,
-  TagList: styled.ul`
-    list-style: none !important ;
-    background-color: ${styleColor.GRAY[0]};
-    padding: 10px;
-    ${styleFont.textsmall}
-    font-weight: 400;
-    li {
-      position: relative;
-      left: 0;
-      top: 0;
-      display: inline-block;
-      background-color: ${styleColor.INDIGO[0]};
-      padding: 4px 10px;
-      border-radius: 4px;
-      text-indent: 4px;
-      color: #fff !important;
-      margin-right: 5px;
-      &::before {
-        position: absolute;
-        left: 6px;
-        top: 50%;
-        margin-top: -3px;
-        display: block;
-        content: "";
-        width: 5px;
-        height: 5px;
-        border-radius: 100%;
-        background-color: #ffffff;
-      }
-    }
   `,
 };

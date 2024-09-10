@@ -8,7 +8,7 @@ interface PropsType {
     review : ReviewType
 }
 
-const MyReview = ({review}:PropsType) => {
+const MyReviewContainer = ({review}:PropsType) => {
   console.log(review,"리뷰")
   return (
     <div>
@@ -47,7 +47,7 @@ const MyReview = ({review}:PropsType) => {
   );
 };
 
-export default MyReview;
+export default MyReviewContainer;
 
 const S = {
   ReviewTextContainer: styled.ul`

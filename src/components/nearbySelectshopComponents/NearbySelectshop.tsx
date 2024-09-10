@@ -10,7 +10,6 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import SelectshopInfo from "./SelectshopInfo";
-import { Map, MapMarker, useMap } from "react-kakao-maps-sdk"; // Kakao map import
 
 const NearbySelectshop = () => {
   const myLocation = useRecoilValue(myLocationState);
@@ -19,7 +18,6 @@ const NearbySelectshop = () => {
     useRecoilState<PlaceType[]>(selectShopsState);
   const [pagination, setPagination] = useState<PaginationType>();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [map, setMap] = useState<any>(null);
   const [bounds, setBounds] = useRecoilState<any>(boundsState);
 
   useEffect(() => {

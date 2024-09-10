@@ -45,14 +45,11 @@ const S = {
     /* overflow-y: auto; */
   `,
   StyleHeader: styled.div`
-    /* position: absolute; */
     left: 0;
     top: 0;
     width: 100%;
   `,
   StyleContent: styled.div`
-    /* flex: 1; */
-    /* margin-top: 137.5px; */
     height: calc(100vh - 137.5px);
     overflow-y: scroll;
     &::-webkit-scrollbar {
