@@ -82,7 +82,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
 
   const logoutHandleSubmit = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
+      await supabase.auth.signOut();
       alert("로그아웃 되었습니다.");
       router.push("/");
     } catch (error) {

@@ -5,13 +5,14 @@ import { RegisterReviewInput } from "@/types/reviewType";
 import { registerReviewSchema } from "@/validators/review";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@mui/material";
+import { Blob } from "buffer";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 
 export interface ReviewType {
-  file: File | null | undefined;
+  file: FileList | null | undefined;
   review: string;
   advantage: { value: string }[];
   disAdvantage: { value: string }[];
@@ -22,8 +23,11 @@ const WriteReview = () => {
   const router = useRouter();
   const { id } = router.query;
   const loginUser = useLoginUserId();
+  const [previewImage, setPreviewImage] = useState<
+    string | ArrayBuffer | null
+  >("");
 
-  const { register, handleSubmit, control } = useForm<ReviewType>({
+  const { register, handleSubmit, control, watch } = useForm<ReviewType>({
     resolver: zodResolver(registerReviewSchema),
     defaultValues: {
       file: null,
@@ -33,7 +37,17 @@ const WriteReview = () => {
       tags: "",
     },
   });
-
+  const onchangeImageUpload = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const uploadImageFile = e.target.files![0]
+    if (uploadImageFile) {
+      const reader = new FileReader();
+      reader.readAsDataURL(uploadImageFile);
+      reader.onloadend = () => {
+        setPreviewImage(reader.result)
+      };
+    }
+  }
+  console.log(watch("file"));
   const {
     fields: advantageFields,
     append: advantageAppend,
@@ -59,9 +73,14 @@ const WriteReview = () => {
     disAdvantage,
     tags,
   }: ReviewType) => {
+    if (!file || file.length === 0) {
+      alert("파일을 업로드해 주세요.");
+      return;
+    }
+
     const newReview = {
       selectshopId: id,
-      reviewImages: file,
+      reviewImages: file === null ? null : file[0].name,
       description: review,
       visited: true,
       good: advantage?.map((item) => item.value).join(","),
@@ -69,10 +88,15 @@ const WriteReview = () => {
       tags: tags,
       userId: loginUser,
     };
-    await supabase.from("review").insert(newReview);
-    alert("작성이 완료 되었습니다.");
+    console.log(file, "새로운 리뷰");
+    try {
+      await supabase.from("review").insert(newReview);
+      alert("작성이 완료 되었습니다.");
+    } catch (error) {
+      console.log(error);
+    }
   };
-
+  console.log(previewImage)
   return (
     <div>
       <form onSubmit={handleSubmit(addReviewSubmit)}>
@@ -81,12 +105,14 @@ const WriteReview = () => {
         </div>
         <ul>
           <li>
-            <S.Label htmlFor="file-upload"></S.Label>
-            <S.Input
+            <img src={`${previewImage}`} style={{width:'200px', height:'200px'}}></img>
+            <S.Label htmlFor="file-upload">이미지 찾기</S.Label>
+            <S.ImageInput
               id="file-upload"
               type="file"
-              {...register("file")}
-            ></S.Input>
+              accept="image/*"
+              onChange={onchangeImageUpload}
+            ></S.ImageInput>
           </li>
           <li>
             <S.Label htmlFor="review">후기</S.Label>
@@ -161,6 +187,9 @@ const S = {
   Label: styled.label`
     display: block;
     margin-bottom: 15px;
+  `,
+  ImageInput: styled.input`
+    display: none;
   `,
   Input: styled.input`
     width: 100%;
