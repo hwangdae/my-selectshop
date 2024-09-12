@@ -1,6 +1,7 @@
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { ReviewType } from "@/types/reviewType";
+import NoImage from '@/assets/NoImage.svg'
 import React from "react";
 import styled from "styled-components";
 
@@ -12,7 +13,8 @@ const MyReviewContainer = ({review}:PropsType) => {
   console.log(review,"리뷰")
   return (
     <div>
-      <img></img>
+      {review.reviewImages === null ? <NoImage/> : ""}
+      <img src=""></img>
       <S.ReviewTextContainer>
         <S.ReviewTextRow>
           <S.ReviewTitle>📒 나의 후기</S.ReviewTitle>

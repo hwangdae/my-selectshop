@@ -26,6 +26,7 @@
     "recoil": "^0.7.7",
     "shortid": "^2.2.16",
     "styled-components": "^6.1.12",
+    "swiper": "^11.1.12",
     "zod": "^3.23.8"
   },
   "devDependencies": {

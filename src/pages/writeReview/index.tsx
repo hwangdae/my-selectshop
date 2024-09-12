@@ -1,3 +1,4 @@
+import WriteReviewInputImage from "@/components/writeReviewComponents/WriteReviewInputImage";
 import useLoginUserId from "@/hook/useLoginUserId";
 import supabase from "@/lib/supabaseClient";
 import { styleColor } from "@/styles/styleColor";
@@ -5,7 +6,6 @@ import { RegisterReviewInput } from "@/types/reviewType";
 import { registerReviewSchema } from "@/validators/review";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@mui/material";
-import { Blob } from "buffer";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
@@ -37,16 +37,16 @@ const WriteReview = () => {
       tags: "",
     },
   });
-  const onchangeImageUpload = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const uploadImageFile = e.target.files![0]
-    if (uploadImageFile) {
-      const reader = new FileReader();
-      reader.readAsDataURL(uploadImageFile);
-      reader.onloadend = () => {
-        setPreviewImage(reader.result)
-      };
-    }
-  }
+  // const onchangeImageUpload = (e:React.ChangeEvent<HTMLInputElement>) => {
+  //   const uploadImageFile = e.target.files![0]
+  //   if (uploadImageFile) {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(uploadImageFile);
+  //     reader.onloadend = () => {
+  //       setPreviewImage(reader.result)
+  //     };
+  //   }
+  // }
   console.log(watch("file"));
   const {
     fields: advantageFields,
@@ -96,7 +96,7 @@ const WriteReview = () => {
       console.log(error);
     }
   };
-  console.log(previewImage)
+
   return (
     <div>
       <form onSubmit={handleSubmit(addReviewSubmit)}>
@@ -105,14 +105,14 @@ const WriteReview = () => {
         </div>
         <ul>
           <li>
-            <img src={`${previewImage}`} style={{width:'200px', height:'200px'}}></img>
-            <S.Label htmlFor="file-upload">이미지 찾기</S.Label>
-            <S.ImageInput
+            {/* <S.ImageInput
               id="file-upload"
               type="file"
               accept="image/*"
-              onChange={onchangeImageUpload}
-            ></S.ImageInput>
+              multiple
+            ></S.ImageInput> */}
+            <S.Label htmlFor="file-upload">업로드</S.Label>
+            <WriteReviewInputImage multiple {...register("file")}/>
           </li>
           <li>
             <S.Label htmlFor="review">후기</S.Label>
