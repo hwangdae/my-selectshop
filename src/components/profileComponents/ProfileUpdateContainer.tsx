@@ -68,7 +68,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
       }
       const updateProfile = {
         profileImage: url
-          ? `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_PROFILEIMAGES}/${url}`
+          ? `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/profileImages/${url}`
           : user?.profileImage,
         nickName,
       };

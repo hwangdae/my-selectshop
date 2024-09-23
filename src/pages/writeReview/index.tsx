@@ -2,17 +2,17 @@ import WriteReviewInputImage from "@/components/writeReviewComponents/WriteRevie
 import useLoginUserId from "@/hook/useLoginUserId";
 import supabase from "@/lib/supabaseClient";
 import { styleColor } from "@/styles/styleColor";
-import { RegisterReviewInput } from "@/types/reviewType";
 import { registerReviewSchema } from "@/validators/review";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
+import shortid from "shortid";
 import styled from "styled-components";
 
 export interface ReviewType {
-  file: FileList | null | undefined;
+  files: FileList | null | undefined;
   review: string;
   advantage: { value: string }[];
   disAdvantage: { value: string }[];
@@ -23,31 +23,20 @@ const WriteReview = () => {
   const router = useRouter();
   const { id } = router.query;
   const loginUser = useLoginUserId();
-  const [previewImage, setPreviewImage] = useState<
-    string | ArrayBuffer | null
-  >("");
 
-  const { register, handleSubmit, control, watch } = useForm<ReviewType>({
+  const [files, setFiles] = useState<File[]>([]);
+  console.log(files);
+  const { register, handleSubmit, control } = useForm<ReviewType>({
     resolver: zodResolver(registerReviewSchema),
     defaultValues: {
-      file: null,
+      files: null,
       review: "",
       advantage: [{ value: "" }],
       disAdvantage: [{ value: "" }],
       tags: "",
     },
   });
-  // const onchangeImageUpload = (e:React.ChangeEvent<HTMLInputElement>) => {
-  //   const uploadImageFile = e.target.files![0]
-  //   if (uploadImageFile) {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(uploadImageFile);
-  //     reader.onloadend = () => {
-  //       setPreviewImage(reader.result)
-  //     };
-  //   }
-  // }
-  console.log(watch("file"));
+
   const {
     fields: advantageFields,
     append: advantageAppend,
@@ -67,20 +56,32 @@ const WriteReview = () => {
   });
 
   const addReviewSubmit: SubmitHandler<ReviewType> = async ({
-    file,
     review,
     advantage,
     disAdvantage,
     tags,
   }: ReviewType) => {
-    if (!file || file.length === 0) {
-      alert("파일을 업로드해 주세요.");
-      return;
+
+    let imagesString: string[] = [];
+    if (files) {
+      for (const file of files) {
+        const imageName = file.name;
+        const fileExtension = imageName?.split(".").pop();
+        const randomFileName = `${shortid.generate()}.${fileExtension}`;
+        try {
+          await supabase.storage
+            .from("images")
+            .upload(`reviewImages/${randomFileName}`, file);
+          imagesString.push(`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/reviewImages/${randomFileName}`);
+        } catch (error) {
+          console.error("Unexpected error:", error);
+        }
+      }
     }
 
     const newReview = {
       selectshopId: id,
-      reviewImages: file === null ? null : file[0].name,
+      files: imagesString.join(","),
       description: review,
       visited: true,
       good: advantage?.map((item) => item.value).join(","),
@@ -88,7 +89,7 @@ const WriteReview = () => {
       tags: tags,
       userId: loginUser,
     };
-    console.log(file, "새로운 리뷰");
+
     try {
       await supabase.from("review").insert(newReview);
       alert("작성이 완료 되었습니다.");
@@ -105,14 +106,11 @@ const WriteReview = () => {
         </div>
         <ul>
           <li>
-            {/* <S.ImageInput
-              id="file-upload"
-              type="file"
-              accept="image/*"
-              multiple
-            ></S.ImageInput> */}
-            <S.Label htmlFor="file-upload">업로드</S.Label>
-            <WriteReviewInputImage multiple {...register("file")}/>
+            <WriteReviewInputImage
+              files={files}
+              setFiles={setFiles}
+              {...register("files")}
+            />
           </li>
           <li>
             <S.Label htmlFor="review">후기</S.Label>

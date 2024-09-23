@@ -1,50 +1,64 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import NoImage from "@/assets/NoImage.svg";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 
-const WriteReviewInputImage = ({
-  type = "file",
-  accept = 'accept="image/*"',
-  id = "file-upload",
-  ...props
-}) => {
-  const [files, setFiles] = useState<File[]>([]);
+interface PropsType extends React.InputHTMLAttributes<HTMLInputElement> {
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+}
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFiles((prevFile) => [...prevFile, e.target.files![0]]);
-    }
-  };
+const WriteReviewInputImage = forwardRef<HTMLInputElement, PropsType>(
+  ({
+    files,
+    setFiles,
+    type = "file",
+    accept = 'accept="image/*"',
+    id = "file-upload",
+    ...props
+  }) => {
 
-  return (
-    <>
-      <S.Label htmlFor="file-upload">
-        {files.length === 0 ? (
-          <S.NoImageWrapper>
-            <NoImage />
-          </S.NoImageWrapper>
-        ) : (
-          <Swiper
-            spaceBetween={50}
-            slidesPerView={3}
-            onSlideChange={() => console.log("slide change")}
-            onSwiper={(swiper) => console.log(swiper)}
-          >
-            {files.map((file, index) => (
-              <SwiperSlide key={index}>
-                <S.UploadImage src={URL.createObjectURL(file)} alt={`uploaded-${index}`} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        )}
-      </S.Label>
-      <S.ImageInput type={type} id={id} accept={accept} onChange={onChange} />
-    </>
-  );
-};
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const files = Array.from(e.target.files);
+        setFiles(files);
+      }
+    };
+    
+    return (
+      <>
+        <S.Label htmlFor="file-upload">
+          {files.length === 0 ? (
+            <S.NoImageWrapper>
+              <NoImage />
+            </S.NoImageWrapper>
+          ) : (
+            <Swiper spaceBetween={50} slidesPerView={1}>
+              {files.map((file, index) => (
+                <SwiperSlide key={index}>
+                  <S.UploadImage
+                    src={URL.createObjectURL(file)}
+                    alt={`uploaded-${index}`}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
+        </S.Label>
+        <S.ImageInput
+          multiple
+          type={type}
+          id={id}
+          accept={accept}
+          {...props}
+          onChange={onChange}
+        />
+      </>
+    );
+  }
+);
 
 export default WriteReviewInputImage;
 

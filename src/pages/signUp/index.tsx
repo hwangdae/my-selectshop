@@ -50,7 +50,7 @@ const SignUp = ({ onClose }:ModalProps) => {
       id: user?.id,
       email: user?.email,
       nickName: user?.user_metadata?.nickName,
-      profileImage : `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_PROFILEIMAGES}/basicUserImage.png`
+      profileImage : `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/profileImages/basicUserImage.png`
     };
     await supabase.from("users").insert(newUser);
     alert("회원가입이 완료되었습니다.");
