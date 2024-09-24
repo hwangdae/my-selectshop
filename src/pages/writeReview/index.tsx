@@ -25,7 +25,7 @@ const WriteReview = () => {
   const loginUser = useLoginUserId();
 
   const [files, setFiles] = useState<File[]>([]);
-  console.log(files);
+
   const { register, handleSubmit, control } = useForm<ReviewType>({
     resolver: zodResolver(registerReviewSchema),
     defaultValues: {
@@ -78,10 +78,10 @@ const WriteReview = () => {
         }
       }
     }
-
+    
     const newReview = {
       selectshopId: id,
-      files: imagesString.join(","),
+      reviewImages: files === null ? null : imagesString.join(","),
       description: review,
       visited: true,
       good: advantage?.map((item) => item.value).join(","),
@@ -89,7 +89,6 @@ const WriteReview = () => {
       tags: tags,
       userId: loginUser,
     };
-
     try {
       await supabase.from("review").insert(newReview);
       alert("작성이 완료 되었습니다.");
@@ -109,7 +108,6 @@ const WriteReview = () => {
             <WriteReviewInputImage
               files={files}
               setFiles={setFiles}
-              {...register("files")}
             />
           </li>
           <li>

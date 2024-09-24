@@ -1,20 +1,27 @@
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { ReviewType } from "@/types/reviewType";
-import NoImage from '@/assets/NoImage.svg'
+import NoImage from "@/assets/NoImage.svg";
 import React from "react";
 import styled from "styled-components";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import 'swiper/css/navigation';
+import CommonSwiper from "./CommonSwiper";
 
 interface PropsType {
-    review : ReviewType
+  review: ReviewType;
 }
 
-const MyReviewContainer = ({review}:PropsType) => {
-  console.log(review,"리뷰")
+const MyReviewContainer = ({ review }: PropsType) => {
+  console.log(review, "리뷰");
   return (
     <div>
-      {review.reviewImages === null ? <NoImage/> : ""}
-      <img src=""></img>
+      {review.reviewImages === null ? (
+        <NoImage />
+      ) : (
+        <CommonSwiper slideImages={review.reviewImages}/>
+      )}
       <S.ReviewTextContainer>
         <S.ReviewTextRow>
           <S.ReviewTitle>📒 나의 후기</S.ReviewTitle>
@@ -23,25 +30,27 @@ const MyReviewContainer = ({review}:PropsType) => {
         <S.ReviewTextRow>
           <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
           <ul>
-            {review?.good?.split(',').map((good)=>{
-              return <li>{good}</li>
+            {review?.good?.split(",").map((good) => {
+              return <li>{good}</li>;
             })}
           </ul>
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>👎 설렉샵 단점</S.ReviewTitle>
           <ul>
-          {review?.notGood?.split(',').map((notGood)=>{
-              return <li>{notGood}</li>
+            {review?.notGood?.split(",").map((notGood) => {
+              return <li>{notGood}</li>;
             })}
           </ul>
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
           <S.TagList>
-            {review.tags === null ? "추천할 브랜드가 없어요" : review?.tags?.split(',').map((tag: string) => {
-              return <li key={tag}>{tag}</li>;
-            })}
+            {review.tags === null
+              ? "추천할 브랜드가 없어요"
+              : review?.tags?.split(",").map((tag: string) => {
+                  return <li key={tag}>{tag}</li>;
+                })}
           </S.TagList>
         </S.ReviewTextRow>
       </S.ReviewTextContainer>
@@ -52,6 +61,10 @@ const MyReviewContainer = ({review}:PropsType) => {
 export default MyReviewContainer;
 
 const S = {
+  ReviewImage : styled.img`
+  width: 100%;
+  height: auto;
+  `,
   ReviewTextContainer: styled.ul`
     padding: 0px 12px;
   `,
