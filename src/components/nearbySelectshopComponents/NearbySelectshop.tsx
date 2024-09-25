@@ -10,15 +10,17 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import SelectshopInfo from "./SelectshopInfo";
+import SelectshopDetailInfoContainer from "./SelectshopDetailInfoContainer";
 
 const NearbySelectshop = () => {
   const myLocation = useRecoilValue(myLocationState);
-  const [markers, setMarkers] = useRecoilState<MarkersType[]>(markersState);
-  const [selectShops, setSelectShops] =
+  const [, setMarkers] = useRecoilState<MarkersType[]>(markersState);
+  const [selectshops, setSelectshops] =
     useRecoilState<PlaceType[]>(selectShopsState);
   const [pagination, setPagination] = useState<PaginationType>();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [bounds, setBounds] = useRecoilState<any>(boundsState);
+  const [, setBounds] = useRecoilState<any>(boundsState);
+  const [activeShopId, setActiveShopId] = useState<string | null>(null); 
 
   useEffect(() => {
     if (
@@ -48,7 +50,7 @@ const NearbySelectshop = () => {
           pagination: PaginationType
         ) => {
           if (status === kakao.maps.services.Status.OK) {
-            setSelectShops(data);
+            setSelectshops(data);
             displayPlaces(data);
             setPagination(pagination);
           }
@@ -79,8 +81,14 @@ const NearbySelectshop = () => {
   return (
     <S.SearchResultsContainer>
       <S.SearchResultsInner>
-        {selectShops?.map((selectShop: PlaceType) => (
-          <SelectshopInfo key={selectShop.id} selectShop={selectShop} />
+        {selectshops?.map((selectshop: PlaceType) => (
+          <li
+            onClick={() => {
+              setActiveShopId(selectshop.id)
+            }}
+          >
+            <SelectshopInfo key={selectshop.id} selectshop={selectshop} />
+          </li>
         ))}
       </S.SearchResultsInner>
       <PaginationContainer
@@ -88,6 +96,16 @@ const NearbySelectshop = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
+      {selectshops?.map((selectshop: PlaceType) => {
+        return (
+          activeShopId === selectshop.id && (
+            <SelectshopDetailInfoContainer
+              key={selectshop.id}
+              selectshop={selectshop}
+            />
+          )
+        );
+      })}
     </S.SearchResultsContainer>
   );
 };

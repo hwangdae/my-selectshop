@@ -4,9 +4,6 @@ import { ReviewType } from "@/types/reviewType";
 import NoImage from "@/assets/NoImage.svg";
 import React from "react";
 import styled from "styled-components";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import 'swiper/css/navigation';
 import CommonSwiper from "./CommonSwiper";
 
 interface PropsType {

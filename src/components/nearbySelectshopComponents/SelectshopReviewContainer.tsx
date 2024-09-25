@@ -43,7 +43,7 @@ export default SelectshopReviewContainer;
 const S = {
   SelectshopReviewContainer: styled.div`
     border-top: solid 1px #999;
-    padding: 20px 18px;
+    padding: 20px 18px 30px 18px;
   `,
   SelectshopReviewTitle: styled.h1`
     ${styleFont.textLarge}

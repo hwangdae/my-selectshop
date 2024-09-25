@@ -11,21 +11,19 @@ import useLoginUserId from "@/hook/useLoginUserId";
 import { useRecoilState } from "recoil";
 import { boundsState } from "@/globalState/recoilState";
 import { ReviewType } from "@/types/reviewType";
-import AllReview from "./AllReview";
-import SelectshopReviewContainer from "./SelectshopReviewContainer";
-import MyReviewContainer from "./MyReviewContainer";
 
 interface PropsType {
-  selectShop: PlaceType;
+  selectshop: PlaceType;
 }
 
-const SelectshopInfo = ({ selectShop }: PropsType) => {
-  const { id, place_name, address_name, phone, distance, x, y } = selectShop;
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+const SelectshopInfo = ({ selectshop }: PropsType) => {
+  const { id, place_name, address_name, phone, distance, x, y } = selectshop;
+  const [selectedToggle, setSelectedToggle] = useState<boolean>(false);
+  const [selectedId,setSelectedId] = useState(null)
   const [_, setBounds] = useRecoilState<any>(boundsState);
   const loginUser = useLoginUserId();
 
-  const { data: reviewData, isLoading } = useQuery({
+  const { data: reviewData} = useQuery({
     queryKey: ["review", id],
     queryFn: () => getReviewAndUser(id),
     enabled: !!id,
@@ -34,7 +32,6 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
 
   useEffect(() => {
     if (
-      selectedId === id &&
       typeof window !== "undefined" &&
       window.kakao &&
       window.kakao.maps
@@ -45,10 +42,10 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
       bounds.extend(position);
       setBounds(bounds);
     }
-  }, [selectedId, id, x, y, setBounds]);
+  }, [selectedToggle, id, x, y, setBounds]);
 
   const detailSelectshopInfoHandler = () => {
-    setSelectedId((prev) => (prev === id ? null : id));
+    setSelectedToggle(true)
   };
 
   const myReview = reviewData?.find((review: ReviewType) => {
@@ -56,7 +53,6 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
   });
 
   return (
-    <>
       <S.SelectshopContainer onClick={detailSelectshopInfoHandler}>
         <S.SlectshopContents>
           <S.SelectshopInfo>
@@ -94,30 +90,13 @@ const SelectshopInfo = ({ selectShop }: PropsType) => {
           </S.PreviewReviewContainer>
         )}
       </S.SelectshopContainer>
-      {/* 디테일 리뷰 */}
-      {selectedId === id && (
-        <S.DetailContainer>
-          <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
-          {myReview ? (
-            <MyReviewContainer review={myReview} />
-          ) : (
-            <SelectshopReviewContainer id={id} />
-          )}
-          <S.AllReviewContainer>
-            {reviewData?.map((review: ReviewType) => {
-              return <AllReview review={review} />;
-            })}
-          </S.AllReviewContainer>
-        </S.DetailContainer>
-      )}
-    </>
   );
 };
 
 export default SelectshopInfo;
 
 const S = {
-  SelectshopContainer: styled.li`
+  SelectshopContainer: styled.div`
     cursor: pointer;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
@@ -178,39 +157,5 @@ const S = {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  `,
-  //디테일 부분
-  DetailContainer: styled.div`
-    position: absolute;
-    left: 360px;
-    top: 0px;
-    background-color: #fff;
-    width: 300px;
-    height: 100vh;
-    z-index: 999;
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    /* padding: 0px 18px; */
-  `,
-  DetailSelectshopInfo: styled.div``,
-  DetailSelectshopName: styled.h1`
-    text-indent: 6px;
-    padding: 14px 0px;
-    ${styleFont.textLarge}
-    background-color: ${styleColor.RED[0]};
-  `,
-  DetailImage: styled.h2`
-    width: 100%;
-    height: 147px;
-    background-color: #666;
-  `,
-  DetailAddress: styled.p`
-    display: flex;
-    align-items: center;
-  `,
-  AllReviewContainer: styled.ul`
-    padding: 0px 18px;
   `,
 };
