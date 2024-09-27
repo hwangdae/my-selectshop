@@ -1,6 +1,6 @@
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { PlaceType } from "@/types/placeType";
 import { useQuery } from "@tanstack/react-query";
@@ -8,19 +8,14 @@ import {  getReviewAndUser } from "@/api/review";
 import PatchCheck from "@/assets/PatchCheck.svg";
 import FullfillPatchCheck from "@/assets/FullfillPatchCheck.svg";
 import useLoginUserId from "@/hook/useLoginUserId";
-import { useRecoilState } from "recoil";
-import { boundsState } from "@/globalState/recoilState";
 import { ReviewType } from "@/types/reviewType";
 
 interface PropsType {
   selectshop: PlaceType;
 }
 
-const SelectshopInfo = ({ selectshop }: PropsType) => {
-  const { id, place_name, address_name, phone, distance, x, y } = selectshop;
-  const [selectedToggle, setSelectedToggle] = useState<boolean>(false);
-  const [selectedId,setSelectedId] = useState(null)
-  const [_, setBounds] = useRecoilState<any>(boundsState);
+const SelectshopInfoContainer = ({ selectshop }: PropsType) => {
+  const { id, place_name, address_name, phone, distance } = selectshop;
   const loginUser = useLoginUserId();
 
   const { data: reviewData} = useQuery({
@@ -30,30 +25,12 @@ const SelectshopInfo = ({ selectshop }: PropsType) => {
     refetchOnWindowFocus: false,
   });
 
-  useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      window.kakao &&
-      window.kakao.maps
-    ) {
-      const bounds = new kakao.maps.LatLngBounds();
-      const position = new kakao.maps.LatLng(y, x);
-
-      bounds.extend(position);
-      setBounds(bounds);
-    }
-  }, [selectedToggle, id, x, y, setBounds]);
-
-  const detailSelectshopInfoHandler = () => {
-    setSelectedToggle(true)
-  };
-
   const myReview = reviewData?.find((review: ReviewType) => {
     return review?.selectshopId === id && review?.userId === loginUser;
   });
 
   return (
-      <S.SelectshopContainer onClick={detailSelectshopInfoHandler}>
+      <S.SelectshopContainer>
         <S.SlectshopContents>
           <S.SelectshopInfo>
             <S.SelectshopName>
@@ -93,7 +70,7 @@ const SelectshopInfo = ({ selectshop }: PropsType) => {
   );
 };
 
-export default SelectshopInfo;
+export default SelectshopInfoContainer;
 
 const S = {
   SelectshopContainer: styled.div`

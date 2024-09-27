@@ -1,17 +1,17 @@
 import useLoginUserId from "@/hook/useLoginUserId";
 import { styleFont } from "@/styles/styleFont";
 import { Button } from "@mui/material";
-import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 
 interface PropsType {
   id: string;
+  onWriteReviewClick: () => void; // 콜백 함수 props 추가
 }
 
-const SelectshopReviewContainer = ({ id }: PropsType) => {
+const SelectshopReviewContainer = ({ id, onWriteReviewClick }: PropsType) => {
   const loginUser = useLoginUserId();
-  const router = useRouter();
+
   return (
     <S.SelectshopReviewContainer>
       <S.SelectshopReviewTitle>📒 나의 후기</S.SelectshopReviewTitle>
@@ -23,10 +23,7 @@ const SelectshopReviewContainer = ({ id }: PropsType) => {
               alert("로그인이 필요한 서비스 입니다.");
               return;
             }
-            router.push(
-              { pathname: "/writeReview", query: { id } },
-              "/writeReview"
-            );
+            onWriteReviewClick(); // 콜백 호출
           }}
           variant="contained"
           sx={{ padding: "5px 30px" }}
@@ -57,10 +54,5 @@ const S = {
   NoReview: styled.p`
     ${styleFont.textMedium}
     margin-bottom: 10px;
-  `,
-  WriteReviewButton: styled.button``,
-
-  AllReviewContainer: styled.ul`
-    padding: 0px 18px;
   `,
 };
