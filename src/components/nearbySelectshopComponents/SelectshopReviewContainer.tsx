@@ -23,7 +23,7 @@ const SelectshopReviewContainer = ({ id, onWriteReviewClick }: PropsType) => {
               alert("로그인이 필요한 서비스 입니다.");
               return;
             }
-            onWriteReviewClick(); // 콜백 호출
+            onWriteReviewClick();
           }}
           variant="contained"
           sx={{ padding: "5px 30px" }}
@@ -40,7 +40,7 @@ export default SelectshopReviewContainer;
 const S = {
   SelectshopReviewContainer: styled.div`
     border-top: solid 1px #999;
-    padding: 20px 18px 30px 18px;
+    padding: 20px 12px 30px 12px;
   `,
   SelectshopReviewTitle: styled.h1`
     ${styleFont.textLarge}
