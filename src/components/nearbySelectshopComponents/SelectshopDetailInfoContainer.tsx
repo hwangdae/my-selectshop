@@ -22,7 +22,19 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const { id, place_name, x, y } = selectshop;
   const [_, setBounds] = useRecoilState<any>(boundsState);
   const loginUser = useLoginUserId();
-  const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false); // 상태 추가
+  const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
+
+  useEffect(()=>{
+    if(typeof window !== "undefined" &&
+      window.kakao &&
+      window.kakao.maps){
+        const bounds = new kakao.maps.LatLngBounds();
+        const position = new kakao.maps.LatLng(y, x);
+      
+        bounds.extend(position);
+        setBounds(bounds);
+    }
+  },[id, x, y, setBounds])
 
   const { data: reviewData } = useQuery({
     queryKey: ["review", id],
@@ -38,8 +50,6 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   return (
     <S.DetailContainer>
       <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
-
-      {/* isWriteReviewOpen이 true이면 WriteReview만 렌더링 */}
       {isWriteReviewOpen ? (
         <WriteReview />
       ) : (
@@ -49,13 +59,11 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
           ) : (
             <SelectshopReviewContainer
               id={id}
-              onWriteReviewClick={() => setIsWriteReviewOpen(true)} // 콜백 함수 전달
+              onWriteReviewClick={() => setIsWriteReviewOpen(true)}
             />
           )}
         </>
       )}
-
-      {/* isWriteReviewOpen이 false일 때만 AllReviewContainer 표시 */}
       {!isWriteReviewOpen && (
         <S.AllReviewContainer>
           {reviewData?.map((review: ReviewType) => (

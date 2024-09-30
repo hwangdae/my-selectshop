@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 interface PropsType {
   id: string;
-  onWriteReviewClick: () => void; // 콜백 함수 props 추가
+  onWriteReviewClick: () => void;
 }
 
 const SelectshopReviewContainer = ({ id, onWriteReviewClick }: PropsType) => {

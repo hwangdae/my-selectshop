@@ -1,6 +1,5 @@
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import { useState } from "react";
 import styled from "styled-components";
 import { PlaceType } from "@/types/placeType";
 import { useQuery } from "@tanstack/react-query";
@@ -9,13 +8,16 @@ import PatchCheck from "@/assets/PatchCheck.svg";
 import FullfillPatchCheck from "@/assets/FullfillPatchCheck.svg";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { ReviewType } from "@/types/reviewType";
+import { useRecoilState } from "recoil";
+import { boundsState } from "@/globalState/recoilState";
 
 interface PropsType {
   selectshop: PlaceType;
 }
 
 const SelectshopInfoContainer = ({ selectshop }: PropsType) => {
-  const { id, place_name, address_name, phone, distance } = selectshop;
+  const { id, place_name, address_name, phone, distance, x, y } = selectshop;
+  const [_,setBounds] = useRecoilState<any>(boundsState)
   const loginUser = useLoginUserId();
 
   const { data: reviewData} = useQuery({

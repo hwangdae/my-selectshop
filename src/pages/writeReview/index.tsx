@@ -12,6 +12,7 @@ import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import shortid from "shortid";
 import styled from "styled-components";
 import Trash from "@/assets/Trash.svg";
+import { ErrorMessage } from "@hookform/error-message";
 
 export interface ReviewType {
   files: FileList | null | undefined;
@@ -28,7 +29,13 @@ const WriteReview = () => {
 
   const [files, setFiles] = useState<File[]>([]);
 
-  const { register, handleSubmit, control } = useForm<ReviewType>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<ReviewType>({
     resolver: zodResolver(registerReviewSchema),
     defaultValues: {
       files: null,
@@ -38,7 +45,7 @@ const WriteReview = () => {
       tags: "",
     },
   });
-
+  console.log();
   const {
     fields: advantageFields,
     append: advantageAppend,
@@ -77,7 +84,9 @@ const WriteReview = () => {
             `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/reviewImages/${randomFileName}`
           );
         } catch (error) {
+          alert("이미지 업로드 중 오류가 발생했습니다.");
           console.error("Unexpected error:", error);
+          return;
         }
       }
     }
@@ -110,7 +119,31 @@ const WriteReview = () => {
           </S.InputLiRow>
           <S.InputLiRow>
             <S.Label htmlFor="review">후기</S.Label>
-            <S.TextArea id="review" {...register("review")} />
+            <S.TextAreaWrap>
+            <S.TextArea
+              id="review"
+              {...register("review", {
+                validate: (value) => {
+                  if (value.length > 50) {
+                    alert("50자를 초과할 수 없습니다.");
+                    return "50자를 초과할 수 없습니다.";
+                  }
+                  return true;
+                },
+              })}
+            />
+              <S.StringLength>
+                {watch("review").length}
+                /50
+              </S.StringLength>
+            </S.TextAreaWrap>
+            <ErrorMessage
+              errors={errors}
+              name="review"
+              render={({ message }) => (
+                <S.ReviewErrorMessage>{message}</S.ReviewErrorMessage>
+              )}
+            />
           </S.InputLiRow>
           <S.InputLiRow>
             <S.Label htmlFor="advantage">
@@ -123,7 +156,7 @@ const WriteReview = () => {
               </S.AddButton>
             </S.Label>
             {advantageFields.map((field, index) => (
-              <div key={field.id}>
+              <S.InputWrap key={field.id}>
                 <S.Input
                   id={`advantage-${index}`}
                   {...register(`advantage.${index}.value`)}
@@ -133,7 +166,7 @@ const WriteReview = () => {
                     <Trash fill={`${styleColor.GRAY[200]}`} />
                   </button>
                 )}
-              </div>
+              </S.InputWrap>
             ))}
           </S.InputLiRow>
           <S.InputLiRow>
@@ -148,27 +181,29 @@ const WriteReview = () => {
             </S.Label>
             {disAdvantageFields.map((field, index) => {
               return (
-                <div key={field.id}>
+                <S.InputWrap key={field.id}>
                   <S.Input
                     id={`disAdvantage-${index}`}
                     {...register(`disAdvantage.${index}.value`)}
-                  ></S.Input>
+                  />
                   {index > 0 && (
                     <button onClick={() => disAdvantageRemove(index)}>
                       <Trash fill={`${styleColor.GRAY[200]}`} />
                     </button>
                   )}
-                </div>
+                </S.InputWrap>
               );
             })}
           </S.InputLiRow>
           <S.InputLiRow>
             <S.Label htmlFor="brand">추천 브랜드</S.Label>
-            <S.Input
-              id="brand"
-              placeholder="쉼표(,)로 구분하면 멋진 태그가 될거에요!"
-              {...register("tags")}
-            ></S.Input>
+            <S.InputWrap>
+              <S.Input
+                id="brand"
+                placeholder="쉼표(,)로 구분하면 멋진 태그가 될거에요!"
+                {...register("tags")}
+              />
+            </S.InputWrap>
           </S.InputLiRow>
         </S.WriteReviewUl>
         <Button type="submit">저장</Button>
@@ -196,17 +231,6 @@ const S = {
   InputLiRow: styled.li`
     padding: 0px 12px;
     margin-bottom: 15px;
-    div {
-      position: relative;
-      left: 0;
-      top: 0;
-      button {
-        position: absolute;
-        right: 6px;
-        top: 12px;
-        cursor: pointer;
-      }
-    }
   `,
   Label: styled.label`
     display: flex;
@@ -218,26 +242,48 @@ const S = {
   ImageInput: styled.input`
     display: none;
   `,
+  TextAreaWrap :styled.div`
+    position: relative; right: 0; bottom: 0;
+  `,
+
   TextArea: styled.textarea`
-    width: 100%;
-    padding: 12px 6px;
+    max-width: 94%;
+    width: 94%;
+    height: 90px;
+    padding: 12px 7px;
     border: solid 1px ${styleColor.GRAY[200]};
     border-radius: 4px;
     outline: none;
+    resize: none;
     &::placeholder {
       font-size: 14px;
       color: #d9dfeb;
     }
   `,
-  Input: styled.input`
-    display: block;
-    width: 100%;
+  StringLength: styled.p`
+  position: absolute; right: 10px; bottom: 10px;
+    ${styleFont.textMedium}
+    color: ${styleColor.GRAY[400]};
+  `,
+  InputWrap: styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 97%;
     padding: 12px 0px;
+    padding-right: 7px;
     margin-bottom: 7px;
-    /* text-indent: 6px; */
     border: solid 1px ${styleColor.GRAY[200]};
     border-radius: 4px;
     outline: none;
+    button {
+      cursor: pointer;
+    }
+  `,
+  Input: styled.input`
+    width: 100%;
+    border: none;
+    outline: none;
+    text-indent: 7px;
     &::placeholder {
       font-size: 14px;
       color: #d9dfeb;
@@ -247,7 +293,12 @@ const S = {
     width: 20px;
     height: 20px;
     background-color: ${styleColor.INDIGO[0]};
+    ${styleFont.textMedium}
     color: #fff;
     border-radius: 4px;
+  `,
+  ReviewErrorMessage: styled.p`
+    color: red;
+    font-size: 14px;
   `,
 };
