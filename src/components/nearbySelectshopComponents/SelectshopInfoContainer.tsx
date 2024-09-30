@@ -77,7 +77,7 @@ const S = {
     cursor: pointer;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
-    padding: 20px 18px;
+    padding: 20px 12px;
     margin: 20px;
   `,
   SlectshopContents: styled.div`

@@ -2,6 +2,7 @@ import WriteReviewInputImage from "@/components/writeReviewComponents/WriteRevie
 import useLoginUserId from "@/hook/useLoginUserId";
 import supabase from "@/lib/supabaseClient";
 import { styleColor } from "@/styles/styleColor";
+import { styleFont } from "@/styles/styleFont";
 import { registerReviewSchema } from "@/validators/review";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@mui/material";
@@ -61,7 +62,6 @@ const WriteReview = () => {
     disAdvantage,
     tags,
   }: ReviewType) => {
-
     let imagesString: string[] = [];
     if (files) {
       for (const file of files) {
@@ -72,13 +72,15 @@ const WriteReview = () => {
           await supabase.storage
             .from("images")
             .upload(`reviewImages/${randomFileName}`, file);
-          imagesString.push(`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/reviewImages/${randomFileName}`);
+          imagesString.push(
+            `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/reviewImages/${randomFileName}`
+          );
         } catch (error) {
           console.error("Unexpected error:", error);
         }
       }
     }
-    
+
     const newReview = {
       selectshopId: id,
       reviewImages: files === null ? null : imagesString.join(","),
@@ -98,17 +100,12 @@ const WriteReview = () => {
   };
 
   return (
-    <div>
+    <S.WriteReviewContainer>
       <form onSubmit={handleSubmit(addReviewSubmit)}>
-        <div>
-          <h1>후기 등록하기</h1>
-        </div>
+        <S.WriteReviewTitle>후기 등록하기</S.WriteReviewTitle>
         <ul>
           <li>
-            <WriteReviewInputImage
-              files={files}
-              setFiles={setFiles}
-            />
+            <WriteReviewInputImage files={files} setFiles={setFiles} />
           </li>
           <li>
             <S.Label htmlFor="review">후기</S.Label>
@@ -173,13 +170,20 @@ const WriteReview = () => {
         </ul>
         <Button type="submit">저장</Button>
       </form>
-    </div>
+    </S.WriteReviewContainer>
   );
 };
 
 export default WriteReview;
 
 const S = {
+  WriteReviewContainer: styled.div`
+  padding: 18px 12px;
+  `,
+  WriteReviewTitle: styled.h1`
+    ${styleFont.textLarge}
+    margin-bottom: 30px;
+  `,
   Label: styled.label`
     display: block;
     margin-bottom: 15px;

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import MyReviewContainer from "./MyReviewContainer";
 import SelectshopReviewContainer from "./SelectshopReviewContainer";
-import WriteReview from "@/pages/writeReview"; // WriteReview 컴포넌트 임포트
+import WriteReview from "@/pages/writeReview";
 import { useQuery } from "@tanstack/react-query";
 import { getReviewAndUser } from "@/api/review";
 import useLoginUserId from "@/hook/useLoginUserId";
@@ -11,8 +11,6 @@ import { styleFont } from "@/styles/styleFont";
 import { PlaceType } from "@/types/placeType";
 import { ReviewType } from "@/types/reviewType";
 import AllReview from "./AllReview";
-import { useRecoilState } from "recoil";
-import { boundsState } from "@/globalState/recoilState";
 
 interface PropsType {
   selectshop: PlaceType;
@@ -20,9 +18,8 @@ interface PropsType {
 
 const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const { id, place_name, x, y } = selectshop;
-  const [_, setBounds] = useRecoilState<any>(boundsState);
   const loginUser = useLoginUserId();
-  const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false); // 상태 추가
+  const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
 
   const { data: reviewData } = useQuery({
     queryKey: ["review", id],
@@ -38,8 +35,6 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   return (
     <S.DetailContainer>
       <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
-
-      {/* isWriteReviewOpen이 true이면 WriteReview만 렌더링 */}
       {isWriteReviewOpen ? (
         <WriteReview />
       ) : (
@@ -49,13 +44,11 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
           ) : (
             <SelectshopReviewContainer
               id={id}
-              onWriteReviewClick={() => setIsWriteReviewOpen(true)} // 콜백 함수 전달
+              onWriteReviewClick={() => setIsWriteReviewOpen(true)}
             />
           )}
         </>
       )}
-
-      {/* isWriteReviewOpen이 false일 때만 AllReviewContainer 표시 */}
       {!isWriteReviewOpen && (
         <S.AllReviewContainer>
           {reviewData?.map((review: ReviewType) => (
