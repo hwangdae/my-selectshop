@@ -5,7 +5,7 @@ import {
   selectShopsState,
 } from "@/globalState/recoilState";
 import { useEffect, useState } from "react";
-import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
+import { Map } from "react-kakao-maps-sdk";
 import { useRecoilState, useRecoilValue } from "recoil";
 import MyLocationMaker from "./MyLocationMaker";
 import styled from "styled-components";
@@ -16,7 +16,6 @@ import MarkerContainer from "./MarkerContainer";
 const MapComponent = () => {
   const [map, setMap] = useState<any>();
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
-  const markers = useRecoilValue(markersState);
   const selectshops = useRecoilValue(selectShopsState);
   const bounds = useRecoilValue(boundsState);
 

@@ -1,6 +1,5 @@
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import { useState } from "react";
 import styled from "styled-components";
 import { PlaceType } from "@/types/placeType";
 import { useQuery } from "@tanstack/react-query";
@@ -15,7 +14,7 @@ interface PropsType {
 }
 
 const SelectshopInfoContainer = ({ selectshop }: PropsType) => {
-  const { id, place_name, address_name, phone, distance } = selectshop;
+  const { id, place_name, address_name, phone, distance, x, y } = selectshop;
   const loginUser = useLoginUserId();
 
   const { data: reviewData} = useQuery({

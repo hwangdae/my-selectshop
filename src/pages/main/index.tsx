@@ -1,12 +1,10 @@
 "use client";
-import HeaderContainer from "@/components/HeaderContainer";
 import { selectShopsState} from "@/globalState/recoilState";
 import React, { useEffect, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import MyLocation from "@/assets/MyLocation.svg";
-import ContentsContainer from "@/components/ContentsContainer";
 import { MarkersType, PlaceType } from "@/types/placeType";
 
 declare global {
@@ -47,8 +45,6 @@ const Main = () => {
   return (
     <S.Container>
       <S.SideContainer>
-        <HeaderContainer />
-        <ContentsContainer/>
       </S.SideContainer>
       <main>
         <Map

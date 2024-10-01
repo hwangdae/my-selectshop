@@ -7,7 +7,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 interface SlideImgProps {
-  slideImages: string;
+  slideImages: string | null;
 }
 
 const CommonSwiper = ({slideImages}: SlideImgProps) => {

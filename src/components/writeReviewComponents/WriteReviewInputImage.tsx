@@ -19,14 +19,13 @@ const WriteReviewInputImage = forwardRef<HTMLInputElement, PropsType>(
     id = "file-upload",
     ...props
   }) => {
-
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
         const files = Array.from(e.target.files);
         setFiles(files);
       }
     };
-    
+
     return (
       <>
         <S.Label htmlFor="file-upload">
@@ -35,16 +34,16 @@ const WriteReviewInputImage = forwardRef<HTMLInputElement, PropsType>(
               <NoImage />
             </S.NoImageWrapper>
           ) : (
-            <Swiper spaceBetween={50} slidesPerView={1}>
+            <S.ImageSwiper spaceBetween={50} slidesPerView={1}>
               {files.map((file, index) => (
-                <SwiperSlide key={index}>
+                <S.SwiperSlide key={index}>
                   <S.UploadImage
                     src={URL.createObjectURL(file)}
                     alt={`uploaded-${index}`}
                   />
-                </SwiperSlide>
+                </S.SwiperSlide>
               ))}
-            </Swiper>
+            </S.ImageSwiper>
           )}
         </S.Label>
         <S.ImageInput
@@ -72,8 +71,9 @@ const S = {
     display: none;
   `,
   UploadImage: styled.img`
-    width: 100%;
-    height: auto;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
   `,
   NoImageWrapper: styled.div`
     width: 100%;
@@ -81,4 +81,13 @@ const S = {
     justify-content: center;
     align-items: center;
   `,
+  ImageSwiper: styled(Swiper)`
+    width: 100%;
+    height: 180px;
+  `,
+  SwiperSlide : styled(SwiperSlide)`
+    width: 100%;
+    height: 100%;
+    background-image: cover;
+  `
 };

@@ -7,13 +7,19 @@ import Link from "next/link";
 import { Button } from "@mui/material";
 import useLoginUserId from "@/hook/useLoginUserId";
 import supabase from "@/lib/supabaseClient";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { markersState, selectShopsState } from "@/globalState/recoilState";
+import { MarkersType, PlaceType } from "@/types/placeType";
 
 const HeaderContainer = () => {
-  
   const [searchName, setSearchName] = useState("");
+  const [markers, setMarkers] = useRecoilState<MarkersType[]>(markersState);
+  const [selectshops, setSelectshops] =
+    useRecoilState<PlaceType[]>(selectShopsState);
   const loginUser = useLoginUserId();
 
   const router = useRouter();
+  console.log(router);
 
   const logoutHandleSubmit = async () => {
     try {
@@ -31,17 +37,20 @@ const HeaderContainer = () => {
       <S.HeaderInner>
         <S.HeaderTop>
           <S.Logo>
-            <Link href={"/"}>MySelectshop</Link>
+            <button
+              onClick={() => {
+                setSelectshops([]);
+                router.push("/");
+              }}
+            >
+              MySelectshop
+            </button>
           </S.Logo>
           {!loginUser ? (
             <Button
               variant="contained"
               sx={{ padding: "5px 30px" }}
-              onClick={() =>
-                router.push(
-                  '?modal=login',
-                )
-              }
+              onClick={() => router.push("?modal=login")}
             >
               로그인
             </Button>
@@ -90,12 +99,11 @@ const S = {
     margin-bottom: 20px;
   `,
   Logo: styled.h1`
-  a{
-    ${styleFont.textLarge}
-    font-weight: bold;
-    color: #fff;
-  }
-
+    button {
+      ${styleFont.textLarge}
+      font-weight: bold;
+      color: #fff;
+    }
   `,
   SearchForm: styled.form`
     position: relative;

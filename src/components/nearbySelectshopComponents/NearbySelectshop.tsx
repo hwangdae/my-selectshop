@@ -11,8 +11,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import SelectshopDetailInfoContainer from "./SelectshopDetailInfoContainer";
 import SelectshopInfoContainer from "./SelectshopInfoContainer";
-import { useRouter } from "next/router";
-import WriteReview from "@/pages/writeReview";
 
 const NearbySelectshop = () => {
   const myLocation = useRecoilValue(myLocationState);
@@ -23,10 +21,6 @@ const NearbySelectshop = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [, setBounds] = useRecoilState<any>(boundsState);
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
-
-  const router = useRouter();
-  const { tab } = router.query;
-  console.log(router, "라우터");
 
   useEffect(() => {
     if (
@@ -84,15 +78,6 @@ const NearbySelectshop = () => {
     }
   }, [myLocation, currentPage]);
 
-  const renderContent = () => {
-    switch (tab) {
-      case "writeReview":
-        return <WriteReview />;
-      default:
-        return <div>디폴트</div>;
-    }
-  };
-
   return (
     <S.SearchResultsContainer>
       <S.SearchResultsInner>
@@ -114,22 +99,7 @@ const NearbySelectshop = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-      {/* <div>{renderContent()}</div> */}
       {selectshops?.map((selectshop: PlaceType) => {
-        return (
-          activeShopId === selectshop.id &&
-          // 조건부 렌더링: tab 값에 따라 다른 컴포넌트 반환
-          (tab === "writeReview" ? (
-            <WriteReview key={selectshop.id} />
-          ) : (
-            <SelectshopDetailInfoContainer
-              key={selectshop.id}
-              selectshop={selectshop}
-            />
-          ))
-        );
-      })}
-      {/* {selectshops?.map((selectshop: PlaceType) => {
         return (
           activeShopId === selectshop.id && (
             <SelectshopDetailInfoContainer
@@ -138,7 +108,7 @@ const NearbySelectshop = () => {
             />
           )
         );
-      })} */}
+      })}
     </S.SearchResultsContainer>
   );
 };

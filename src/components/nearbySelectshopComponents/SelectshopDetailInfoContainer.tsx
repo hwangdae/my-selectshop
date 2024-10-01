@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import MyReviewContainer from "./MyReviewContainer";
 import SelectshopReviewContainer from "./SelectshopReviewContainer";
@@ -11,6 +11,8 @@ import { styleFont } from "@/styles/styleFont";
 import { PlaceType } from "@/types/placeType";
 import { ReviewType } from "@/types/reviewType";
 import AllReview from "./AllReview";
+import { useRecoilState } from "recoil";
+import { boundsState } from "@/globalState/recoilState";
 
 interface PropsType {
   selectshop: PlaceType;
@@ -18,8 +20,21 @@ interface PropsType {
 
 const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const { id, place_name, x, y } = selectshop;
+  const [_,setBounds] = useRecoilState<any>(boundsState)
   const loginUser = useLoginUserId();
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
+
+  useEffect(()=>{
+    if(typeof window !== "undefined" &&
+      window.kakao &&
+      window.kakao.maps){
+        const bounds = new kakao.maps.LatLngBounds();
+        const position = new kakao.maps.LatLng(y, x);
+      
+        bounds.extend(position);
+        setBounds(bounds);
+    }
+  },[id, x, y, setBounds])
 
   const { data: reviewData } = useQuery({
     queryKey: ["review", id],
@@ -36,7 +51,7 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
     <S.DetailContainer>
       <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
       {isWriteReviewOpen ? (
-        <WriteReview />
+        <WriteReview selectshopId={id} />
       ) : (
         <>
           {myReview ? (

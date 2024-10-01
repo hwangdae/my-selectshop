@@ -14,7 +14,7 @@ const MyReviewContainer = ({ review }: PropsType) => {
   console.log(review, "리뷰");
   return (
     <div>
-      {review.reviewImages === null ? (
+      {review.reviewImages === null || review.reviewImages === ""  ? (
         <NoImage />
       ) : (
         <CommonSwiper slideImages={review.reviewImages}/>
@@ -28,7 +28,7 @@ const MyReviewContainer = ({ review }: PropsType) => {
           <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
           <ul>
             {review?.good?.split(",").map((good) => {
-              return <li>{good}</li>;
+              return <li key={good}>{good}</li>;
             })}
           </ul>
         </S.ReviewTextRow>
@@ -36,7 +36,7 @@ const MyReviewContainer = ({ review }: PropsType) => {
           <S.ReviewTitle>👎 설렉샵 단점</S.ReviewTitle>
           <ul>
             {review?.notGood?.split(",").map((notGood) => {
-              return <li>{notGood}</li>;
+              return <li key={notGood}>{notGood}</li>;
             })}
           </ul>
         </S.ReviewTextRow>

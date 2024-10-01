@@ -1,6 +1,7 @@
 import useLoginUserId from "@/hook/useLoginUserId";
 import { styleFont } from "@/styles/styleFont";
 import { Button } from "@mui/material";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 
@@ -11,6 +12,7 @@ interface PropsType {
 
 const SelectshopReviewContainer = ({ id, onWriteReviewClick }: PropsType) => {
   const loginUser = useLoginUserId();
+  const router = useRouter();
 
   return (
     <S.SelectshopReviewContainer>
@@ -21,6 +23,7 @@ const SelectshopReviewContainer = ({ id, onWriteReviewClick }: PropsType) => {
           onClick={() => {
             if (!loginUser) {
               alert("로그인이 필요한 서비스 입니다.");
+              router.push("?modal=login");
               return;
             }
             onWriteReviewClick();
