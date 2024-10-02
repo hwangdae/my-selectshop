@@ -23,6 +23,14 @@ export interface MarkersType {
     lng: number;
   };
 }
+export interface MyLocationType {
+  center : {
+    lat : number;
+    lng: number;
+  },
+  errMsg: null;
+  isLoading : boolean;
+}
 
 export interface PaginationType {
   current: number;
@@ -32,4 +40,12 @@ export interface PaginationType {
   hasPrevPage: boolean;
   nextPage: (page:number) => void;
   prevPage: (page:number) => void;
+}
+
+export interface Shop {
+  id: string;
+  name: string;
+  address: string;
+  lat: number;
+  lng: number;
 }

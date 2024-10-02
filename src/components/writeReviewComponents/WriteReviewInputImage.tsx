@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef } from "react";
 import NoImage from "@/assets/NoImage.svg";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";

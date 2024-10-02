@@ -13,19 +13,13 @@ import shortid from "shortid";
 import styled from "styled-components";
 import Trash from "@/assets/Trash.svg";
 import { ErrorMessage } from "@hookform/error-message";
+import { UploadReviewType } from "@/types/reviewType";
 
-export interface ReviewType {
-  files: FileList | null | undefined;
-  review: string;
-  advantage: { value: string }[];
-  disAdvantage: { value: string }[];
-  tags: string;
-}
 interface PropsType {
-  selectshopId : string
+  selectshopId: string;
 }
 
-const WriteReview = ({selectshopId}:PropsType) => {
+const WriteReview = ({ selectshopId }: PropsType) => {
   const router = useRouter();
   const { id } = router.query;
   const loginUser = useLoginUserId();
@@ -37,7 +31,7 @@ const WriteReview = ({selectshopId}:PropsType) => {
     control,
     watch,
     formState: { errors },
-  } = useForm<ReviewType>({
+  } = useForm<UploadReviewType>({
     resolver: zodResolver(registerReviewSchema),
     defaultValues: {
       files: null,
@@ -66,12 +60,12 @@ const WriteReview = ({selectshopId}:PropsType) => {
     name: "disAdvantage",
   });
 
-  const addReviewSubmit: SubmitHandler<ReviewType> = async ({
+  const addReviewSubmit: SubmitHandler<UploadReviewType> = async ({
     review,
     advantage,
     disAdvantage,
     tags,
-  }: ReviewType) => {
+  }: UploadReviewType) => {
     let imagesString: string[] = [];
     if (files) {
       for (const file of files) {
@@ -122,20 +116,7 @@ const WriteReview = ({selectshopId}:PropsType) => {
           <S.InputLiRow>
             <S.Label htmlFor="review">후기</S.Label>
             <S.TextAreaWrap>
-              <S.TextArea
-                id="review"
-                {...register("review", {
-                  validate: {
-                    maxLength: (value) => {
-                      const isValid = value.length <= 50;
-                      if (!isValid) {
-                        alert("입력한 내용이 50자를 초과했습니다!");
-                      }
-                      return isValid;
-                    },
-                  },
-                })}
-              />
+              <S.TextArea id="review" {...register("review")} maxLength={50} />
               <S.StringLength>
                 {watch("review").length}
                 /50

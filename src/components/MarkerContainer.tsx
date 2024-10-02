@@ -7,12 +7,12 @@ import React from "react";
 import { CustomOverlayMap } from "react-kakao-maps-sdk";
 import styled from "styled-components";
 
-interface Propstype {
+interface PropsType {
   selectshop: PlaceType;
   index: number;
 }
 
-const MarkerContainer = ({ selectshop, index }: Propstype) => {
+const MarkerContainer = ({ selectshop, index }: PropsType) => {
   const { id, place_name, x, y } = selectshop;
   const position = { lat: y, lng: x };
 

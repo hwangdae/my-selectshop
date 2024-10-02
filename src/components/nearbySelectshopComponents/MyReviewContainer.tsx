@@ -14,10 +14,10 @@ const MyReviewContainer = ({ review }: PropsType) => {
   console.log(review, "리뷰");
   return (
     <div>
-      {review.reviewImages === null || review.reviewImages === ""  ? (
+      {review.reviewImages === null || review.reviewImages === "" ? (
         <NoImage />
       ) : (
-        <CommonSwiper slideImages={review.reviewImages}/>
+        <CommonSwiper slideImages={review.reviewImages} />
       )}
       <S.ReviewTextContainer>
         <S.ReviewTextRow>
@@ -27,24 +27,32 @@ const MyReviewContainer = ({ review }: PropsType) => {
         <S.ReviewTextRow>
           <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
           <ul>
-            {review?.good?.split(",").map((good) => {
-              return <li key={good}>{good}</li>;
-            })}
+            {review?.good !== null ? (
+              review?.good?.split(",").map((good) => {
+                return <li key={good}>{good}</li>;
+              })
+            ) : (
+              <li>장점이 없어요</li>
+            )}
           </ul>
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>👎 설렉샵 단점</S.ReviewTitle>
           <ul>
-            {review?.notGood?.split(",").map((notGood) => {
-              return <li key={notGood}>{notGood}</li>;
-            })}
+            {review?.notGood !== null ? (
+              review?.notGood?.split(",").map((notGood) => {
+                return <li key={notGood}>{notGood}</li>;
+              })
+            ) : (
+              <li>단점이 없어요</li>
+            )}
           </ul>
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
           <S.TagList>
             {review.tags === null
-              ? "추천할 브랜드가 없어요"
+              ? <li>추천할 브랜드가 없어요</li>
               : review?.tags?.split(",").map((tag: string) => {
                   return <li key={tag}>{tag}</li>;
                 })}
@@ -58,9 +66,9 @@ const MyReviewContainer = ({ review }: PropsType) => {
 export default MyReviewContainer;
 
 const S = {
-  ReviewImage : styled.img`
-  width: 100%;
-  height: auto;
+  ReviewImage: styled.img`
+    width: 100%;
+    height: auto;
   `,
   ReviewTextContainer: styled.ul`
     padding: 0px 12px;

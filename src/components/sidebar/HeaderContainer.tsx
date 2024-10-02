@@ -3,19 +3,16 @@ import { useState } from "react";
 import styled from "styled-components";
 import Search from "@/assets/Search.svg";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { Button } from "@mui/material";
 import useLoginUserId from "@/hook/useLoginUserId";
 import supabase from "@/lib/supabaseClient";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { markersState, selectShopsState } from "@/globalState/recoilState";
-import { MarkersType, PlaceType } from "@/types/placeType";
+import { useRecoilState } from "recoil";
+import { selectShopsState } from "@/globalState/recoilState";
+import { PlaceType } from "@/types/placeType";
 
 const HeaderContainer = () => {
   const [searchName, setSearchName] = useState("");
-  const [markers, setMarkers] = useRecoilState<MarkersType[]>(markersState);
-  const [selectshops, setSelectshops] =
-    useRecoilState<PlaceType[]>(selectShopsState);
+  const [, setSelectshops] = useRecoilState<PlaceType[]>(selectShopsState);
   const loginUser = useLoginUserId();
 
   const router = useRouter();
@@ -23,7 +20,7 @@ const HeaderContainer = () => {
 
   const logoutHandleSubmit = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
+      await supabase.auth.signOut();
       alert("로그아웃 되었습니다.");
     } catch (error) {
       console.log(error);
@@ -100,6 +97,7 @@ const S = {
   `,
   Logo: styled.h1`
     button {
+      cursor: pointer;
       ${styleFont.textLarge}
       font-weight: bold;
       color: #fff;

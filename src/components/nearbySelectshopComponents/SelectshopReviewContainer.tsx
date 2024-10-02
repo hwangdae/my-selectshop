@@ -6,11 +6,10 @@ import React from "react";
 import styled from "styled-components";
 
 interface PropsType {
-  id: string;
   onWriteReviewClick: () => void;
 }
 
-const SelectshopReviewContainer = ({ id, onWriteReviewClick }: PropsType) => {
+const SelectshopReviewContainer = ({ onWriteReviewClick }: PropsType) => {
   const loginUser = useLoginUserId();
   const router = useRouter();
 

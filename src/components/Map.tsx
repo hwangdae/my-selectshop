@@ -1,6 +1,5 @@
 import {
   boundsState,
-  markersState,
   myLocationState,
   selectShopsState,
 } from "@/globalState/recoilState";

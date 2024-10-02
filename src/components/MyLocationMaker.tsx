@@ -2,11 +2,11 @@ import { MyLocationType } from "@/globalState/recoilState";
 import React from "react";
 import { MapMarker } from "react-kakao-maps-sdk";
 
-interface Props {
+interface PropsType {
   myLocation: MyLocationType;
 }
 
-const MyLocationMaker = ({ myLocation }: Props) => {
+const MyLocationMaker = ({ myLocation }: PropsType) => {
   return (
     <MapMarker
       position={myLocation.center}

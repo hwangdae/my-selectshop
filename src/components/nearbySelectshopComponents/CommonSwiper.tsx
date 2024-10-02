@@ -6,11 +6,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-interface SlideImgProps {
+interface PropsType {
   slideImages: string | null;
 }
 
-const CommonSwiper = ({slideImages}: SlideImgProps) => {
+const CommonSwiper = ({slideImages}: PropsType) => {
 
   return (
     <S.SwiperWrap>

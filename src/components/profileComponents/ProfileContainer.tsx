@@ -3,27 +3,33 @@ import useLoginUserId from "@/hook/useLoginUserId";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import ProfileUpdate from "@/assets/ProfileUpdate.svg";
 import { useRouter } from "next/router";
+import { getReviewCount } from "@/api/review";
 
 const ProfileContainer = () => {
   const loginUser = useLoginUserId();
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     data: user,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["user",loginUser],
+    queryKey: ["user", loginUser],
     queryFn: () => getUser(loginUser),
-    enabled : !!loginUser,
+    enabled: !!loginUser,
+  });
+
+  const { data: reviewCount } = useQuery({
+    queryKey: ["review", loginUser],
+    queryFn: () => getReviewCount(loginUser),
   });
 
   const updateProfileButtonhandle = () => {
-    router.push('?modal=profile');
+    router.push("?modal=profile");
   };
 
   if (isLoading) {
@@ -48,14 +54,13 @@ const ProfileContainer = () => {
                   fill={`${styleColor.GRAY[700]}`}
                 />
               </S.ProfileUpdateButton>
-            
             </S.ProfileImageContainer>
             <S.ProfileInfo>
               <S.UserEmail>{user?.email}</S.UserEmail>
               <S.UserActivity>
                 <S.Activity>
                   <h3>리뷰수</h3>
-                  <p>0</p>
+                  <p>{reviewCount}</p>
                 </S.Activity>
                 <S.Activity>
                   <h3>팔로워</h3>

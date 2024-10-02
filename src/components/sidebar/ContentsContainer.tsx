@@ -5,6 +5,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProfileContainer from "../profileComponents/ProfileContainer";
 import MyAddressContainer from "./MyAddressContainer";
+import { useRecoilState } from "recoil";
+import { PlaceType } from "@/types/placeType";
+import { selectShopsState } from "@/globalState/recoilState";
 
 const CONTENTSTABNAV = [
   { id: "nearbySelectshop", name: "편집샵 보기" },
@@ -14,8 +17,13 @@ const CONTENTSTABNAV = [
 ];
 
 const ContentsContainer = () => {
-
+  const [,setSelectshops] =
+    useRecoilState<PlaceType[]>(selectShopsState);
   const router = useRouter();
+
+  useEffect(()=>{
+    setSelectshops([])
+  },[setSelectshops])
   
   const viewSelectShopHandle = (id: string) => {
     router.push(`/?tab=${id}`);

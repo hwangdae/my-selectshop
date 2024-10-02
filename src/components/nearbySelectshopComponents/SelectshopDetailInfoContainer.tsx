@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import MyReviewContainer from "./MyReviewContainer";
 import SelectshopReviewContainer from "./SelectshopReviewContainer";
-import WriteReview from "@/pages/writeReview";
 import { useQuery } from "@tanstack/react-query";
 import { getReviewAndUser } from "@/api/review";
 import useLoginUserId from "@/hook/useLoginUserId";
@@ -13,6 +12,7 @@ import { ReviewType } from "@/types/reviewType";
 import AllReview from "./AllReview";
 import { useRecoilState } from "recoil";
 import { boundsState } from "@/globalState/recoilState";
+import WriteReview from "../writeReviewComponents/WriteReview";
 
 interface PropsType {
   selectshop: PlaceType;

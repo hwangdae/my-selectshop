@@ -1,9 +1,5 @@
 import supabase from "@/lib/supabaseClient";
-
-interface updateProfileType {
-  profileImage: string | undefined;
-  nickName: string;
-}
+import { updateProfileType } from "@/types/authType";
 
 const getUser = async (id: string) => {
   try {
