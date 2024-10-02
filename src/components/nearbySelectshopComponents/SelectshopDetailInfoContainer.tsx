@@ -58,7 +58,6 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
             <MyReviewContainer review={myReview} />
           ) : (
             <SelectshopReviewContainer
-              id={id}
               onWriteReviewClick={() => setIsWriteReviewOpen(true)}
             />
           )}

@@ -1,4 +1,5 @@
 import supabase from "@/lib/supabaseClient"
+import { ReviewType, UploadReviewType } from "@/types/reviewType"
 
 const getAllReview = async() => {
     const {data} = await supabase.from('review').select('*')
@@ -17,5 +18,7 @@ const getReviewCount = async(loginUser:any) => {
     const {count} = await supabase.from('review').select('*',{count:'exact',head:true}).eq('userId',loginUser)
     return count
 }
-
-export {getAllReview, getReview,getReviewAndUser,getReviewCount}
+const addReview = async(review:any) => {
+    await supabase.from("review").insert(review);
+}
+export {getAllReview, getReview,getReviewAndUser,getReviewCount,addReview}

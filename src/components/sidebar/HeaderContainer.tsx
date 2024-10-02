@@ -9,19 +9,21 @@ import supabase from "@/lib/supabaseClient";
 import { useRecoilState } from "recoil";
 import { selectShopsState } from "@/globalState/recoilState";
 import { PlaceType } from "@/types/placeType";
+import { logOut } from "@/api/user";
+import useUserMutate from "@/hook/useUserMutate";
 
 const HeaderContainer = () => {
   const [searchName, setSearchName] = useState("");
   const [, setSelectshops] = useRecoilState<PlaceType[]>(selectShopsState);
   const loginUser = useLoginUserId();
+  const {logOutMutate} = useUserMutate()
 
   const router = useRouter();
-  console.log(router);
 
   const logoutHandleSubmit = async () => {
     try {
-      await supabase.auth.signOut();
       alert("로그아웃 되었습니다.");
+      logOutMutate.mutate()
     } catch (error) {
       console.log(error);
     }

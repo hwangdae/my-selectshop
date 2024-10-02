@@ -2,7 +2,7 @@ import { registerReviewSchema } from "@/validators/review";
 import { z } from "zod";
 
 export interface ReviewType {
-  id: string;
+  id:string;
   reviewImages: string | null;
   description: string;
   visited: boolean;

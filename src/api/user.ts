@@ -27,10 +27,13 @@ const signUp = async (email: string, password: string, nickName: string) => {
   });
 };
 
+const logOut = async () => {
+  await supabase.auth.signOut();
+}
 const userProfileUpdate = async (
   updateProfile: updateProfileType,
   id: string
 ) => {
   await supabase.from("users").update(updateProfile).eq("id", id).select();
 };
-export { getUser, signUp, userProfileUpdate };
+export { getUser, signUp,logOut, userProfileUpdate };

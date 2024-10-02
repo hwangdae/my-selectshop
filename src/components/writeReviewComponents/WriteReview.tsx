@@ -14,6 +14,8 @@ import styled from "styled-components";
 import Trash from "@/assets/Trash.svg";
 import { ErrorMessage } from "@hookform/error-message";
 import { UploadReviewType } from "@/types/reviewType";
+import { addReview } from "@/api/review";
+import useReviewMutate from "@/hook/useReviewMutate";
 
 interface PropsType {
   selectshopId: string;
@@ -24,7 +26,7 @@ const WriteReview = ({ selectshopId }: PropsType) => {
   const { id } = router.query;
   const loginUser = useLoginUserId();
   const [files, setFiles] = useState<File[]>([]);
-
+  const {reviewMutate} = useReviewMutate(selectshopId)
   const {
     register,
     handleSubmit,
@@ -98,7 +100,7 @@ const WriteReview = ({ selectshopId }: PropsType) => {
       userId: loginUser,
     };
     try {
-      await supabase.from("review").insert(newReview);
+      reviewMutate.mutate()
       alert("작성이 완료 되었습니다.");
     } catch (error) {
       console.log(error);

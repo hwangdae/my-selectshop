@@ -11,7 +11,7 @@ interface PropsType {
 }
 
 const MyReviewContainer = ({ review }: PropsType) => {
-  console.log(review, "리뷰");
+
   return (
     <div>
       {review.reviewImages === null || review.reviewImages === "" ? (
