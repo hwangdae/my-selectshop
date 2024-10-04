@@ -100,7 +100,7 @@ const WriteReview = ({ selectshopId }: PropsType) => {
       userId: loginUser,
     };
     try {
-      reviewMutate.mutate()
+      reviewMutate.mutate(newReview as any)
       alert("작성이 완료 되었습니다.");
     } catch (error) {
       console.log(error);
