@@ -4,7 +4,7 @@ import HeaderContainer from "./HeaderContainer";
 import ContentsContainer from "./ContentsContainer";
 import { useRouter } from "next/router";
 import NearbySelectshop from "../nearbySelectshopComponents/NearbySelectshop";
-import VisitedSelectshop from "@/pages/visitedSelectshop";
+import VisitedSelectshop from "../visitedSelectshopComponents/VisitedSelectshop";
 
 
 const Sidebar = () => {

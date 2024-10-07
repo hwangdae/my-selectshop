@@ -28,7 +28,6 @@ const MapComponent = () => {
     if (typeof window !== "undefined" && window.kakao && window.kakao.maps) {
       kakao.maps.load(() => {
         if (navigator.geolocation) {
-          var geocoder = new kakao.maps.services.Geocoder();
           navigator.geolocation.getCurrentPosition((position) => {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;

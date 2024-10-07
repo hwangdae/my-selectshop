@@ -13,6 +13,7 @@ import AllReview from "./AllReview";
 import { useRecoilState } from "recoil";
 import { boundsState } from "@/globalState/recoilState";
 import WriteReview from "../writeReviewComponents/WriteReview";
+import { getAllUsers, getUser } from "@/api/user";
 
 interface PropsType {
   selectshop: PlaceType;
@@ -35,6 +36,15 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
         setBounds(bounds);
     }
   },[id, x, y, setBounds])
+
+  const {
+    data: users,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getAllUsers(),
+  });
 
   const { data: reviewData } = useQuery({
     queryKey: ["review", id],
@@ -66,7 +76,7 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
       {!isWriteReviewOpen && (
         <S.AllReviewContainer>
           {reviewData?.map((review: ReviewType) => (
-            <AllReview review={review} key={review.id} />
+            <AllReview key={review.id} review={review} users={users} />
           ))}
         </S.AllReviewContainer>
       )}

@@ -5,18 +5,25 @@ import React from 'react'
 import styled from 'styled-components'
 
 interface PropsType {
-    review : ReviewType
+    review : ReviewType;
+    users : any
 }
 
-const AllReview = ({review}:PropsType) => {
+const AllReview = ({review,users}:PropsType) => {
 
-    const {users,description,tags} = review
+    const {userId,description,tags} = review
+    console.log(review)
+    // const {id,nickName,profileImage} = user
+    const user = users?.find((user:any)=>{
+      return user.id === userId
+    })
+    console.log(user)
   return (
     <S.ReviewWrap>
     <S.UserContainer>
-      <S.ProfileImage src={users?.profileImage} />
+      <S.ProfileImage src={user?.profileImage} />
       <S.writtenUser>
-        {users?.nickName}님의 후기
+        {user?.nickName}님의 후기
       </S.writtenUser>
     </S.UserContainer>
     <S.ReviewDescription>

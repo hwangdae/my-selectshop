@@ -3,13 +3,22 @@ import { updateProfileType } from "@/types/authType";
 
 const getUser = async (id: string) => {
   try {
-    const { data: userLogin,error } = await supabase
+    const { data: userLogin, error } = await supabase
       .from("users")
       .select("*")
       .eq("id", id)
       .single();
-      if(error) throw error
+    if (error) throw error;
     return userLogin;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAllUsers = async () => {
+  try {
+    const { data } = await supabase.from("users").select("*");
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -29,7 +38,7 @@ const signUp = async (email: string, password: string, nickName: string) => {
 
 const logOut = async () => {
   await supabase.auth.signOut();
-}
+};
 
 const userProfileUpdate = async (
   updateProfile: updateProfileType,
@@ -38,4 +47,4 @@ const userProfileUpdate = async (
   await supabase.from("users").update(updateProfile).eq("id", id).select();
 };
 
-export { getUser, signUp,logOut, userProfileUpdate };
+export { getUser, getAllUsers, signUp, logOut, userProfileUpdate };

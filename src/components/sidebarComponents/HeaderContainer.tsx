@@ -8,22 +8,20 @@ import useLoginUserId from "@/hook/useLoginUserId";
 import { useRecoilState } from "recoil";
 import { selectShopsState } from "@/globalState/recoilState";
 import { PlaceType } from "@/types/placeType";
-import useUserMutate from "@/hook/useUserMutate";
 import { logOut } from "@/api/user";
 
 const HeaderContainer = () => {
   const [searchName, setSearchName] = useState("");
   const [, setSelectshops] = useRecoilState<PlaceType[]>(selectShopsState);
   const loginUser = useLoginUserId();
-  const { logOutMutate, logOutButton } = useUserMutate(loginUser);
 
   const router = useRouter();
 
   const logoutHandleSubmit = async () => {
     try {
       if (window.confirm("로그아웃 하시겠습니까?")) {
+        await logOut();
         alert("로그아웃 되었습니다.");
-        logOut();
         window.location.reload();
       }
     } catch (error) {

@@ -15,7 +15,6 @@ const PaginationContainer = ({
   currentPage,
   setCurrentPage,
 }: PropsType) => {
-
   const nextPageButtonHandler = () => {
     if (pagination && pagination.hasNextPage) {
       setCurrentPage(currentPage + 1);
@@ -34,16 +33,24 @@ const PaginationContainer = ({
     <S.PaginationContainer>
       <S.PageButtonWrap>
         <button onClick={() => setCurrentPage(pagination.first)}>
-          <Chevrons transform={"rotate(180)"} fill={`${styleColor.GRAY[400]}`}/>
+          <Chevrons
+            transform={"rotate(180)"}
+            fill={`${styleColor.GRAY[400]}`}
+          />
         </button>
         <button onClick={prevPageButtonHandler}>
-          <Chevron transform={"rotate(180)"} fill={`${styleColor.GRAY[400]}`}/>
+          <Chevron transform={"rotate(180)"} fill={`${styleColor.GRAY[400]}`} />
         </button>
       </S.PageButtonWrap>
       <S.PageNumberButtons>
         {Array.from({ length: pagination?.last }).map((_, index) => {
           return (
-            <S.PageNumberButton key={index} $index={index+1} $currentPage={currentPage} onClick={() => setCurrentPage(index + 1)}>
+            <S.PageNumberButton
+              key={index}
+              $index={index + 1}
+              $currentPage={currentPage}
+              onClick={() => setCurrentPage(index + 1)}
+            >
               {index + 1}
             </S.PageNumberButton>
           );
@@ -51,10 +58,10 @@ const PaginationContainer = ({
       </S.PageNumberButtons>
       <S.PageButtonWrap>
         <button onClick={nextPageButtonHandler}>
-          <Chevron fill={`${styleColor.GRAY[400]}`}/>
+          <Chevron fill={`${styleColor.GRAY[400]}`} />
         </button>
         <button onClick={() => setCurrentPage(pagination.last)}>
-          <Chevrons fill={`${styleColor.GRAY[400]}`}/>
+          <Chevrons fill={`${styleColor.GRAY[400]}`} />
         </button>
       </S.PageButtonWrap>
     </S.PaginationContainer>
@@ -72,8 +79,8 @@ const S = {
     margin-bottom: 20px;
   `,
   PageButtonWrap: styled.div`
-  display: flex;
-  gap: 10px;
+    display: flex;
+    gap: 10px;
     button {
       cursor: pointer;
       font-size: 16px;
@@ -89,10 +96,11 @@ const S = {
     align-items: center;
     gap: 20px;
   `,
-  PageNumberButton : styled.button<{$index:Number,$currentPage:Number}>`
-          cursor: pointer;
-      font-size: 14px;
-      color: ${(props)=>props.$index === props.$currentPage ? `#000` : `${styleColor.GRAY[400]}`};
-      font-weight :bold
+  PageNumberButton: styled.button<{ $index: Number; $currentPage: Number }>`
+    cursor: pointer;
+    font-size: 14px;
+    color: ${(props) =>
+      props.$index === props.$currentPage ? `#000` : `${styleColor.GRAY[400]}`};
+    font-weight: bold;
   `,
 };

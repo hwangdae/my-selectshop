@@ -32,13 +32,6 @@ const ProfileContainer = () => {
     router.push("?modal=profile");
   };
 
-  if (isLoading) {
-    return <div>로딩 중...</div>;
-  }
-
-  if (error) {
-    return <div>오류 발생: {error.message}</div>;
-  }
   return (
     <div>
       {loginUser && (

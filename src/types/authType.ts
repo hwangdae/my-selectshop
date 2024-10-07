@@ -8,7 +8,7 @@ export interface AuthType {
   nickName: string;
 }
 
-export interface User {
+export interface UserType {
   id :string;
   created_at : string;
   email :string;

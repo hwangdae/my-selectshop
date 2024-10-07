@@ -21,7 +21,6 @@ const MyAddressContainer = () => {
 
       let updateAddressFromGeocode = function (data: any, status: string) {
         if (status === kakao.maps.services.Status.OK) {
-          console.log(data);
           setMyAddress(data[0].address_name);
         }
       };

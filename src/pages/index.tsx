@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Sidebar from "@/components/sidebar/Sidebar";
+import Sidebar from "@/components/sidebarComponents/Sidebar";
 import MapComponent from "@/components/Map";
 
 const Home = () => {

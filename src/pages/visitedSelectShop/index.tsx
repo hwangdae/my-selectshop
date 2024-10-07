@@ -1,11 +1,8 @@
-import React from 'react'
+import VisitedSelectshop from "@/components/visitedSelectshopComponents/VisitedSelectshop";
+import React from "react";
 
-const VisitedSelectshop = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const index = () => {
+  return <VisitedSelectshop />;
+};
 
-export default VisitedSelectshop
+export default index;
