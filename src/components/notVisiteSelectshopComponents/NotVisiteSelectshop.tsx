@@ -9,27 +9,35 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllReview } from "@/api/review";
 import { ReviewType } from "@/types/reviewType";
 
-const VisitedSelectshop = () => {
+const NotVisiteSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { data: reviewData} = useQuery({
+  const { data: reviewData } = useQuery({
     queryKey: ["review"],
     queryFn: () => getAllReview(),
     refetchOnWindowFocus: false,
   });
-  const {searchPlaces,searchAllPlaces, pagination, selectshops, myLocation} = useKakaoSearch()
+  const { searchPlaces, pagination, selectshops, myLocation } =
+    useKakaoSearch();
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.kakao && window.kakao.maps && window.kakao.maps.services) {
+    if (
+      typeof window !== "undefined" &&
+      window.kakao &&
+      window.kakao.maps &&
+      window.kakao.maps.services
+    ) {
       if (myLocation.center.lat && myLocation.center.lng) {
-        searchAllPlaces();
+        searchPlaces(currentPage);
       }
     }
-  }, []);
+  }, [currentPage]);
 
-  const visitedSelectshops = selectshops?.filter((selectshop: PlaceType) => 
-    reviewData?.some((review: ReviewType) => review.selectshopId === selectshop.id)
+  const visitedSelectshops = selectshops?.filter((selectshop: PlaceType) =>
+    !reviewData?.some(
+      (review: ReviewType) => review.selectshopId === selectshop.id
+    )
   );
 
   return (
@@ -48,11 +56,11 @@ const VisitedSelectshop = () => {
           </li>
         ))}
       </S.SearchResultsInner>
-      {/* <PaginationContainer
+      <PaginationContainer
         pagination={pagination}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-      /> */}
+      />
       {visitedSelectshops?.map((selectshop: PlaceType) => {
         return (
           activeShopId === selectshop.id && (
@@ -67,7 +75,7 @@ const VisitedSelectshop = () => {
   );
 };
 
-export default VisitedSelectshop;
+export default NotVisiteSelectshop;
 
 const S = {
   SearchResultsInner: styled.ul``,

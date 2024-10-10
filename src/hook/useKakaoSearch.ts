@@ -4,7 +4,8 @@ import {
   myLocationState,
   selectShopsState,
 } from "@/globalState/recoilState";
-import { MarkersType, MyLocationType, PaginationType } from "@/types/placeType";
+import { MarkersType, MyLocationType, PaginationType, PlaceType } from "@/types/placeType";
+import { accordionSummaryClasses } from "@mui/material";
 import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -26,18 +27,41 @@ const useKakaoSearch = () => {
       sort: window.kakao.maps.services.SortBy.DISTANCE,
       page: currentPage,
     };
-    ps.keywordSearch(keyword, placesSearchCB, options);
+    ps.keywordSearch(keyword, (data,status,pagination)=>placesSearchCB(data,status,pagination,[],false), options);
+  };
+  const searchAllPlaces = (currentPage: number = 1,accumulatedShops: PlaceType[] = []) => {
+    const ps = new window.kakao.maps.services.Places();
+    const keyword = "의류판매";
+    const options = {
+      location: new window.kakao.maps.LatLng(
+        myLocation.center.lat,
+        myLocation.center.lng
+      ),
+      sort: window.kakao.maps.services.SortBy.DISTANCE,
+      page: currentPage,
+    };
+    ps.keywordSearch(keyword, (data,status,pagination)=>placesSearchCB(data,status,pagination,accumulatedShops,true), options);
   };
 
   const placesSearchCB = (
-    data: any,
+    data: any[],
     status: string,
-    pagination: PaginationType
+    pagination: PaginationType,
+    accumulatedShops: any[] = [],
+    isAllPages: boolean = false,
   ) => {
     if (status === window.kakao.maps.services.Status.OK) {
-      setSelectshops(data);
-      displayPlaces(data);
-      setPagination(pagination);
+      const updatedShops = [...accumulatedShops, ...data];
+
+      if (isAllPages && pagination.current < pagination.last) {
+        searchAllPlaces(pagination.current + 1, updatedShops);
+      } else {
+        setSelectshops(updatedShops);
+        displayPlaces(updatedShops);
+      }
+      if (!isAllPages) {
+        setPagination(pagination);
+      }
     }
   };
 
@@ -52,7 +76,7 @@ const useKakaoSearch = () => {
     setMarkers(newMarkers);
     setBounds(bounds);
   };
-  return { searchPlaces, pagination, selectshops, myLocation };
+  return { searchPlaces,searchAllPlaces, pagination, selectshops, myLocation };
 };
 
 export default useKakaoSearch;

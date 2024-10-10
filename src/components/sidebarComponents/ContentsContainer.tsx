@@ -8,6 +8,7 @@ import MyAddressContainer from "./MyAddressContainer";
 import { useRecoilState } from "recoil";
 import { PlaceType } from "@/types/placeType";
 import { selectShopsState } from "@/globalState/recoilState";
+import useLoginUserId from "@/hook/useLoginUserId";
 
 const CONTENTSTABNAV = [
   { id: "nearbySelectshop", name: "편집샵 보기" },
@@ -19,6 +20,7 @@ const CONTENTSTABNAV = [
 const ContentsContainer = () => {
   const [,setSelectshops] =
     useRecoilState<PlaceType[]>(selectShopsState);
+  const loginUser = useLoginUserId()
   const router = useRouter();
 
   useEffect(()=>{
@@ -26,6 +28,11 @@ const ContentsContainer = () => {
   },[setSelectshops])
   
   const viewSelectShopHandle = (id: string) => {
+    if(id !== "nearbySelectshop" && !loginUser){
+      alert('로그인이 필요한 서비스입니다.')
+      router.push("?modal=login");
+      return;
+    }
     router.push(`/?tab=${id}`);
   };
 

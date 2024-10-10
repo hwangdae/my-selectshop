@@ -3,7 +3,7 @@ import { styleFont } from "@/styles/styleFont";
 import styled from "styled-components";
 import { PlaceType } from "@/types/placeType";
 import { useQuery } from "@tanstack/react-query";
-import {  getReviewAndUser } from "@/api/review";
+import { getReview, getReviewAndUser } from "@/api/review";
 import PatchCheck from "@/assets/PatchCheck.svg";
 import FullfillPatchCheck from "@/assets/FullfillPatchCheck.svg";
 import useLoginUserId from "@/hook/useLoginUserId";
@@ -11,15 +11,16 @@ import { ReviewType } from "@/types/reviewType";
 
 interface PropsType {
   selectshop: PlaceType;
+  type?: string;
 }
 
-const SelectshopInfoContainer = ({ selectshop }: PropsType) => {
+const SelectshopInfoContainer = ({ selectshop, type }: PropsType) => {
   const { id, place_name, address_name, phone, distance, x, y } = selectshop;
   const loginUser = useLoginUserId();
 
-  const { data: reviewData} = useQuery({
+  const { data: reviewData } = useQuery({
     queryKey: ["review", id],
-    queryFn: () => getReviewAndUser(id),
+    queryFn: () => getReview(id),
     enabled: !!id,
     refetchOnWindowFocus: false,
   });
@@ -29,43 +30,43 @@ const SelectshopInfoContainer = ({ selectshop }: PropsType) => {
   });
 
   return (
-      <S.SelectshopContainer>
-        <S.SlectshopContents>
-          <S.SelectshopInfo>
-            <S.SelectshopName>
-              {place_name}
-              <S.SelectshopDistance>
-                {distance >= 1000
-                  ? `${(distance / 1000).toFixed(1)}km`
-                  : `${distance}m`}
-              </S.SelectshopDistance>
-            </S.SelectshopName>
-            <S.SelectshopAddressName>{address_name}</S.SelectshopAddressName>
-            <S.SelectshopPhone>{phone}</S.SelectshopPhone>
-          </S.SelectshopInfo>
-          <S.SelectshopFn>
-            <S.SelectshopMoreInfoButton>
-              {myReview ? (
-                <FullfillPatchCheck
-                  width={"18px"}
-                  height={"18px"}
-                  fill={`${styleColor.RED[0]}`}
-                />
-              ) : (
-                <PatchCheck width={"18px"} height={"18px"} />
-              )}
-            </S.SelectshopMoreInfoButton>
-          </S.SelectshopFn>
-        </S.SlectshopContents>
-        {myReview && (
-          <S.PreviewReviewContainer>
-            <S.PreviewReviewTitle>나의 후기</S.PreviewReviewTitle>
-            <S.PreviewReviewDescription>
-              {myReview?.description}
-            </S.PreviewReviewDescription>
-          </S.PreviewReviewContainer>
-        )}
-      </S.SelectshopContainer>
+    <S.SelectshopContainer>
+      <S.SlectshopContents>
+        <S.SelectshopInfo>
+          <S.SelectshopName>
+            {place_name}
+            <S.SelectshopDistance>
+              {distance >= 1000
+                ? `${(distance / 1000).toFixed(1)}km`
+                : `${distance}m`}
+            </S.SelectshopDistance>
+          </S.SelectshopName>
+          <S.SelectshopAddressName>{address_name}</S.SelectshopAddressName>
+          <S.SelectshopPhone>{phone}</S.SelectshopPhone>
+        </S.SelectshopInfo>
+        <S.SelectshopFn>
+          <S.SelectshopMoreInfoButton>
+            {myReview ? (
+              <FullfillPatchCheck
+                width={"18px"}
+                height={"18px"}
+                fill={`${styleColor.RED[0]}`}
+              />
+            ) : (
+              <PatchCheck width={"18px"} height={"18px"} />
+            )}
+          </S.SelectshopMoreInfoButton>
+        </S.SelectshopFn>
+      </S.SlectshopContents>
+      {myReview && (
+        <S.PreviewReviewContainer>
+          <S.PreviewReviewTitle>나의 후기</S.PreviewReviewTitle>
+          <S.PreviewReviewDescription>
+            {myReview?.description}
+          </S.PreviewReviewDescription>
+        </S.PreviewReviewContainer>
+      )}
+    </S.SelectshopContainer>
   );
 };
 

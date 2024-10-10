@@ -1,13 +1,6 @@
 import PaginationContainer from "@/components/nearbySelectshopComponents/PaginationContainer";
-import {
-  boundsState,
-  markersState,
-  myLocationState,
-  selectShopsState,
-} from "@/globalState/recoilState";
-import { MarkersType, PaginationType, PlaceType } from "@/types/placeType";
+import { PlaceType } from "@/types/placeType";
 import React, { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import SelectshopDetailInfoContainer from "./SelectshopDetailInfoContainer";
 import SelectshopInfoContainer from "./SelectshopInfoContainer";
@@ -17,10 +10,16 @@ const NearbySelectshop = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
 
-  const {searchPlaces, pagination, selectshops, myLocation} = useKakaoSearch()
- 
+  const { searchPlaces,searchAllPlaces, pagination, selectshops, myLocation } =
+    useKakaoSearch();
+
   useEffect(() => {
-    if (typeof window !== "undefined" && window.kakao && window.kakao.maps && window.kakao.maps.services) {
+    if (
+      typeof window !== "undefined" &&
+      window.kakao &&
+      window.kakao.maps &&
+      window.kakao.maps.services
+    ) {
       if (myLocation.center.lat && myLocation.center.lng) {
         searchPlaces(currentPage);
       }
