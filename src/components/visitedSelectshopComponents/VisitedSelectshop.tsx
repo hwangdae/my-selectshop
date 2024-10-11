@@ -2,7 +2,6 @@ import { PlaceType } from "@/types/placeType";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import SelectshopInfoContainer from "../nearbySelectshopComponents/SelectshopInfoContainer";
-import PaginationContainer from "../nearbySelectshopComponents/PaginationContainer";
 import SelectshopDetailInfoContainer from "../nearbySelectshopComponents/SelectshopDetailInfoContainer";
 import useKakaoSearch from "@/hook/useKakaoSearch";
 import { useQuery } from "@tanstack/react-query";
@@ -11,25 +10,31 @@ import { ReviewType } from "@/types/reviewType";
 
 const VisitedSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { data: reviewData} = useQuery({
+  const { data: reviewData } = useQuery({
     queryKey: ["review"],
     queryFn: () => getAllReview(),
     refetchOnWindowFocus: false,
   });
-  const {searchPlaces,searchAllPlaces, pagination, selectshops, myLocation} = useKakaoSearch()
+  const { searchAllPlaces, selectshops, myLocation } = useKakaoSearch();
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.kakao && window.kakao.maps && window.kakao.maps.services) {
+    if (
+      typeof window !== "undefined" &&
+      window.kakao &&
+      window.kakao.maps &&
+      window.kakao.maps.services
+    ) {
       if (myLocation.center.lat && myLocation.center.lng) {
         searchAllPlaces();
       }
     }
   }, []);
 
-  const visitedSelectshops = selectshops?.filter((selectshop: PlaceType) => 
-    reviewData?.some((review: ReviewType) => review.selectshopId === selectshop.id)
+  const visitedSelectshops = selectshops?.filter((selectshop: PlaceType) =>
+    reviewData?.some(
+      (review: ReviewType) => review.selectshopId === selectshop.id
+    )
   );
 
   return (
@@ -48,11 +53,6 @@ const VisitedSelectshop = () => {
           </li>
         ))}
       </S.SearchResultsInner>
-      {/* <PaginationContainer
-        pagination={pagination}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      /> */}
       {visitedSelectshops?.map((selectshop: PlaceType) => {
         return (
           activeShopId === selectshop.id && (

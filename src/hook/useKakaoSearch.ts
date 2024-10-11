@@ -4,8 +4,12 @@ import {
   myLocationState,
   selectShopsState,
 } from "@/globalState/recoilState";
-import { MarkersType, MyLocationType, PaginationType, PlaceType } from "@/types/placeType";
-import { accordionSummaryClasses } from "@mui/material";
+import {
+  MarkersType,
+  MyLocationType,
+  PaginationType,
+  PlaceType,
+} from "@/types/placeType";
 import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -27,9 +31,17 @@ const useKakaoSearch = () => {
       sort: window.kakao.maps.services.SortBy.DISTANCE,
       page: currentPage,
     };
-    ps.keywordSearch(keyword, (data,status,pagination)=>placesSearchCB(data,status,pagination,[],false), options);
+    ps.keywordSearch(
+      keyword,
+      (data, status, pagination) =>
+        placesSearchCB(data, status, pagination, [], false),
+      options
+    );
   };
-  const searchAllPlaces = (currentPage: number = 1,accumulatedShops: PlaceType[] = []) => {
+  const searchAllPlaces = (
+    currentPage: number = 1,
+    accumulatedShops: PlaceType[] = []
+  ) => {
     const ps = new window.kakao.maps.services.Places();
     const keyword = "의류판매";
     const options = {
@@ -40,7 +52,12 @@ const useKakaoSearch = () => {
       sort: window.kakao.maps.services.SortBy.DISTANCE,
       page: currentPage,
     };
-    ps.keywordSearch(keyword, (data,status,pagination)=>placesSearchCB(data,status,pagination,accumulatedShops,true), options);
+    ps.keywordSearch(
+      keyword,
+      (data, status, pagination) =>
+        placesSearchCB(data, status, pagination, accumulatedShops, true),
+      options
+    );
   };
 
   const placesSearchCB = (
@@ -48,7 +65,7 @@ const useKakaoSearch = () => {
     status: string,
     pagination: PaginationType,
     accumulatedShops: any[] = [],
-    isAllPages: boolean = false,
+    isAllPages: boolean = false
   ) => {
     if (status === window.kakao.maps.services.Status.OK) {
       const updatedShops = [...accumulatedShops, ...data];
@@ -76,7 +93,8 @@ const useKakaoSearch = () => {
     setMarkers(newMarkers);
     setBounds(bounds);
   };
-  return { searchPlaces,searchAllPlaces, pagination, selectshops, myLocation };
+
+  return { searchPlaces, searchAllPlaces, pagination, selectshops, myLocation };
 };
 
 export default useKakaoSearch;

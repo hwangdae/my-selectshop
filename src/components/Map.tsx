@@ -11,12 +11,36 @@ import styled from "styled-components";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import MarkerContainer from "./MarkerContainer";
+import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import { getAllReview } from "@/api/review";
+import { PlaceType } from "@/types/placeType";
+import { ReviewType } from "@/types/reviewType";
 
 const MapComponent = () => {
   const [map, setMap] = useState<any>();
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
   const selectshops = useRecoilValue(selectShopsState);
   const bounds = useRecoilValue(boundsState);
+
+  const router = useRouter()
+  const {tab} = router.query
+
+  const { data: reviewData} = useQuery({
+    queryKey: ["review"],
+    queryFn: () => getAllReview(),
+    refetchOnWindowFocus: false,
+  });
+
+  const visitedSelectshops = selectshops?.filter((selectshop: PlaceType) => 
+    reviewData?.some((review: ReviewType) => review.selectshopId === selectshop.id)
+  );
+
+  const notVisitedSelectshops = selectshops?.filter((selectshop: PlaceType) =>
+    !reviewData?.some(
+      (review: ReviewType) => review.selectshopId === selectshop.id
+    )
+  );
 
   useEffect(() => {
     if (map && bounds) {
@@ -42,6 +66,16 @@ const MapComponent = () => {
     }
   }, []);
 
+  const renderContent = () => {
+    if(tab === "nearbySelectshop"){
+      return selectshops
+    }else if(tab === "visitedSelectshop"){
+      return visitedSelectshops
+    }else{
+      return notVisitedSelectshops
+    }
+  }
+
   return (
     <Map
       id="map"
@@ -49,7 +83,7 @@ const MapComponent = () => {
       style={{ width: "100%", height: "100%" }}
       onCreate={setMap}
     >
-      {selectshops.map((selectshop, index) => (
+      {renderContent().map((selectshop, index) => (
         <MarkerContainer selectshop={selectshop} index={index} />
       ))}
       {!myLocation.isLoading && <MyLocationMaker myLocation={myLocation} />}

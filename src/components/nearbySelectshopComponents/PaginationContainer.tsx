@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Chevron from "@/assets/Chevron.svg";
 import Chevrons from "@/assets/Chevrons.svg";
@@ -15,6 +15,10 @@ const PaginationContainer = ({
   currentPage,
   setCurrentPage,
 }: PropsType) => {
+
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  },[currentPage])
   const nextPageButtonHandler = () => {
     if (pagination && pagination.hasNextPage) {
       setCurrentPage(currentPage + 1);

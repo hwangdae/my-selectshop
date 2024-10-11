@@ -34,7 +34,7 @@ const NotVisiteSelectshop = () => {
     }
   }, [currentPage]);
 
-  const visitedSelectshops = selectshops?.filter((selectshop: PlaceType) =>
+  const notVisitedSelectshops = selectshops?.filter((selectshop: PlaceType) =>
     !reviewData?.some(
       (review: ReviewType) => review.selectshopId === selectshop.id
     )
@@ -43,7 +43,7 @@ const NotVisiteSelectshop = () => {
   return (
     <>
       <S.SearchResultsInner>
-        {visitedSelectshops?.map((selectshop: PlaceType) => (
+        {notVisitedSelectshops?.map((selectshop: PlaceType) => (
           <li
             onClick={() => {
               setActiveShopId(selectshop.id);
@@ -61,7 +61,7 @@ const NotVisiteSelectshop = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-      {visitedSelectshops?.map((selectshop: PlaceType) => {
+      {notVisitedSelectshops?.map((selectshop: PlaceType) => {
         return (
           activeShopId === selectshop.id && (
             <SelectshopDetailInfoContainer

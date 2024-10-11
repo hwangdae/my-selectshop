@@ -10,8 +10,7 @@ const NearbySelectshop = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
 
-  const { searchPlaces,searchAllPlaces, pagination, selectshops, myLocation } =
-    useKakaoSearch();
+  const { searchPlaces, pagination, selectshops, myLocation } = useKakaoSearch();
 
   useEffect(() => {
     if (
