@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import HeaderContainer from "./HeaderContainer";
 import ContentsContainer from "./ContentsContainer";
@@ -23,6 +23,7 @@ const Sidebar = () => {
         return <ContentsContainer />;
     }
   };
+
   return (
     <S.SideContainer>
       <S.StyleHeader>
@@ -37,14 +38,12 @@ export default Sidebar;
 
 const S = {
   SideContainer: styled.aside`
-    /* position: absolute; */
     left: 0;
     top: 0;
     width: 360px;
     height: 100vh;
     z-index: 999;
     background-color: #fff;
-    /* overflow-y: auto; */
   `,
   StyleHeader: styled.div`
     left: 0;

@@ -18,6 +18,9 @@ const VisitedSelectshop = () => {
   });
   const { searchAllPlaces, selectshops, myLocation } = useKakaoSearch();
 
+  //모든 데이터가 45개
+  //15개씩 보여줄건데 
+
   useEffect(() => {
     if (
       typeof window !== "undefined" &&

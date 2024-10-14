@@ -1,6 +1,6 @@
 import PaginationContainer from "@/components/nearbySelectshopComponents/PaginationContainer";
 import { PlaceType } from "@/types/placeType";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import SelectshopDetailInfoContainer from "./SelectshopDetailInfoContainer";
 import SelectshopInfoContainer from "./SelectshopInfoContainer";
@@ -9,6 +9,7 @@ import useKakaoSearch from "@/hook/useKakaoSearch";
 const NearbySelectshop = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const { searchPlaces, pagination, selectshops, myLocation } = useKakaoSearch();
 
@@ -26,7 +27,7 @@ const NearbySelectshop = () => {
   }, [currentPage]);
 
   return (
-    <S.SearchResultsContainer>
+    <S.SearchResultsContainer ref={scrollRef}>
       <S.SearchResultsInner>
         {selectshops?.map((selectshop: PlaceType) => (
           <li
@@ -45,6 +46,7 @@ const NearbySelectshop = () => {
         pagination={pagination}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
+        scrollRef={scrollRef}
       />
       {selectshops?.map((selectshop: PlaceType) => {
         return (
@@ -65,7 +67,8 @@ export default NearbySelectshop;
 const S = {
   SearchResultsContainer: styled.div`
     width: 100%;
-    overflow-y: scroll;
+    height: 100%;
+    overflow-y: auto;
     &::-webkit-scrollbar {
       display: none;
     }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { RefObject, useEffect } from "react";
 import styled from "styled-components";
 import Chevron from "@/assets/Chevron.svg";
 import Chevrons from "@/assets/Chevrons.svg";
@@ -8,17 +8,22 @@ interface PropsType {
   pagination: any;
   currentPage: number;
   setCurrentPage: (page: number) => void;
+  scrollRef : RefObject<HTMLDivElement>
 }
 
 const PaginationContainer = ({
   pagination,
   currentPage,
   setCurrentPage,
+  scrollRef
 }: PropsType) => {
 
   useEffect(()=>{
-    window.scrollTo(0,0)
-  },[currentPage])
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({ top: 0 });
+    }
+  },[pagination])
+
   const nextPageButtonHandler = () => {
     if (pagination && pagination.hasNextPage) {
       setCurrentPage(currentPage + 1);
