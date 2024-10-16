@@ -7,6 +7,7 @@ import useKakaoSearch from "@/hook/useKakaoSearch";
 import { useQuery } from "@tanstack/react-query";
 import { getAllReview } from "@/api/review";
 import { ReviewType } from "@/types/reviewType";
+import PaginationContainer from "../nearbySelectshopComponents/PaginationContainer";
 
 const VisitedSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
@@ -39,7 +40,7 @@ const VisitedSelectshop = () => {
       (review: ReviewType) => review.selectshopId === selectshop.id
     )
   );
-
+  console.log(visitedSelectshops)
   return (
     <>
       <S.SearchResultsInner>
@@ -56,6 +57,12 @@ const VisitedSelectshop = () => {
           </li>
         ))}
       </S.SearchResultsInner>
+      {/* <PaginationContainer
+        pagination={pagination}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        scrollRef={scrollRef}
+      /> */}
       {visitedSelectshops?.map((selectshop: PlaceType) => {
         return (
           activeShopId === selectshop.id && (

@@ -2,12 +2,13 @@ import { PlaceType } from "@/types/placeType";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import SelectshopInfoContainer from "../nearbySelectshopComponents/SelectshopInfoContainer";
-import PaginationContainer from "../nearbySelectshopComponents/PaginationContainer";
+// import PaginationContainer from "../nearbySelectshopComponents/PaginationContainer";
 import SelectshopDetailInfoContainer from "../nearbySelectshopComponents/SelectshopDetailInfoContainer";
 import useKakaoSearch from "@/hook/useKakaoSearch";
 import { useQuery } from "@tanstack/react-query";
 import { getAllReview } from "@/api/review";
 import { ReviewType } from "@/types/reviewType";
+import PaginationContainer from "../utilityComponents/PaginationContainer";
 
 const NotVisiteSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
@@ -56,11 +57,12 @@ const NotVisiteSelectshop = () => {
           </li>
         ))}
       </S.SearchResultsInner>
-      <PaginationContainer
+      {/* <PaginationContainer
         pagination={pagination}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-      />
+      /> */}
+      <PaginationContainer/>
       {notVisitedSelectshops?.map((selectshop: PlaceType) => {
         return (
           activeShopId === selectshop.id && (
