@@ -64,7 +64,7 @@ const useKakaoSearch = () => {
     data: any[],
     status: string,
     pagination: PaginationType,
-    accumulatedShops: any[] = [],
+    accumulatedShops: PlaceType[] = [],
     isAllPages: boolean = false
   ) => {
     if (status === window.kakao.maps.services.Status.OK) {

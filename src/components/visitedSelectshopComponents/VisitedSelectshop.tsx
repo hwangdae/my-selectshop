@@ -40,7 +40,6 @@ const VisitedSelectshop = () => {
       (review: ReviewType) => review.selectshopId === selectshop.id
     )
   );
-  console.log(visitedSelectshops)
   return (
     <>
       <S.SearchResultsInner>
