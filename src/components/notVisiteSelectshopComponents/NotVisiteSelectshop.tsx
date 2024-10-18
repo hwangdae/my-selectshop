@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllReview } from "@/api/review";
 import { ReviewType } from "@/types/reviewType";
 import CustomPaginationContainer from "../utilityComponents/CustomPaginationContainer";
+import { getPaginatedItems } from "@/utilityFunction/pagenate";
 
 const NotVisiteSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
@@ -19,8 +20,7 @@ const NotVisiteSelectshop = () => {
     queryFn: () => getAllReview(),
     refetchOnWindowFocus: false,
   });
-  const { searchAllPlaces, searchPlaces, pagination, selectshops, myLocation } =
-    useKakaoSearch();
+  const { searchAllPlaces, selectshops, myLocation } = useKakaoSearch();
 
   useEffect(() => {
     if (
@@ -30,7 +30,7 @@ const NotVisiteSelectshop = () => {
       window.kakao.maps.services
     ) {
       if (myLocation.center.lat && myLocation.center.lng) {
-        searchAllPlaces(currentPage);
+        searchAllPlaces();
       }
     }
   }, [currentPage]);
@@ -42,46 +42,29 @@ const NotVisiteSelectshop = () => {
       )
   );
 
-  const indexOfLastItem = currentPage * 15;
-  const indexOfFirstItem = indexOfLastItem - 15;
-  const currentItems = notVisitedSelectshops.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+  const currentItems = getPaginatedItems(notVisitedSelectshops, currentPage);
 
-  console.log(currentItems);
   return (
     <S.SearchResultsContainer ref={scrollRef}>
       <S.SearchResultsInner>
         {currentItems?.map((selectshop: PlaceType) => (
           <li
-            onClick={() => {
-              setActiveShopId(selectshop.id);
-            }}
+            key={selectshop.id}
+            onClick={() => setActiveShopId(selectshop.id)}
           >
-            <SelectshopInfoContainer
-              key={selectshop.id}
-              selectshop={selectshop}
-            />
+            <SelectshopInfoContainer selectshop={selectshop} />
+            {activeShopId === selectshop.id && (
+              <SelectshopDetailInfoContainer selectshop={selectshop} />
+            )}
           </li>
         ))}
       </S.SearchResultsInner>
       <CustomPaginationContainer
-        notVisitedSelectshops={notVisitedSelectshops}
+        selectshops={notVisitedSelectshops}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         scrollRef={scrollRef}
       />
-      {notVisitedSelectshops?.map((selectshop: PlaceType) => {
-        return (
-          activeShopId === selectshop.id && (
-            <SelectshopDetailInfoContainer
-              key={selectshop.id}
-              selectshop={selectshop}
-            />
-          )
-        );
-      })}
     </S.SearchResultsContainer>
   );
 };

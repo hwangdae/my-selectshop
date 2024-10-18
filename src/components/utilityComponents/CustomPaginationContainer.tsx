@@ -6,22 +6,24 @@ import { styleColor } from "@/styles/styleColor";
 import { PlaceType } from "@/types/placeType";
 
 interface PropsType {
-  notVisitedSelectshops: PlaceType[];
+  selectshops: PlaceType[];
   currentPage: number;
   setCurrentPage: (page: number) => void;
   scrollRef: RefObject<HTMLDivElement>;
 }
 
 const CustomPaginationContainer = ({
-  notVisitedSelectshops,
+  selectshops,
   currentPage,
   setCurrentPage,
   scrollRef,
 }: PropsType) => {
 
-  const totalPages = Math.ceil(notVisitedSelectshops.length / 15);
+  const totalPages = Math.ceil(selectshops.length / 15);
 
-  console.log(notVisitedSelectshops)
+  console.log(Array.from({length : totalPages}))
+
+  console.log(selectshops.length)
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -32,12 +34,12 @@ const CustomPaginationContainer = ({
   return (
     <S.PaginationContainer>
       <S.PageButtonWrap>
-        {/* <button onClick={}>
+       <button onClick={()=>setCurrentPage(1)}>
           <Chevrons
             transform={"rotate(180)"}
             fill={`${styleColor.GRAY[400]}`}
           />
-        </button> */}
+        </button>
         <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
           <Chevron transform={"rotate(180)"} fill={`${styleColor.GRAY[400]}`} />
         </button>
@@ -49,7 +51,7 @@ const CustomPaginationContainer = ({
               key={index+1}
               $index={index+1}
               $currentPage={currentPage}
-              onClick={() => setCurrentPage(index+1)}
+              onClick={() => setCurrentPage(index + 1)}
             >
               {index + 1}
             </S.PageNumberButton>
@@ -60,9 +62,9 @@ const CustomPaginationContainer = ({
         <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
           <Chevron fill={`${styleColor.GRAY[400]}`} />
         </button>
-        {/* <button onClick={}>
+        <button onClick={()=>setCurrentPage(totalPages)}>
           <Chevrons fill={`${styleColor.GRAY[400]}`} />
-        </button> */}
+        </button>
       </S.PageButtonWrap>
     </S.PaginationContainer>
   );

@@ -1,5 +1,5 @@
 import { PlaceType } from "@/types/placeType";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import SelectshopInfoContainer from "../nearbySelectshopComponents/SelectshopInfoContainer";
 import SelectshopDetailInfoContainer from "../nearbySelectshopComponents/SelectshopDetailInfoContainer";
@@ -8,9 +8,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllReview } from "@/api/review";
 import { ReviewType } from "@/types/reviewType";
 import PaginationContainer from "../nearbySelectshopComponents/PaginationContainer";
+import { getPaginatedItems } from "@/utilityFunction/pagenate";
+import CustomPaginationContainer from "../utilityComponents/CustomPaginationContainer";
 
 const VisitedSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const { data: reviewData } = useQuery({
     queryKey: ["review"],
@@ -18,9 +22,6 @@ const VisitedSelectshop = () => {
     refetchOnWindowFocus: false,
   });
   const { searchAllPlaces, selectshops, myLocation } = useKakaoSearch();
-
-  //모든 데이터가 45개
-  //15개씩 보여줄건데 
 
   useEffect(() => {
     if (
@@ -33,17 +34,20 @@ const VisitedSelectshop = () => {
         searchAllPlaces();
       }
     }
-  }, []);
+  }, [currentPage]);
 
   const visitedSelectshops = selectshops?.filter((selectshop: PlaceType) =>
     reviewData?.some(
       (review: ReviewType) => review.selectshopId === selectshop.id
     )
   );
+
+  const currentItems = getPaginatedItems(visitedSelectshops, currentPage);
+
   return (
     <>
       <S.SearchResultsInner>
-        {visitedSelectshops?.map((selectshop: PlaceType) => (
+        {currentItems?.map((selectshop: PlaceType) => (
           <li
             onClick={() => {
               setActiveShopId(selectshop.id);
@@ -53,25 +57,19 @@ const VisitedSelectshop = () => {
               key={selectshop.id}
               selectshop={selectshop}
             />
+            {activeShopId === selectshop.id && (
+              <SelectshopDetailInfoContainer
+                key={selectshop.id}
+                selectshop={selectshop}
+              />
+            )}
           </li>
         ))}
       </S.SearchResultsInner>
-      {/* <PaginationContainer
-        pagination={pagination}
+      <CustomPaginationContainer selectshops={visitedSelectshops}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        scrollRef={scrollRef}
-      /> */}
-      {visitedSelectshops?.map((selectshop: PlaceType) => {
-        return (
-          activeShopId === selectshop.id && (
-            <SelectshopDetailInfoContainer
-              key={selectshop.id}
-              selectshop={selectshop}
-            />
-          )
-        );
-      })}
+        scrollRef={scrollRef}/>
     </>
   );
 };
