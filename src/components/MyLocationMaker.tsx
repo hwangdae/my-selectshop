@@ -1,4 +1,4 @@
-import { MyLocationType } from "@/globalState/recoilState";
+import { MyLocationType } from "@/types/placeType";
 import React from "react";
 import { MapMarker } from "react-kakao-maps-sdk";
 

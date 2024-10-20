@@ -43,3 +43,8 @@ export const boundsState = atom ({
   key : 'boundsState',
   default : null
 })
+
+export const currentPageState = atom ({
+  key : 'currentPageState',
+  default : 1
+})

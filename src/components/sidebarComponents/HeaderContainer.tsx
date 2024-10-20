@@ -1,21 +1,35 @@
 import { styleFont } from "@/styles/styleFont";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Search from "@/assets/Search.svg";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";
 import useLoginUserId from "@/hook/useLoginUserId";
-import { useRecoilState } from "recoil";
-import { selectShopsState } from "@/globalState/recoilState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { boundsState, myLocationState, selectShopsState } from "@/globalState/recoilState";
 import { PlaceType } from "@/types/placeType";
 import { logOut } from "@/api/user";
 
 const HeaderContainer = () => {
   const [searchName, setSearchName] = useState("");
+  const myLocation = useRecoilValue(myLocationState);
+  const [,setBounds] = useRecoilState<any>(boundsState)
   const [, setSelectshops] = useRecoilState<PlaceType[]>(selectShopsState);
   const loginUser = useLoginUserId();
 
   const router = useRouter();
+  console.log(myLocation)
+
+  useEffect(()=>{
+    if(typeof window !== "undefined" &&
+      window.kakao &&
+      window.kakao.maps){
+        const bounds = new kakao.maps.LatLngBounds();
+        const position = new kakao.maps.LatLng(myLocation.center.lat, myLocation.center.lng);
+        bounds.extend(position);
+        setBounds(bounds)
+    }
+  },[setBounds])
 
   const logoutHandleSubmit = async () => {
     try {
@@ -29,7 +43,7 @@ const HeaderContainer = () => {
     }
   };
 
-  const searchSelectshopButton = async (e: any) => {};
+  const searchSelectshopButton = async (e : any) => {};
 
   return (
     <S.HeaderContainer>
@@ -40,6 +54,7 @@ const HeaderContainer = () => {
               onClick={() => {
                 setSelectshops([]);
                 router.push("/");
+
               }}
             >
               MySelectshop

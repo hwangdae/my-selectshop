@@ -9,10 +9,12 @@ import { getAllReview } from "@/api/review";
 import { ReviewType } from "@/types/reviewType";
 import CustomPaginationContainer from "../utilityComponents/CustomPaginationContainer";
 import { getPaginatedItems } from "@/utilityFunction/pagenate";
+import { useRecoilState } from "recoil";
+import { currentPageState } from "@/globalState/recoilState";
 
 const NotVisiteSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useRecoilState<number>(currentPageState);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { data: reviewData } = useQuery({

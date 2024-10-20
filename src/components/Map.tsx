@@ -1,5 +1,6 @@
 import {
   boundsState,
+  currentPageState,
   myLocationState,
   selectShopsState,
 } from "@/globalState/recoilState";
@@ -16,10 +17,12 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllReview } from "@/api/review";
 import { PlaceType } from "@/types/placeType";
 import { ReviewType } from "@/types/reviewType";
+import { getPaginatedItems } from "@/utilityFunction/pagenate";
 
 const MapComponent = () => {
   const [map, setMap] = useState<any>();
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
+  const currentPage = useRecoilValue<number>(currentPageState);
   const selectshops = useRecoilValue(selectShopsState);
   const bounds = useRecoilValue(boundsState);
 
@@ -70,9 +73,9 @@ const MapComponent = () => {
     if(tab === "nearbySelectshop"){
       return selectshops
     }else if(tab === "visitedSelectshop"){
-      return visitedSelectshops
+      return getPaginatedItems(visitedSelectshops, currentPage);
     }else{
-      return notVisitedSelectshops
+      return getPaginatedItems(notVisitedSelectshops,currentPage)
     }
   }
 
