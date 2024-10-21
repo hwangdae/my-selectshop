@@ -26,15 +26,15 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
 
   useEffect(()=>{
-    if(typeof window !== "undefined" &&
-      window.kakao &&
-      window.kakao.maps){
+    // if(typeof window !== "undefined" &&
+    //   window.kakao &&
+    //   window.kakao.maps){
         const bounds = new kakao.maps.LatLngBounds();
         const position = new kakao.maps.LatLng(y, x);
       
         bounds.extend(position);
         setBounds(bounds);
-    }
+    // }
   },[id, x, y, setBounds])
 
   const {

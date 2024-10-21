@@ -6,30 +6,34 @@ import { useRouter } from "next/router";
 import { Button } from "@mui/material";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { boundsState, myLocationState, selectShopsState } from "@/globalState/recoilState";
+import {
+  boundsState,
+  myLocationState,
+  selectShopsState,
+} from "@/globalState/recoilState";
 import { PlaceType } from "@/types/placeType";
 import { logOut } from "@/api/user";
 
 const HeaderContainer = () => {
   const [searchName, setSearchName] = useState("");
   const myLocation = useRecoilValue(myLocationState);
-  const [,setBounds] = useRecoilState<any>(boundsState)
+  const [, setBounds] = useRecoilState<any>(boundsState);
   const [, setSelectshops] = useRecoilState<PlaceType[]>(selectShopsState);
   const loginUser = useLoginUserId();
 
   const router = useRouter();
-  console.log(myLocation)
 
-  useEffect(()=>{
-    if(typeof window !== "undefined" &&
-      window.kakao &&
-      window.kakao.maps){
-        const bounds = new kakao.maps.LatLngBounds();
-        const position = new kakao.maps.LatLng(myLocation.center.lat, myLocation.center.lng);
-        bounds.extend(position);
-        setBounds(bounds)
-    }
-  },[setBounds])
+  const handleLogoClick = () => {
+    setSelectshops([]);
+    router.push("/");
+    const bounds = new kakao.maps.LatLngBounds();
+    const position = new kakao.maps.LatLng(
+      myLocation.center.lat,
+      myLocation.center.lng
+    );
+    bounds.extend(position);
+    setBounds(bounds);
+  };
 
   const logoutHandleSubmit = async () => {
     try {
@@ -43,22 +47,17 @@ const HeaderContainer = () => {
     }
   };
 
-  const searchSelectshopButton = async (e : any) => {};
+  const searchSelectshopButton = async (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push({ pathname:"nearbySelectshop", query: {name :`${searchName}`}  });
+  };
 
   return (
     <S.HeaderContainer>
       <S.HeaderInner>
         <S.HeaderTop>
           <S.Logo>
-            <button
-              onClick={() => {
-                setSelectshops([]);
-                router.push("/");
-
-              }}
-            >
-              MySelectshop
-            </button>
+            <button onClick={() => handleLogoClick()}>MySelectshop</button>
           </S.Logo>
           {!loginUser ? (
             <Button

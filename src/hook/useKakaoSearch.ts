@@ -23,12 +23,12 @@ const useKakaoSearch = () => {
   const searchPlaces = (currentPage: number = 1) => {
     const ps = new window.kakao.maps.services.Places();
     const keyword = "의류판매";
-    const options = {
+    const options: kakao.maps.services.PlacesSearchOptions = {
       location: new window.kakao.maps.LatLng(
         myLocation.center.lat,
         myLocation.center.lng
       ),
-      sort: window.kakao.maps.services.SortBy.DISTANCE,
+      sort: window.kakao.maps.services.SortBy.ACCURACY,
       page: currentPage,
     };
     ps.keywordSearch(
@@ -43,13 +43,13 @@ const useKakaoSearch = () => {
     accumulatedShops: PlaceType[] = []
   ) => {
     const ps = new window.kakao.maps.services.Places();
-    const keyword = "의류판매";
-    const options = {
+    const keyword = "의류판매"
+    const options: kakao.maps.services.PlacesSearchOptions = {
       location: new window.kakao.maps.LatLng(
         myLocation.center.lat,
         myLocation.center.lng
       ),
-      sort: window.kakao.maps.services.SortBy.DISTANCE,
+      sort: window.kakao.maps.services.SortBy.ACCURACY,
       page: currentPage,
     };
     ps.keywordSearch(

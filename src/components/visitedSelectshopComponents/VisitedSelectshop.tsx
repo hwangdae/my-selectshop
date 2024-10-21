@@ -7,7 +7,6 @@ import useKakaoSearch from "@/hook/useKakaoSearch";
 import { useQuery } from "@tanstack/react-query";
 import { getAllReview } from "@/api/review";
 import { ReviewType } from "@/types/reviewType";
-import PaginationContainer from "../nearbySelectshopComponents/PaginationContainer";
 import { getPaginatedItems } from "@/utilityFunction/pagenate";
 import CustomPaginationContainer from "../utilityComponents/CustomPaginationContainer";
 
