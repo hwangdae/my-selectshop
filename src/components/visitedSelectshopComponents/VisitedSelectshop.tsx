@@ -9,10 +9,13 @@ import { getAllReview } from "@/api/review";
 import { ReviewType } from "@/types/reviewType";
 import { getPaginatedItems } from "@/utilityFunction/pagenate";
 import CustomPaginationContainer from "../utilityComponents/CustomPaginationContainer";
+import { useRecoilValue } from "recoil";
+import { searchTermState } from "@/globalState/recoilState";
 
 const VisitedSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const searchTerm = useRecoilValue(searchTermState);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { data: reviewData } = useQuery({
@@ -38,7 +41,7 @@ const VisitedSelectshop = () => {
   const visitedSelectshops = selectshops?.filter((selectshop: PlaceType) =>
     reviewData?.some(
       (review: ReviewType) => review.selectshopId === selectshop.id
-    )
+    ) && (selectshop.place_name.includes(searchTerm))
   );
 
   const currentItems = getPaginatedItems(visitedSelectshops, currentPage);

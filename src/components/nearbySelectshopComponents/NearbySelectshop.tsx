@@ -5,10 +5,13 @@ import styled from "styled-components";
 import SelectshopDetailInfoContainer from "./SelectshopDetailInfoContainer";
 import SelectshopInfoContainer from "./SelectshopInfoContainer";
 import useKakaoSearch from "@/hook/useKakaoSearch";
+import { useRecoilValue } from "recoil";
+import { searchTermState } from "@/globalState/recoilState";
 
 const NearbySelectshop = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
+  const searchTerm = useRecoilValue(searchTermState);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { searchPlaces, pagination, selectshops, myLocation } = useKakaoSearch();
@@ -25,11 +28,15 @@ const NearbySelectshop = () => {
       }
     }
   }, [currentPage]);
+  console.log(selectshops)
+  const filteredShops = selectshops.filter((selectshop) =>
+    selectshop.place_name.includes(searchTerm)
+  );
 
   return (
     <S.SearchResultsContainer ref={scrollRef}>
       <S.SearchResultsInner>
-        {selectshops?.map((selectshop: PlaceType) => (
+        {filteredShops?.map((selectshop: PlaceType) => (
           <li
             onClick={() => {
               setActiveShopId(selectshop.id);
@@ -48,7 +55,7 @@ const NearbySelectshop = () => {
         setCurrentPage={setCurrentPage}
         scrollRef={scrollRef}
       />
-      {selectshops?.map((selectshop: PlaceType) => {
+      {filteredShops?.map((selectshop: PlaceType) => {
         return (
           activeShopId === selectshop.id && (
             <SelectshopDetailInfoContainer

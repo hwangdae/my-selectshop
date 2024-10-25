@@ -48,3 +48,8 @@ export const currentPageState = atom ({
   key : 'currentPageState',
   default : 1
 })
+
+export const searchTermState = atom<string>({
+  key: "searchTermState",
+  default: "",
+});

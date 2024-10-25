@@ -9,19 +9,22 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   boundsState,
   myLocationState,
+  searchTermState,
   selectShopsState,
 } from "@/globalState/recoilState";
 import { PlaceType } from "@/types/placeType";
 import { logOut } from "@/api/user";
 
 const HeaderContainer = () => {
-  const [searchName, setSearchName] = useState("");
+  const [searchName, setSearchName] = useRecoilState(searchTermState);
   const myLocation = useRecoilValue(myLocationState);
   const [, setBounds] = useRecoilState<any>(boundsState);
   const [, setSelectshops] = useRecoilState<PlaceType[]>(selectShopsState);
   const loginUser = useLoginUserId();
 
   const router = useRouter();
+  const {tab} = router.query;
+  console.log(router,tab)
 
   const handleLogoClick = () => {
     setSelectshops([]);
@@ -47,9 +50,11 @@ const HeaderContainer = () => {
     }
   };
 
-  const searchSelectshopButton = async (e: React.FormEvent) => {
+  const searchSelectshopSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push({ pathname:"nearbySelectshop", query: {name :`${searchName}`}  });
+    if (router.query.tab !== "nearbySelectshop") {
+      router.push("?tab=nearbySelectshop");
+    }
   };
 
   return (
@@ -77,7 +82,7 @@ const HeaderContainer = () => {
             </Button>
           )}
         </S.HeaderTop>
-        <S.SearchForm onSubmit={searchSelectshopButton}>
+        <S.SearchForm onSubmit={searchSelectshopSubmit}>
           <S.SearchInput
             type="text"
             value={searchName}
