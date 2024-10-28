@@ -11,10 +11,12 @@ import CustomPaginationContainer from "../utilityComponents/CustomPaginationCont
 import { getPaginatedItems } from "@/utilityFunction/pagenate";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { currentPageState, searchTermState } from "@/globalState/recoilState";
+import { styleColor } from "@/styles/styleColor";
 
 const NotVisiteSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useRecoilState<number>(currentPageState);
+  const [currentPage, setCurrentPage] =
+    useRecoilState<number>(currentPageState);
   const searchTerm = useRecoilValue(searchTermState);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +44,7 @@ const NotVisiteSelectshop = () => {
     (selectshop: PlaceType) =>
       !reviewData?.some(
         (review: ReviewType) => review.selectshopId === selectshop.id
-      ) && (selectshop.place_name.includes(searchTerm))
+      ) && selectshop.place_name.includes(searchTerm)
   );
 
   const currentItems = getPaginatedItems(notVisitedSelectshops, currentPage);
@@ -50,24 +52,35 @@ const NotVisiteSelectshop = () => {
   return (
     <S.SearchResultsContainer ref={scrollRef}>
       <S.SearchResultsInner>
-        {currentItems?.map((selectshop: PlaceType) => (
-          <li
-            key={selectshop.id}
-            onClick={() => setActiveShopId(selectshop.id)}
-          >
-            <SelectshopInfoContainer selectshop={selectshop} />
-            {activeShopId === selectshop.id && (
-              <SelectshopDetailInfoContainer selectshop={selectshop} />
-            )}
-          </li>
-        ))}
+        {currentItems.length > 0 ? (
+          currentItems?.map((selectshop: PlaceType) => (
+            <li
+              key={selectshop.id}
+              onClick={() => setActiveShopId(selectshop.id)}
+            >
+              <SelectshopInfoContainer selectshop={selectshop} />
+              {activeShopId === selectshop.id && (
+                <SelectshopDetailInfoContainer selectshop={selectshop} />
+              )}
+            </li>
+          ))
+        ) : (
+          <S.NoSearchResult>
+            <h2>셀렉샵 검색결과가 없습니다.</h2>
+            <span>"{searchTerm}"</span>
+          </S.NoSearchResult>
+        )}
       </S.SearchResultsInner>
-      <CustomPaginationContainer
-        selectshops={notVisitedSelectshops}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        scrollRef={scrollRef}
-      />
+      {currentItems.length < 15 ? (
+        ""
+      ) : (
+        <CustomPaginationContainer
+          selectshops={notVisitedSelectshops}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          scrollRef={scrollRef}
+        />
+      )}
     </S.SearchResultsContainer>
   );
 };
@@ -84,4 +97,18 @@ const S = {
     }
   `,
   SearchResultsInner: styled.ul``,
+  NoSearchResult: styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 50px;
+    h2 {
+      display: block;
+    }
+    span {
+      display: block;
+      color : ${styleColor.RED[0]}
+    }
+  `,
 };

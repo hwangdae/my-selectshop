@@ -38,10 +38,11 @@ const VisitedSelectshop = () => {
     }
   }, [currentPage]);
 
-  const visitedSelectshops = selectshops?.filter((selectshop: PlaceType) =>
-    reviewData?.some(
-      (review: ReviewType) => review.selectshopId === selectshop.id
-    ) && (selectshop.place_name.includes(searchTerm))
+  const visitedSelectshops = selectshops?.filter(
+    (selectshop: PlaceType) =>
+      reviewData?.some(
+        (review: ReviewType) => review.selectshopId === selectshop.id
+      ) && selectshop.place_name.includes(searchTerm)
   );
 
   const currentItems = getPaginatedItems(visitedSelectshops, currentPage);
@@ -68,10 +69,16 @@ const VisitedSelectshop = () => {
           </li>
         ))}
       </S.SearchResultsInner>
-      <CustomPaginationContainer selectshops={visitedSelectshops}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        scrollRef={scrollRef}/>
+      {currentItems.length < 15 ? (
+        ""
+      ) : (
+        <CustomPaginationContainer
+          selectshops={visitedSelectshops}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          scrollRef={scrollRef}
+        />
+      )}
     </>
   );
 };

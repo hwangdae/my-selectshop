@@ -14,7 +14,8 @@ const NearbySelectshop = () => {
   const searchTerm = useRecoilValue(searchTermState);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { searchPlaces, pagination, selectshops, myLocation } = useKakaoSearch();
+  const { searchPlaces, pagination, selectshops, myLocation } =
+    useKakaoSearch();
 
   useEffect(() => {
     if (
@@ -28,7 +29,7 @@ const NearbySelectshop = () => {
       }
     }
   }, [currentPage]);
-  console.log(selectshops)
+
   const filteredShops = selectshops.filter((selectshop) =>
     selectshop.place_name.includes(searchTerm)
   );
@@ -46,25 +47,25 @@ const NearbySelectshop = () => {
               key={selectshop.id}
               selectshop={selectshop}
             />
+            {activeShopId === selectshop.id && (
+              <SelectshopDetailInfoContainer
+                key={selectshop.id}
+                selectshop={selectshop}
+              />
+            )}
           </li>
         ))}
       </S.SearchResultsInner>
-      <PaginationContainer
-        pagination={pagination}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        scrollRef={scrollRef}
-      />
-      {filteredShops?.map((selectshop: PlaceType) => {
-        return (
-          activeShopId === selectshop.id && (
-            <SelectshopDetailInfoContainer
-              key={selectshop.id}
-              selectshop={selectshop}
-            />
-          )
-        );
-      })}
+      {filteredShops.length < 15 ? (
+        ""
+      ) : (
+        <PaginationContainer
+          pagination={pagination}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          scrollRef={scrollRef}
+        />
+      )}
     </S.SearchResultsContainer>
   );
 };

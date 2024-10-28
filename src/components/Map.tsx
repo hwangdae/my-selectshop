@@ -2,6 +2,7 @@ import {
   boundsState,
   currentPageState,
   myLocationState,
+  searchTermState,
   selectShopsState,
 } from "@/globalState/recoilState";
 import { useEffect, useState } from "react";
@@ -25,6 +26,7 @@ const MapComponent = () => {
   const currentPage = useRecoilValue<number>(currentPageState);
   const selectshops = useRecoilValue(selectShopsState);
   const bounds = useRecoilValue(boundsState);
+  const searchTerm = useRecoilValue(searchTermState);
 
   const router = useRouter()
   const {tab} = router.query
@@ -35,14 +37,18 @@ const MapComponent = () => {
     refetchOnWindowFocus: false,
   });
 
-  const visitedSelectshops = selectshops?.filter((selectshop: PlaceType) => 
-    reviewData?.some((review: ReviewType) => review.selectshopId === selectshop.id)
+  const visitedSelectshops = selectshops?.filter(
+    (selectshop: PlaceType) =>
+      reviewData?.some(
+        (review: ReviewType) => review.selectshopId === selectshop.id
+      ) && selectshop.place_name.includes(searchTerm)
   );
 
-  const notVisitedSelectshops = selectshops?.filter((selectshop: PlaceType) =>
-    !reviewData?.some(
-      (review: ReviewType) => review.selectshopId === selectshop.id
-    )
+  const notVisitedSelectshops = selectshops?.filter(
+    (selectshop: PlaceType) =>
+      !reviewData?.some(
+        (review: ReviewType) => review.selectshopId === selectshop.id
+      ) && selectshop.place_name.includes(searchTerm)
   );
 
   useEffect(() => {

@@ -52,7 +52,7 @@ const HeaderContainer = () => {
 
   const searchSelectshopSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (router.query.tab !== "nearbySelectshop") {
+    if (router.query.tab === undefined) {
       router.push("?tab=nearbySelectshop");
     }
   };
