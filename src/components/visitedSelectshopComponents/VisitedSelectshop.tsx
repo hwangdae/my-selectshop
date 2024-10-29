@@ -11,6 +11,7 @@ import { getPaginatedItems } from "@/utilityFunction/pagenate";
 import CustomPaginationContainer from "../utilityComponents/CustomPaginationContainer";
 import { useRecoilValue } from "recoil";
 import { searchTermState } from "@/globalState/recoilState";
+import NoSearchResultContainer from "../NoSearchResultContainer";
 
 const VisitedSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
@@ -50,24 +51,28 @@ const VisitedSelectshop = () => {
   return (
     <>
       <S.SearchResultsInner>
-        {currentItems?.map((selectshop: PlaceType) => (
-          <li
-            onClick={() => {
-              setActiveShopId(selectshop.id);
-            }}
-          >
-            <SelectshopInfoContainer
-              key={selectshop.id}
-              selectshop={selectshop}
-            />
-            {activeShopId === selectshop.id && (
-              <SelectshopDetailInfoContainer
+        {currentItems.length > 0 ? (
+          currentItems?.map((selectshop: PlaceType) => (
+            <li
+              onClick={() => {
+                setActiveShopId(selectshop.id);
+              }}
+            >
+              <SelectshopInfoContainer
                 key={selectshop.id}
                 selectshop={selectshop}
               />
-            )}
-          </li>
-        ))}
+              {activeShopId === selectshop.id && (
+                <SelectshopDetailInfoContainer
+                  key={selectshop.id}
+                  selectshop={selectshop}
+                />
+              )}
+            </li>
+          ))
+        ) : (
+          <NoSearchResultContainer />
+        )}
       </S.SearchResultsInner>
       {currentItems.length < 15 ? (
         ""

@@ -37,6 +37,10 @@ const MapComponent = () => {
     refetchOnWindowFocus: false,
   });
 
+  const filteredShops = selectshops.filter((selectshop) =>
+    selectshop.place_name.includes(searchTerm)
+  );
+
   const visitedSelectshops = selectshops?.filter(
     (selectshop: PlaceType) =>
       reviewData?.some(
@@ -77,7 +81,7 @@ const MapComponent = () => {
 
   const renderContent = () => {
     if(tab === "nearbySelectshop"){
-      return selectshops
+      return filteredShops
     }else if(tab === "visitedSelectshop"){
       return getPaginatedItems(visitedSelectshops, currentPage);
     }else{

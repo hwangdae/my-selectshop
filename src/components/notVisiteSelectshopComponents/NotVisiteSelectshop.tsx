@@ -11,7 +11,7 @@ import CustomPaginationContainer from "../utilityComponents/CustomPaginationCont
 import { getPaginatedItems } from "@/utilityFunction/pagenate";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { currentPageState, searchTermState } from "@/globalState/recoilState";
-import { styleColor } from "@/styles/styleColor";
+import NoSearchResultContainer from "../NoSearchResultContainer";
 
 const NotVisiteSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
@@ -65,10 +65,7 @@ const NotVisiteSelectshop = () => {
             </li>
           ))
         ) : (
-          <S.NoSearchResult>
-            <h2>셀렉샵 검색결과가 없습니다.</h2>
-            <span>"{searchTerm}"</span>
-          </S.NoSearchResult>
+          <NoSearchResultContainer/>
         )}
       </S.SearchResultsInner>
       {currentItems.length < 15 ? (
@@ -97,18 +94,4 @@ const S = {
     }
   `,
   SearchResultsInner: styled.ul``,
-  NoSearchResult: styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-top: 50px;
-    h2 {
-      display: block;
-    }
-    span {
-      display: block;
-      color : ${styleColor.RED[0]}
-    }
-  `,
 };
