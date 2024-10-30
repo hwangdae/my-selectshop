@@ -8,6 +8,8 @@ import PatchCheck from "@/assets/PatchCheck.svg";
 import FullfillPatchCheck from "@/assets/FullfillPatchCheck.svg";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { ReviewType } from "@/types/reviewType";
+import { useRecoilValue } from "recoil";
+import { searchTermState } from "@/globalState/recoilState";
 
 interface PropsType {
   selectshop: PlaceType;
@@ -17,6 +19,7 @@ interface PropsType {
 const SelectshopInfoContainer = ({ selectshop, type }: PropsType) => {
   const { id, place_name, address_name, phone, distance, x, y } = selectshop;
   const loginUser = useLoginUserId();
+  const searchTerm = useRecoilValue(searchTermState);
 
   const { data: reviewData } = useQuery({
     queryKey: ["review", id],
@@ -29,12 +32,32 @@ const SelectshopInfoContainer = ({ selectshop, type }: PropsType) => {
     return review?.selectshopId === id && review?.userId === loginUser;
   });
 
+  const highlighttedText = (text: string, query: string) => {
+    if (query !== "" && text.includes(query)) {
+      const parts = text.split(new RegExp(`(${query})`, "gi"));
+      console.log(text)
+      console.log(parts);
+      return (
+        <>
+          {parts.map((part, index) => {
+            return part.toLowerCase() === query.toLowerCase() ? (
+              <S.HighlightText key={`${part}+${index}`}>{part}</S.HighlightText>
+            ) : (
+              <span key={`${part}-${index}`}>{part}</span>
+            );
+          })}
+        </>
+      );
+    }
+    return text;
+  };
+
   return (
     <S.SelectshopContainer>
       <S.SlectshopContents>
         <S.SelectshopInfo>
           <S.SelectshopName>
-            {place_name}
+            {highlighttedText(place_name, searchTerm)}
             <S.SelectshopDistance>
               {distance >= 1000
                 ? `${(distance / 1000).toFixed(1)}km`
@@ -134,5 +157,11 @@ const S = {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  `,
+
+  HighlightText: styled.mark`
+    background-color: transparent;
+    font-weight: 800;
+    color: ${styleColor.INDIGO[0]};
   `,
 };
