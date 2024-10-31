@@ -14,6 +14,7 @@ import {
 } from "@/globalState/recoilState";
 import { PlaceType } from "@/types/placeType";
 import { logOut } from "@/api/user";
+import { styleColor } from "@/styles/styleColor";
 
 const HeaderContainer = () => {
   const [searchName, setSearchName] = useRecoilState(searchTermState);
@@ -23,8 +24,8 @@ const HeaderContainer = () => {
   const loginUser = useLoginUserId();
 
   const router = useRouter();
-  const {tab} = router.query;
-  console.log(router,tab)
+  const { tab } = router.query;
+  console.log(router, tab);
 
   const handleLogoClick = () => {
     setSelectshops([]);
@@ -65,21 +66,9 @@ const HeaderContainer = () => {
             <button onClick={() => handleLogoClick()}>MySelectshop</button>
           </S.Logo>
           {!loginUser ? (
-            <Button
-              variant="contained"
-              sx={{ padding: "5px 30px" }}
-              onClick={() => router.push("?modal=login")}
-            >
-              로그인
-            </Button>
+            <Button onClick={() => router.push("?modal=login")}>로그인</Button>
           ) : (
-            <Button
-              variant="contained"
-              sx={{ padding: "5px 30px" }}
-              onClick={logoutHandleSubmit}
-            >
-              로그아웃
-            </Button>
+            <Button onClick={logoutHandleSubmit}>로그아웃</Button>
           )}
         </S.HeaderTop>
         <S.SearchForm onSubmit={searchSelectshopSubmit}>
@@ -108,7 +97,7 @@ const S = {
   `,
   HeaderInner: styled.div`
     padding: 20px 12px;
-    background-color: #b76371;
+    background-color: ${styleColor.MAIN.Eggplant};
   `,
   HeaderTop: styled.div`
     display: flex;

@@ -32,6 +32,8 @@ const SelectshopInfoContainer = ({ selectshop, type }: PropsType) => {
     return review?.selectshopId === id && review?.userId === loginUser;
   });
 
+  
+
   const highlighttedText = (text: string, query: string) => {
     if (query !== "" && text.includes(query)) {
       const parts = text.split(new RegExp(`(${query})`, "gi"));
@@ -144,7 +146,7 @@ const S = {
   `,
   PreviewReviewTitle: styled.h2`
     ${styleFont.textMedium}
-    color: ${styleColor.RED[100]};
+    color: ${styleColor.INDIGO.main};
     font-weight: bold;
   `,
   PreviewReviewDescription: styled.p`
@@ -162,6 +164,6 @@ const S = {
   HighlightText: styled.mark`
     background-color: transparent;
     font-weight: 800;
-    color: ${styleColor.INDIGO[0]};
+    color: ${styleColor.YELLOW.main};
   `,
 };

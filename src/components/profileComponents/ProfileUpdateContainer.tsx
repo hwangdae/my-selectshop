@@ -128,15 +128,11 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
           <S.ProfileFn>
             <Button
               type="submit"
-              variant="contained"
-              sx={{ padding: "5px 30px" }}
             >
               수정
             </Button>
             <Button
               type="button"
-              variant="contained"
-              sx={{ padding: "5px 30px" }}
               onClick={logoutHandleSubmit}
             >
               로그아웃

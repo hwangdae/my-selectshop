@@ -31,7 +31,7 @@ const S = {
     }
     span {
       display: block;
-      color: ${styleColor.RED[0]};
+      color: ${styleColor.YELLOW.main};
     }
   `,
 };

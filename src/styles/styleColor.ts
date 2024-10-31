@@ -1,10 +1,20 @@
 export const styleColor = {
+  WHITE : "#FFFFFF",
+  BLACK : "#111111",
+  MAIN : {
+    Eggplant : "#528599",
+    Coyote : "#002738",
+    Buff : "#004a6a",
+    PeachYellow : "#EDD9A3",
+    Cream : "#E2E8C0",
+  },
   INDIGO: {
     0: "#4E8397",
     100: "#32697C",
     200: "#125062",
     300: "#003849",
     400: "#002232",
+    main: "#528599",
   },
   RED: {
     0: "#B76371",
@@ -15,13 +25,15 @@ export const styleColor = {
   },
   BLUE: {
     0: "#83B8CD",
+    main:'#004a6a',
   },
   BROWN: {
     0: "#8F7159",
     100: "#574144",
   },
   YELLOW:{
-    0:"#96722f"
+    0:"#96722f",
+    main:"#EDD9A3"
   },
   PURPLE: {
     0: "#8E7391",

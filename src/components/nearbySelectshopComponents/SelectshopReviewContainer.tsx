@@ -27,8 +27,6 @@ const SelectshopReviewContainer = ({ onWriteReviewClick }: PropsType) => {
             }
             onWriteReviewClick();
           }}
-          variant="contained"
-          sx={{ padding: "5px 30px" }}
         >
           후기 등록하기
         </Button>

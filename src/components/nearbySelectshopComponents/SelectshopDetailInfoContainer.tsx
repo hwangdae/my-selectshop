@@ -104,7 +104,7 @@ const S = {
     text-indent: 6px;
     padding: 14px 0px;
     ${styleFont.textLarge}
-    background-color: ${styleColor.RED[0]};
+    background-color: ${styleColor.INDIGO.main};
   `,
   AllReviewContainer: styled.ul`
     padding: 0px 18px;

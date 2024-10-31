@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ModalMap from "@/components/ModalMap";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "@/styles/defaultTheme";
 
 const queryClient = new QueryClient();
 
@@ -40,10 +42,12 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
+        <ThemeProvider theme={theme}>
         <main className={notoSansKr.className}>
           <Component {...pageProps} />
           {ModalComponent && <ModalComponent onClose={closeModal} />}
         </main>
+        </ThemeProvider>
       </RecoilRoot>
     </QueryClientProvider>
   );
