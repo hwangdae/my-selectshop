@@ -13,6 +13,7 @@ export interface UserType {
   created_at : string;
   email :string;
   nickName : string;
+  profileImage : string;
 }
 
 export interface updateProfileType {

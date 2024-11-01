@@ -14,7 +14,7 @@ const CONTENTSTABNAV = [
   { id: "nearbySelectshop", name: "편집샵 보기" },
   { id: "visitedSelectshop", name: "방문한 편집샵 보기" },
   { id: "notVisiteSelectshop", name: "방문하지 못한 편집샵 보기" },
-  { id: "BookmarkSelectshop", name: "즐겨찾기" },
+  { id: "bestReviewer", name: "베스트 리뷰어" },
 ];
 
 const ContentsContainer = () => {
@@ -28,7 +28,7 @@ const ContentsContainer = () => {
   },[setSelectshops])
   
   const viewSelectShopHandle = (id: string) => {
-    if(id !== "nearbySelectshop" && !loginUser){
+    if(id !== "nearbySelectshop" && id !== "bestReviewer" && !loginUser){
       alert('로그인이 필요한 서비스입니다.')
       router.push("?modal=login");
       return;

@@ -1,5 +1,6 @@
 import { styleColor } from '@/styles/styleColor'
 import { styleFont } from '@/styles/styleFont'
+import { UserType } from '@/types/authType'
 import { ReviewType } from '@/types/reviewType'
 import React from 'react'
 import styled from 'styled-components'
@@ -14,7 +15,7 @@ const AllReview = ({review,users}:PropsType) => {
     const {userId,description,tags} = review
     console.log(review)
     // const {id,nickName,profileImage} = user
-    const user = users?.find((user:any)=>{
+    const user = users?.find((user:UserType)=>{
       return user.id === userId
     })
     console.log(user)
@@ -84,7 +85,7 @@ const S = {
       left: 0;
       top: 0;
       display: inline-block;
-      background-color: ${styleColor.INDIGO[0]};
+      background-color: ${styleColor.RED[0]};
       padding: 4px 10px;
       border-radius: 4px;
       text-indent: 4px;

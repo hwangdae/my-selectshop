@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import NearbySelectshop from "../nearbySelectshopComponents/NearbySelectshop";
 import VisitedSelectshop from "../visitedSelectshopComponents/VisitedSelectshop";
 import NotVisiteSelectshop from "../notVisiteSelectshopComponents/NotVisiteSelectshop";
+import BestReviewer from "../bestReviewerComponents/BestReviewer";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -19,6 +20,8 @@ const Sidebar = () => {
         return <VisitedSelectshop />;
       case "notVisiteSelectshop":
         return <NotVisiteSelectshop />;
+      case "bestReviewer":
+        return <BestReviewer />;
       default:
         return <ContentsContainer />;
     }

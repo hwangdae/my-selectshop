@@ -100,7 +100,7 @@ const S = {
       left: 0;
       top: 0;
       display: inline-block;
-      background-color: ${styleColor.INDIGO[0]};
+      background-color: ${styleColor.RED[0]};
       padding: 4px 10px;
       border-radius: 4px;
       text-indent: 4px;
