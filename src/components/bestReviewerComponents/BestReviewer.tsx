@@ -8,15 +8,12 @@ import styled from "styled-components";
 import UserProfileContainer from "./UserProfileContainer";
 
 const BestReviewer = () => {
-  const { data: reviewData } = useQuery({
-    queryKey: ["review"],
-    queryFn: () => getAllReview(),
-  });
+
   const { data: users } = useQuery({
     queryKey: ["user"],
     queryFn: () => getAllUsers(),
   });
-  console.log(reviewData);
+
   console.log(users);
   return (
     <S.BestReviewerContainer>
@@ -42,6 +39,7 @@ const S = {
     padding: 0px 12px;
   `,
   Title: styled.h1`
+    margin: 10px 0px 20px 0px;
     ${styleFont.textLarge}
     span {
       color: ${styleColor.YELLOW.main};

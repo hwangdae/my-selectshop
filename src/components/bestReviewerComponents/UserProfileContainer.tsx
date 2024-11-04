@@ -1,6 +1,8 @@
+import { getAllReview } from "@/api/review";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { UserType } from "@/types/authType";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import styled from "styled-components";
 
@@ -9,36 +11,56 @@ interface PropsType {
 }
 
 const UserProfileContainer = ({ user }: PropsType) => {
-  const { profileImage, nickName } = user;
-
+  const { id, profileImage, nickName } = user;
+  const { data: reviewData } = useQuery({
+    queryKey: ["review"],
+    queryFn: () => getAllReview(),
+  });
+  console.log(reviewData);
+  const reviewCount = reviewData?.filter((review) => {
+    return review.userId === id;
+  }).length;
   return (
-    <S.ProfileInfo>
-      <div>
-        <S.ProfileImage src={profileImage} />
-      </div>
-      <div>
-      <S.UserEmail>{nickName}</S.UserEmail>
-      <S.UserActivity>
-        <S.Activity>
-          <h3>리뷰수</h3>
-          <p>0</p>
-        </S.Activity>
-        <S.Activity>
-          <h3>팔로워</h3>
-          <p>0</p>
-        </S.Activity>
-      </S.UserActivity>
-      </div>
-    </S.ProfileInfo>
+    <S.ProfileInfoContainer>
+      <S.ProfileInfoInner>
+        <div>
+          <S.ProfileImage src={profileImage} />
+        </div>
+        <div>
+          <S.UserEmail>{nickName}</S.UserEmail>
+          <S.UserActivity>
+            <S.Activity>
+              <h3>
+                리뷰수<span>{reviewCount}</span>
+              </h3>
+            </S.Activity>
+            <S.Activity>
+              <h3>
+                팔로워<span>0</span>
+              </h3>
+            </S.Activity>
+          </S.UserActivity>
+        </div>
+        <S.FollowButton>팔로우</S.FollowButton>
+      </S.ProfileInfoInner>
+    </S.ProfileInfoContainer>
   );
 };
 
 export default UserProfileContainer;
 
 const S = {
-  ProfileInfo: styled.div`
+  ProfileInfoContainer: styled.div`
     width: 100%;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 10px 1px rgba(124, 124, 124, 0.1);
+    border-radius: 4px;
+  `,
+  ProfileInfoInner: styled.div`
     display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 10px;
   `,
   ProfileImage: styled.img`
     width: 60px;
@@ -48,7 +70,7 @@ const S = {
     object-fit: cover;
   `,
   UserEmail: styled.h2`
-    ${styleFont.textMedium}
+    ${styleFont.text.txt_md}
     margin-bottom: 8px;
   `,
   UserActivity: styled.ul`
@@ -62,16 +84,19 @@ const S = {
     }
   `,
   Activity: styled.li`
-    width: 50%;
+    display: flex;
+    width: 70%;
     border-right: solid 1px #eee;
     padding-left: 10px;
     h3 {
-      ${styleFont.textsmall}
+      ${styleFont.text.txt_sm}
       color: ${styleColor.GRAY[600]};
     }
-    p {
-      ${styleFont.textsmall}
+    span {
+      margin-left: 7px;
+      ${styleFont.text.txt_sm}
       color: ${styleColor.GRAY[600]};
     }
   `,
+  FollowButton: styled.button``,
 };
