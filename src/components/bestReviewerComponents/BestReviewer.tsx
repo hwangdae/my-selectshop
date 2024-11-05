@@ -39,10 +39,11 @@ const S = {
     padding: 0px 12px;
   `,
   Title: styled.h1`
-    margin: 10px 0px 20px 0px;
-    ${styleFont.textLarge}
+    margin: 20px 0px 30px 0px;
+    ${styleFont.title.tit_lg}
     span {
       color: ${styleColor.YELLOW.main};
+      font-weight: 700;
     }
   `,
 };

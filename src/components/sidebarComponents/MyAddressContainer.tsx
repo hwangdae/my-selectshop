@@ -57,7 +57,7 @@ const S = {
     margin-top: 20px;
     padding: 0px 12px;
     h1 {
-      ${styleFont.textLarge}
+      ${styleFont.text.txt_lg}
     }
   `,
 };

@@ -1,4 +1,5 @@
 import { getAllReview } from "@/api/review";
+import useLoginUserId from "@/hook/useLoginUserId";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { UserType } from "@/types/authType";
@@ -12,21 +13,28 @@ interface PropsType {
 
 const UserProfileContainer = ({ user }: PropsType) => {
   const { id, profileImage, nickName } = user;
+  const loginUser = useLoginUserId();
+
   const { data: reviewData } = useQuery({
     queryKey: ["review"],
     queryFn: () => getAllReview(),
   });
-  console.log(reviewData);
+
   const reviewCount = reviewData?.filter((review) => {
     return review.userId === id;
   }).length;
+
+  const followButtonHandler = () => {
+
+  }
+  
   return (
     <S.ProfileInfoContainer>
       <S.ProfileInfoInner>
-        <div>
+        <S.ProfileImageWrap>
           <S.ProfileImage src={profileImage} />
-        </div>
-        <div>
+        </S.ProfileImageWrap>
+        <S.UserInfoWrap>
           <S.UserEmail>{nickName}</S.UserEmail>
           <S.UserActivity>
             <S.Activity>
@@ -40,8 +48,8 @@ const UserProfileContainer = ({ user }: PropsType) => {
               </h3>
             </S.Activity>
           </S.UserActivity>
-        </div>
-        <S.FollowButton>팔로우</S.FollowButton>
+        </S.UserInfoWrap>
+        <S.FollowButton onClick={followButtonHandler}>팔로우</S.FollowButton>
       </S.ProfileInfoInner>
     </S.ProfileInfoContainer>
   );
@@ -60,14 +68,20 @@ const S = {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 16px 10px;
+    padding: 20px 18px;
+  `,
+  ProfileImageWrap: styled.div`
+    width: 20%;
   `,
   ProfileImage: styled.img`
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     border: solid 1px ${styleColor.GRAY[200]};
     border-radius: 70%;
     object-fit: cover;
+  `,
+  UserInfoWrap: styled.div`
+    width: 45%;
   `,
   UserEmail: styled.h2`
     ${styleFont.text.txt_md}
@@ -75,28 +89,32 @@ const S = {
   `,
   UserActivity: styled.ul`
     display: flex;
-    justify-content: space-between;
-    :first-child {
-      padding-left: 0px;
-    }
-    :last-child {
-      border-right: none;
-    }
   `,
   Activity: styled.li`
     display: flex;
-    width: 70%;
     border-right: solid 1px #eee;
-    padding-left: 10px;
+    margin-right: 5px;
+    padding-right: 5px;
     h3 {
       ${styleFont.text.txt_sm}
       color: ${styleColor.GRAY[600]};
     }
     span {
-      margin-left: 7px;
+      margin-left: 4px;
       ${styleFont.text.txt_sm}
       color: ${styleColor.GRAY[600]};
     }
+    &:last-child{
+      border-right: none;
+      padding-right: 0px;
+    }
   `,
-  FollowButton: styled.button``,
+  FollowButton: styled.button`
+    width: 25%;
+    ${styleFont.text.txt_sm}
+    color: #ff7b00;
+    border-radius: 4px;
+    background-color: ${styleColor.YELLOW.main};
+    padding: 7px 0px;
+  `,
 };

@@ -108,7 +108,7 @@ const S = {
   Logo: styled.h1`
     button {
       cursor: pointer;
-      ${styleFont.textLarge}
+      ${styleFont.title.tit_md}
       font-weight: bold;
       color: #fff;
     }

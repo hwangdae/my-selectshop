@@ -5,31 +5,31 @@ export const styleFont = {
   title: {
     tit_2xs: css`
       font-size: 12px;
-      font-weight: 300;
+      font-weight: 400;
       color: ${styleColor.BLACK[0]};
       letter-spacing: -0.5px;
     `,
     tit_xs: css`
       font-size: 14px;
-      font-weight: 300;
+      font-weight: 400;
       color: ${styleColor.BLACK[0]};
       letter-spacing: -0.5px;
     `,
     tit_sm: css`
       font-size: 16px;
-      font-weight: 300;
+      font-weight: 400;
       color: ${styleColor.BLACK[0]};
       letter-spacing: -0.5px;
     `,
     tit_md: css`
       font-size: 18px;
-      font-weight: 300;
+      font-weight: 400;
       color: ${styleColor.BLACK[0]};
       letter-spacing: -0.5px;
     `,
     tit_lg: css`
       font-size: 21px;
-      font-weight: 400;
+      font-weight: 500;
       color: ${styleColor.BLACK[0]};
       letter-spacing: -0.5px;
     `,
@@ -61,27 +61,27 @@ export const styleFont = {
   text: {
     txt_2xs: css`
       font-size: 10px;
-      font-weight: 300;
+      font-weight: 400;
       color: ${styleColor.BLACK[0]};
     `,
     txt_xs: css`
       font-size: 12px;
-      font-weight: 300;
+      font-weight: 400;
       color: ${styleColor.BLACK[0]};
     `,
     txt_sm: css`
       font-size: 14px;
-      font-weight: 300;
+      font-weight: 400;
       color: ${styleColor.BLACK[0]};
     `,
     txt_md: css`
       font-size: 16px;
-      font-weight: 300;
+      font-weight: 400;
       color: ${styleColor.BLACK[0]};
     `,
     txt_lg: css`
       font-size: 18px;
-      font-weight: 400;
+      font-weight: 500;
       color: ${styleColor.BLACK[0]};
     `,
     txt_xl: css`

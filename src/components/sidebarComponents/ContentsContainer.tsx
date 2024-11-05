@@ -74,7 +74,7 @@ const S = {
     border: solid 1px ${styleColor.RED[0]};
     border-radius: 4px;
     padding: 12px 0px;
-    ${styleFont.textMedium}
+    ${styleFont.title.tit_xs}
     text-align: left;
     text-indent: 10px;
   `,

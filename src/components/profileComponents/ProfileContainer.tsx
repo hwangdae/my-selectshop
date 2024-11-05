@@ -79,7 +79,7 @@ const S = {
     padding: 20px 12px;
   `,
   UserNickName: styled.h1`
-    ${styleFont.textLarge}
+    ${styleFont.text.txt_lg}
     margin-bottom: 14px;
   `,
 
@@ -116,7 +116,7 @@ const S = {
     width: 70%;
   `,
   UserEmail: styled.h2`
-    ${styleFont.textMedium}
+    ${styleFont.text.txt_md}
     margin-bottom: 8px;
   `,
   UserActivity: styled.ul`
@@ -134,11 +134,11 @@ const S = {
     border-right: solid 1px #eee;
     padding-left: 10px;
     h3 {
-      ${styleFont.textsmall}
+      ${styleFont.text.txt_sm}
       color: ${styleColor.GRAY[600]};
     }
     p {
-      ${styleFont.textsmall}
+      ${styleFont.text.txt_sm}
       color: ${styleColor.GRAY[600]};
     }
   `,
