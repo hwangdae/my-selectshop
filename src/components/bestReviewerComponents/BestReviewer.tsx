@@ -1,5 +1,5 @@
 import { getAllReview } from "@/api/review";
-import { getAllUsers } from "@/api/user";
+import { getAllUsers, getAllUsersAndReviewCount } from "@/api/user";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { useQuery } from "@tanstack/react-query";
@@ -10,8 +10,8 @@ import UserProfileContainer from "./UserProfileContainer";
 const BestReviewer = () => {
 
   const { data: users } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getAllUsers(),
+    queryKey: ["usera"],
+    queryFn: () => getAllUsersAndReviewCount(),
   });
 
   console.log(users);

@@ -80,12 +80,12 @@ const S = {
       margin-left: 36px;
       li {
         margin-bottom: 7px;
-        ${styleFont.textMedium}
+        ${styleFont.text.txt_md}
       }
     }
   `,
   ReviewTitle: styled.h1`
-    ${styleFont.textLarge}
+    ${styleFont.title.tit_md}
     margin-bottom: 15px;
   `,
   ReviewDescription: styled.p`

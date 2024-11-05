@@ -24,6 +24,15 @@ const getAllUsers = async () => {
   }
 };
 
+const getAllUsersAndReviewCount = async () => {
+  try {
+    const { data } = await supabase.from("users").select('*,review("*")').limit(10);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const signUp = async (email: string, password: string, nickName: string) => {
   await supabase.auth.signUp({
     email,
@@ -47,4 +56,4 @@ const userProfileUpdate = async (
   await supabase.from("users").update(updateProfile).eq("id", id).select();
 };
 
-export { getUser, getAllUsers, signUp, logOut, userProfileUpdate };
+export { getUser, getAllUsers, signUp, logOut, userProfileUpdate,getAllUsersAndReviewCount };

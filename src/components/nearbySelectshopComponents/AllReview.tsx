@@ -1,50 +1,45 @@
-import { styleColor } from '@/styles/styleColor'
-import { styleFont } from '@/styles/styleFont'
-import { UserType } from '@/types/authType'
-import { ReviewType } from '@/types/reviewType'
-import React from 'react'
-import styled from 'styled-components'
+import { styleColor } from "@/styles/styleColor";
+import { styleFont } from "@/styles/styleFont";
+import { UserType } from "@/types/authType";
+import { ReviewType } from "@/types/reviewType";
+import React from "react";
+import styled from "styled-components";
 
 interface PropsType {
-    review : ReviewType;
-    users : any
+  review: ReviewType;
+  users: any;
 }
 
-const AllReview = ({review,users}:PropsType) => {
-
-    const {userId,description,tags} = review
-    console.log(review)
-    // const {id,nickName,profileImage} = user
-    const user = users?.find((user:UserType)=>{
-      return user.id === userId
-    })
-    console.log(user)
+const AllReview = ({ review, users }: PropsType) => {
+  const { userId, description, tags } = review;
+  console.log(review);
+  // const {id,nickName,profileImage} = user
+  const user = users?.find((user: UserType) => {
+    return user.id === userId;
+  });
+  console.log(user);
   return (
     <S.ReviewWrap>
-    <S.UserContainer>
-      <S.ProfileImage src={user?.profileImage} />
-      <S.writtenUser>
-        {user?.nickName}님의 후기
-      </S.writtenUser>
-    </S.UserContainer>
-    <S.ReviewDescription>
-      {description}
-    </S.ReviewDescription>
-    <S.TagList>
-      {tags === null
-        ? "추천할 브랜드가 없어요"
-        : review?.tags?.split(",").map((tag: string) => {
-            return <li key={tag}>{tag}</li>;
-          })}
-    </S.TagList>
-  </S.ReviewWrap>
-  )
-}
+      <S.UserContainer>
+        <S.ProfileImage src={user?.profileImage} />
+        <S.writtenUser>{user?.nickName}님의 후기</S.writtenUser>
+      </S.UserContainer>
+      <S.ReviewDescription>{description}</S.ReviewDescription>
+      <S.TagList>
+        {tags === null
+          ? "추천할 브랜드가 없어요"
+          : review?.tags?.split(",").map((tag: string) => {
+              return <li key={tag}>{tag}</li>;
+            })}
+      </S.TagList>
+    </S.ReviewWrap>
+  );
+};
 
-export default AllReview
+export default AllReview;
 
 const S = {
-    ReviewWrap: styled.li`
+  ReviewWrap: styled.li`
     border: solid 1px ${styleColor.GRAY[100]};
     border-radius: 4px;
     padding: 10px;
@@ -64,21 +59,21 @@ const S = {
     object-fit: cover;
   `,
   writtenUser: styled.p`
-    ${styleFont.textsmall}
+    ${styleFont.text.txt_sm}
     font-weight: 400;
   `,
   ReviewDescription: styled.h1`
     background-color: ${styleColor.GRAY[0]};
     padding: 10px;
     margin-bottom: 10px;
-    ${styleFont.textsmall}
+    ${styleFont.text.txt_sm}
     font-weight: 400;
   `,
   TagList: styled.ul`
     list-style: none !important ;
     background-color: ${styleColor.GRAY[0]};
     padding: 10px;
-    ${styleFont.textsmall}
+    ${styleFont.text.txt_sm}
     font-weight: 400;
     li {
       position: relative;
@@ -105,4 +100,4 @@ const S = {
       }
     }
   `,
-}
+};

@@ -103,9 +103,9 @@ const S = {
   DetailSelectshopName: styled.h1`
     text-indent: 6px;
     padding: 14px 0px;
-    ${styleFont.textLarge}
+    ${styleFont.title.tit_md}
+    font-weight: 600;
     background: linear-gradient(to right,  #528599 0%,#8bb0be 100%); 
-    /* background-color: ${styleColor.INDIGO.main}; */
   `,
   AllReviewContainer: styled.ul`
     padding: 0px 18px;

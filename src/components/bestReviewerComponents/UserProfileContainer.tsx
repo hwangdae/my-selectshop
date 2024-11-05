@@ -1,18 +1,20 @@
 import { getAllReview } from "@/api/review";
 import useLoginUserId from "@/hook/useLoginUserId";
+import supabase from "@/lib/supabaseClient";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { UserType } from "@/types/authType";
+import { ReviewType } from "@/types/reviewType";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import styled from "styled-components";
 
 interface PropsType {
-  user: UserType;
+  user: any;
 }
 
 const UserProfileContainer = ({ user }: PropsType) => {
-  const { id, profileImage, nickName } = user;
+  const { id, profileImage, nickName, review } = user;
   const loginUser = useLoginUserId();
 
   const { data: reviewData } = useQuery({
@@ -24,12 +26,21 @@ const UserProfileContainer = ({ user }: PropsType) => {
     return review.userId === id;
   }).length;
 
-  const followButtonHandler = () => {
-
+  const viewBestReviewerReviews = () => {
+    alert("test")
   }
-  
+
+  const followButtonHandler = async (e:any) => {
+    e.stopPropagation()
+    const follow = {
+      follower_id: loginUser,
+      followee_id: id,
+    };
+    await supabase.from("follows").insert(follow);
+  };
+
   return (
-    <S.ProfileInfoContainer>
+    <S.ProfileInfoContainer onClick={viewBestReviewerReviews}>
       <S.ProfileInfoInner>
         <S.ProfileImageWrap>
           <S.ProfileImage src={profileImage} />
@@ -39,7 +50,7 @@ const UserProfileContainer = ({ user }: PropsType) => {
           <S.UserActivity>
             <S.Activity>
               <h3>
-                리뷰수<span>{reviewCount}</span>
+                리뷰수<span>{review.length}</span>
               </h3>
             </S.Activity>
             <S.Activity>
@@ -49,7 +60,9 @@ const UserProfileContainer = ({ user }: PropsType) => {
             </S.Activity>
           </S.UserActivity>
         </S.UserInfoWrap>
-        <S.FollowButton onClick={followButtonHandler}>팔로우</S.FollowButton>
+        {loginUser !== id && (
+          <S.FollowButton onClick={followButtonHandler}>팔로우</S.FollowButton>
+        )}
       </S.ProfileInfoInner>
     </S.ProfileInfoContainer>
   );
@@ -95,6 +108,7 @@ const S = {
     border-right: solid 1px #eee;
     margin-right: 5px;
     padding-right: 5px;
+    letter-spacing: -1px;
     h3 {
       ${styleFont.text.txt_sm}
       color: ${styleColor.GRAY[600]};
@@ -104,7 +118,7 @@ const S = {
       ${styleFont.text.txt_sm}
       color: ${styleColor.GRAY[600]};
     }
-    &:last-child{
+    &:last-child {
       border-right: none;
       padding-right: 0px;
     }

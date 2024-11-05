@@ -32,12 +32,10 @@ const SelectshopInfoContainer = ({ selectshop, type }: PropsType) => {
     return review?.selectshopId === id && review?.userId === loginUser;
   });
 
-  
-
   const highlighttedText = (text: string, query: string) => {
     if (query !== "" && text.includes(query)) {
       const parts = text.split(new RegExp(`(${query})`, "gi"));
-      console.log(text)
+      console.log(text);
       console.log(parts);
       return (
         <>
@@ -115,21 +113,24 @@ const S = {
   SelectshopName: styled.h1`
     display: flex;
     align-items: center;
-    ${styleFont.textLarge};
+    ${styleFont.title.tit_md};
+    font-weight: 500;
     margin-bottom: 14px;
   `,
   SelectshopDistance: styled.span`
-    ${styleFont.textsmall};
+    ${styleFont.text.txt_sm};
     color: ${styleColor.GRAY[400]};
     font-weight: 400;
     margin-left: 6px;
   `,
 
   SelectshopAddressName: styled.h2`
-    ${styleFont.textMedium}
+    ${styleFont.text.txt_sm}
     margin-bottom: 6px;
   `,
-  SelectshopPhone: styled.p``,
+  SelectshopPhone: styled.p`
+    ${styleFont.text.txt_sm}
+  `,
   SelectshopFn: styled.div``,
   SelectshopMoreInfoButton: styled.button`
     cursor: pointer;
@@ -145,12 +146,12 @@ const S = {
     padding: 10px;
   `,
   PreviewReviewTitle: styled.h2`
-    ${styleFont.textMedium}
+    ${styleFont.text.txt_md}
     color: ${styleColor.INDIGO.main};
     font-weight: bold;
   `,
   PreviewReviewDescription: styled.p`
-    ${styleFont.textsmall}
+    ${styleFont.text.txt_sm}
     font-weight: 400;
     border: solid 1px ${styleColor.GRAY[100]};
     border-radius: 4px;
