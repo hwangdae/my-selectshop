@@ -1,42 +1,46 @@
-import { getAllReview } from "@/api/review";
+import { followWhether, userFollow, userUnfollow } from "@/api/follow";
+import useFollowMutate from "@/hook/useFollowMutate";
 import useLoginUserId from "@/hook/useLoginUserId";
-import supabase from "@/lib/supabaseClient";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { UserType } from "@/types/authType";
-import { ReviewType } from "@/types/reviewType";
+import { FollowType } from "@/types/followType";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface PropsType {
-  user: any;
+  user: UserType;
 }
 
 const UserProfileContainer = ({ user }: PropsType) => {
   const { id, profileImage, nickName, review } = user;
   const loginUser = useLoginUserId();
+  const { followMutate, unFollowMutate } = useFollowMutate(loginUser, id);
 
-  const { data: reviewData } = useQuery({
-    queryKey: ["review"],
-    queryFn: () => getAllReview(),
+  const { data } = useQuery({
+    queryKey: ["followee", loginUser],
+    queryFn: () => followWhether(loginUser, id),
+  });
+  console.log(data);
+  const isFollowing = data?.find((v) => {
+    return v.follower_id === loginUser && v.followee_id === id;
   });
 
-  const reviewCount = reviewData?.filter((review) => {
-    return review.userId === id;
-  }).length;
-
   const viewBestReviewerReviews = () => {
-    alert("test")
-  }
+    alert("test");
+  };
 
-  const followButtonHandler = async (e:any) => {
-    e.stopPropagation()
-    const follow = {
-      follower_id: loginUser,
-      followee_id: id,
-    };
-    await supabase.from("follows").insert(follow);
+  const followButtonHandler = async (e: any) => {
+    e.stopPropagation();
+    if (isFollowing) {
+      unFollowMutate.mutate();
+    } else {
+      followMutate.mutate({
+        follower_id: loginUser,
+        followee_id: id,
+      });
+    }
   };
 
   return (
@@ -50,7 +54,7 @@ const UserProfileContainer = ({ user }: PropsType) => {
           <S.UserActivity>
             <S.Activity>
               <h3>
-                리뷰수<span>{review.length}</span>
+                리뷰수<span>{review?.length}</span>
               </h3>
             </S.Activity>
             <S.Activity>
@@ -61,7 +65,9 @@ const UserProfileContainer = ({ user }: PropsType) => {
           </S.UserActivity>
         </S.UserInfoWrap>
         {loginUser !== id && (
-          <S.FollowButton onClick={followButtonHandler}>팔로우</S.FollowButton>
+          <S.FollowButton onClick={followButtonHandler}>
+            {isFollowing ? "팔로잉" : "팔로우"}
+          </S.FollowButton>
         )}
       </S.ProfileInfoInner>
     </S.ProfileInfoContainer>
@@ -72,6 +78,7 @@ export default UserProfileContainer;
 
 const S = {
   ProfileInfoContainer: styled.div`
+    cursor: pointer;
     width: 100%;
     margin-bottom: 20px;
     box-shadow: 0px 0px 10px 1px rgba(124, 124, 124, 0.1);
@@ -98,7 +105,7 @@ const S = {
   `,
   UserEmail: styled.h2`
     ${styleFont.text.txt_md}
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   `,
   UserActivity: styled.ul`
     display: flex;
@@ -124,6 +131,7 @@ const S = {
     }
   `,
   FollowButton: styled.button`
+    cursor: pointer;
     width: 25%;
     ${styleFont.text.txt_sm}
     color: #ff7b00;

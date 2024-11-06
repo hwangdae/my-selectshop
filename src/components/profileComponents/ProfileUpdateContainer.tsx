@@ -150,7 +150,8 @@ const S = {
   ProfileUpdateContainer: styled(modal)``,
   ProfileUpdateInner: styled(modalContent)``,
   ProfileTitle: styled.h1`
-    ${styleFont.textLarge}
+    ${styleFont.title.tit_md}
+    font-weight: 600;
   `,
   ProfileFormContainer: styled.form`
     text-align: center;

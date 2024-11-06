@@ -207,7 +207,7 @@ const S = {
     padding: 20px 0px;
   `,
   WriteReviewTitle: styled.h1`
-    ${styleFont.textLarge}
+    ${styleFont.title.tit_md}
     margin-bottom: 15px;
   `,
   WriteReviewUl: styled.ul`
@@ -224,7 +224,7 @@ const S = {
     align-items: center;
     gap: 7px;
     margin-bottom: 10px;
-    ${styleFont.textLarge}
+    ${styleFont.text.txt_md}
   `,
   ImageInput: styled.input`
     display: none;
@@ -252,7 +252,7 @@ const S = {
     position: absolute;
     right: 10px;
     bottom: 10px;
-    ${styleFont.textMedium}
+    ${styleFont.text.txt_md}
     color: ${styleColor.GRAY[400]};
   `,
   InputWrap: styled.div`
@@ -285,7 +285,7 @@ const S = {
     width: 20px;
     height: 20px;
     background-color: ${styleColor.INDIGO[0]};
-    ${styleFont.textMedium}
+    ${styleFont.text.txt_sm}
     color: #fff;
     border-radius: 4px;
   `,

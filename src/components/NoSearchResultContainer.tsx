@@ -25,12 +25,13 @@ const S = {
     align-items: center;
     gap: 10px;
     margin-top: 50px;
+    ${styleFont.text.txt_md}
     h2 {
-      ${styleFont.textMedium}
       display: block;
     }
     span {
       display: block;
+      font-weight: 600;
       color: ${styleColor.YELLOW.main};
     }
   `,

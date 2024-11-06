@@ -43,7 +43,8 @@ const S = {
     padding: 20px 12px 30px 12px;
   `,
   SelectshopReviewTitle: styled.h1`
-    ${styleFont.textLarge}
+    ${styleFont.title.tit_md}
+    font-weight: 600;
     margin-bottom: 30px;
   `,
   MySelectshopReview: styled.div`
@@ -52,7 +53,7 @@ const S = {
     align-items: center;
   `,
   NoReview: styled.p`
-    ${styleFont.textMedium}
+    ${styleFont.text.txt_md}
     margin-bottom: 10px;
   `,
 };

@@ -146,7 +146,7 @@ const S = {
     }
   `,
   SelectshopInfoWindow: styled.p`
-    ${styleFont.textMedium}
+    ${styleFont.text.txt_md}
     font-weight: 600;
   `,
 };

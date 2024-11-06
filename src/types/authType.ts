@@ -1,5 +1,6 @@
 import { registerLoginSchema, registerSignUpSchema } from "@/validators/auth";
 import { z } from "zod";
+import { ReviewType } from "./reviewType";
 
 export interface AuthType {
   email: string;
@@ -14,6 +15,7 @@ export interface UserType {
   email :string;
   nickName : string;
   profileImage : string;
+  review ? : ReviewType[]
 }
 
 export interface updateProfileType {

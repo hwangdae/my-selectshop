@@ -81,7 +81,7 @@ const S = {
     }
   `,
   SelectshopInfoWindow: styled.h1`
-    ${styleFont.textMedium}
+    ${styleFont.text.txt_md}
     font-weight: 600;
   `,
   SelectshopReviewCount: styled.p`
@@ -91,7 +91,7 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
-    ${styleFont.textMedium}
+    ${styleFont.text.txt_md}
     font-weight: 500;
     width: 26px;
     height: 26px;
