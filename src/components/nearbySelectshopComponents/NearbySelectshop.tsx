@@ -41,14 +41,12 @@ const NearbySelectshop = () => {
         {filteredShops.length > 0 ? (
           filteredShops?.map((selectshop: PlaceType) => (
             <li
+              key={selectshop.id}
               onClick={() => {
                 setActiveShopId(selectshop.id);
               }}
             >
-              <SelectshopInfoContainer
-                key={selectshop.id}
-                selectshop={selectshop}
-              />
+              <SelectshopInfoContainer selectshop={selectshop} />
               {activeShopId === selectshop.id && (
                 <SelectshopDetailInfoContainer
                   key={selectshop.id}

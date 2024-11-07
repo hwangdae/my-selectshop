@@ -97,7 +97,7 @@ const S = {
   `,
   HeaderInner: styled.div`
     padding: 20px 12px;
-    background-color: ${styleColor.MAIN.Eggplant};
+    background-color: ${styleColor.INDIGO.main};
   `,
   HeaderTop: styled.div`
     display: flex;

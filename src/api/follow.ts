@@ -1,7 +1,7 @@
 import supabase from "@/lib/supabaseClient";
 import { FollowType } from "@/types/followType";
 
-const getFollowList = async () => {
+const getAllFollowList = async () => {
   const { data } = await supabase.from("follows").select("*");
   return data;
 };
@@ -26,4 +26,4 @@ const userUnfollow = async (loginUser:string,id:string) => {
   .eq("follower_id", loginUser)
   .eq("followee_id", id);
 }
-export { getFollowList, followWhether ,userFollow, userUnfollow};
+export { getAllFollowList, followWhether ,userFollow, userUnfollow};

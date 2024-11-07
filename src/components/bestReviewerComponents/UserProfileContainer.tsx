@@ -1,50 +1,33 @@
-import { followWhether, userFollow, userUnfollow } from "@/api/follow";
+import { followWhether, getAllFollowList } from "@/api/follow";
 import useFollowMutate from "@/hook/useFollowMutate";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { UserType } from "@/types/authType";
-import { FollowType } from "@/types/followType";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
+import FollowContainer from "./FollowContainer";
 
 interface PropsType {
   user: UserType;
 }
 
 const UserProfileContainer = ({ user }: PropsType) => {
+
   const { id, profileImage, nickName, review } = user;
-  const loginUser = useLoginUserId();
-  const { followMutate, unFollowMutate } = useFollowMutate(loginUser, id);
 
-  const { data } = useQuery({
-    queryKey: ["followee", loginUser],
-    queryFn: () => followWhether(loginUser, id),
-  });
-  console.log(data);
-  const isFollowing = data?.find((v) => {
-    return v.follower_id === loginUser && v.followee_id === id;
+  const { data : followList } = useQuery({
+    queryKey: ["followee"],
+    queryFn: () => getAllFollowList(),
   });
 
-  const viewBestReviewerReviews = () => {
-    alert("test");
-  };
-
-  const followButtonHandler = async (e: any) => {
-    e.stopPropagation();
-    if (isFollowing) {
-      unFollowMutate.mutate();
-    } else {
-      followMutate.mutate({
-        follower_id: loginUser,
-        followee_id: id,
-      });
-    }
-  };
+  const followerCount = followList?.filter((v:any) => {
+    return v.followee_id === id;
+  }).length;
 
   return (
-    <S.ProfileInfoContainer onClick={viewBestReviewerReviews}>
+    <S.ProfileInfoContainer>
       <S.ProfileInfoInner>
         <S.ProfileImageWrap>
           <S.ProfileImage src={profileImage} />
@@ -59,16 +42,12 @@ const UserProfileContainer = ({ user }: PropsType) => {
             </S.Activity>
             <S.Activity>
               <h3>
-                팔로워<span>0</span>
+                팔로워<span>{followerCount}</span>
               </h3>
             </S.Activity>
           </S.UserActivity>
         </S.UserInfoWrap>
-        {loginUser !== id && (
-          <S.FollowButton onClick={followButtonHandler}>
-            {isFollowing ? "팔로잉" : "팔로우"}
-          </S.FollowButton>
-        )}
+        <FollowContainer id ={id} followList={followList} />
       </S.ProfileInfoInner>
     </S.ProfileInfoContainer>
   );
@@ -129,14 +108,5 @@ const S = {
       border-right: none;
       padding-right: 0px;
     }
-  `,
-  FollowButton: styled.button`
-    cursor: pointer;
-    width: 25%;
-    ${styleFont.text.txt_sm}
-    color: #ff7b00;
-    border-radius: 4px;
-    background-color: ${styleColor.YELLOW.main};
-    padding: 7px 0px;
   `,
 };

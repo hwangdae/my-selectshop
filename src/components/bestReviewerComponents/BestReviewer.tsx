@@ -3,12 +3,13 @@ import { getAllUsers, getAllUsersAndReviewCount } from "@/api/user";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import UserProfileContainer from "./UserProfileContainer";
+import ReviewListContainer from "./ReviewListContainer";
 
 const BestReviewer = () => {
-
+  const [activeUserId, setActiveuserId] = useState();
   const { data: users } = useQuery({
     queryKey: ["usera"],
     queryFn: () => getAllUsersAndReviewCount(),
@@ -21,11 +22,16 @@ const BestReviewer = () => {
         <S.Title>
           <span>👍 TOP 10</span> 베스트 리뷰어
         </S.Title>
-        {users?.map((user) => {
-          return (
-            <UserProfileContainer user={user}/>
-          );
-        })}
+        <ul>
+          {users?.map((user) => {
+            return (
+              <li onClick={() => setActiveuserId(user.id)}>
+                <UserProfileContainer key={user.id} user={user} />
+                {activeUserId === user.id && <ReviewListContainer />}
+              </li>
+            );
+          })}
+        </ul>
       </S.InnerContainer>
     </S.BestReviewerContainer>
   );

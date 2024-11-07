@@ -35,8 +35,6 @@ const SelectshopInfoContainer = ({ selectshop, type }: PropsType) => {
   const highlighttedText = (text: string, query: string) => {
     if (query !== "" && text.includes(query)) {
       const parts = text.split(new RegExp(`(${query})`, "gi"));
-      console.log(text);
-      console.log(parts);
       return (
         <>
           {parts.map((part, index) => {

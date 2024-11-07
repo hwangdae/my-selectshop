@@ -26,15 +26,11 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
 
   useEffect(() => {
-    // if(typeof window !== "undefined" &&
-    //   window.kakao &&
-    //   window.kakao.maps){
     const bounds = new kakao.maps.LatLngBounds();
     const position = new kakao.maps.LatLng(y, x);
 
     bounds.extend(position);
     setBounds(bounds);
-    // }
   }, [id, x, y, setBounds]);
 
   const {
@@ -105,7 +101,7 @@ const S = {
     padding: 14px 0px;
     ${styleFont.title.tit_md}
     font-weight: 600;
-    background: linear-gradient(to right,  #528599 0%,#8bb0be 100%); 
+    background: linear-gradient(to right, #528599 0%, #8bb0be 100%);
   `,
   AllReviewContainer: styled.ul`
     padding: 0px 18px;
