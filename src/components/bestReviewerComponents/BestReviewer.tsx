@@ -15,19 +15,18 @@ const BestReviewer = () => {
     queryFn: () => getAllUsersAndReviewCount(),
   });
 
-  console.log(users);
   return (
     <S.BestReviewerContainer>
       <S.InnerContainer>
         <S.Title>
-          <span>👍 TOP 10</span> 베스트 리뷰어
+          <span>🏆 TOP 10</span> 베스트 리뷰어
         </S.Title>
         <ul>
           {users?.map((user) => {
             return (
               <li onClick={() => setActiveuserId(user.id)}>
                 <UserProfileContainer key={user.id} user={user} />
-                {activeUserId === user.id && <ReviewListContainer />}
+                {activeUserId === user.id && <ReviewListContainer user={user} />}
               </li>
             );
           })}

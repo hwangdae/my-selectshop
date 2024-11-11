@@ -1,11 +1,8 @@
-import { followWhether, getAllFollowList } from "@/api/follow";
-import useFollowMutate from "@/hook/useFollowMutate";
-import useLoginUserId from "@/hook/useLoginUserId";
+import { getAllFollowList } from "@/api/follow";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { UserType } from "@/types/authType";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import styled from "styled-components";
 import FollowContainer from "./FollowContainer";
 
@@ -14,15 +11,14 @@ interface PropsType {
 }
 
 const UserProfileContainer = ({ user }: PropsType) => {
-
   const { id, profileImage, nickName, review } = user;
 
-  const { data : followList } = useQuery({
+  const { data: followList } = useQuery({
     queryKey: ["followee"],
     queryFn: () => getAllFollowList(),
   });
 
-  const followerCount = followList?.filter((v:any) => {
+  const followerCount = followList?.filter((v) => {
     return v.followee_id === id;
   }).length;
 
@@ -47,7 +43,7 @@ const UserProfileContainer = ({ user }: PropsType) => {
             </S.Activity>
           </S.UserActivity>
         </S.UserInfoWrap>
-        <FollowContainer id ={id} followList={followList} />
+        <FollowContainer id={id} followList={followList} />
       </S.ProfileInfoInner>
     </S.ProfileInfoContainer>
   );

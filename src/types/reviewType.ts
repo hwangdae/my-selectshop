@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export interface ReviewType {
   id:string;
-  reviewImages: string | null;
+  reviewImages: string | null ;
   description: string;
   visited: boolean;
   good: string;
@@ -11,10 +11,6 @@ export interface ReviewType {
   tags: string | null;
   userId: string;
   selectshopId: string;
-  users: {
-    nickName: string;
-    profileImage: string;
-  };
 }
 
 export interface UploadReviewType {

@@ -14,10 +14,10 @@ const MyReviewContainer = ({ review }: PropsType) => {
 
   return (
     <div>
-      {review.reviewImages === null || review.reviewImages === "" ? (
+      {review.reviewImages === null && review.reviewImages === "" ? (
         <NoImage />
       ) : (
-        <CommonSwiper slideImages={review.reviewImages} />
+        <CommonSwiper slideImages={review?.reviewImages} />
       )}
       <S.ReviewTextContainer>
         <S.ReviewTextRow>

@@ -4,6 +4,7 @@ import { UserType } from "@/types/authType";
 import { ReviewType } from "@/types/reviewType";
 import React from "react";
 import styled from "styled-components";
+import Tags from "../utilityComponents/Tags";
 
 interface PropsType {
   review: ReviewType;
@@ -12,12 +13,11 @@ interface PropsType {
 
 const AllReview = ({ review, users }: PropsType) => {
   const { userId, description, tags } = review;
-  console.log(review);
-  // const {id,nickName,profileImage} = user
+
   const user = users?.find((user: UserType) => {
     return user.id === userId;
   });
-  console.log(user);
+
   return (
     <S.ReviewWrap>
       <S.UserContainer>
@@ -25,13 +25,7 @@ const AllReview = ({ review, users }: PropsType) => {
         <S.writtenUser>{user?.nickName}님의 후기</S.writtenUser>
       </S.UserContainer>
       <S.ReviewDescription>{description}</S.ReviewDescription>
-      <S.TagList>
-        {tags === null
-          ? "추천할 브랜드가 없어요"
-          : review?.tags?.split(",").map((tag: string) => {
-              return <li key={tag}>{tag}</li>;
-            })}
-      </S.TagList>
+      <Tags tags={tags}/>
     </S.ReviewWrap>
   );
 };
@@ -69,35 +63,5 @@ const S = {
     ${styleFont.text.txt_sm}
     font-weight: 400;
   `,
-  TagList: styled.ul`
-    list-style: none !important ;
-    background-color: ${styleColor.GRAY[0]};
-    padding: 10px;
-    ${styleFont.text.txt_sm}
-    font-weight: 400;
-    li {
-      position: relative;
-      left: 0;
-      top: 0;
-      display: inline-block;
-      background-color: ${styleColor.RED[0]};
-      padding: 4px 10px;
-      border-radius: 4px;
-      text-indent: 4px;
-      color: #fff !important;
-      margin-right: 5px;
-      &::before {
-        position: absolute;
-        left: 6px;
-        top: 50%;
-        margin-top: -3px;
-        display: block;
-        content: "";
-        width: 5px;
-        height: 5px;
-        border-radius: 100%;
-        background-color: #ffffff;
-      }
-    }
-  `,
+  
 };
