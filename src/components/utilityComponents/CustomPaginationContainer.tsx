@@ -21,10 +21,6 @@ const CustomPaginationContainer = ({
 
   const totalPages = Math.ceil(selectshops.length / 15);
 
-  console.log(Array.from({length : totalPages}))
-
-  console.log(selectshops.length)
-
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({ top: 0 });

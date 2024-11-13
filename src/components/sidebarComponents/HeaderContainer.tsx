@@ -25,7 +25,6 @@ const HeaderContainer = () => {
 
   const router = useRouter();
   const { tab } = router.query;
-  console.log(router, tab);
 
   const handleLogoClick = () => {
     setSelectshops([]);

@@ -1,37 +1,35 @@
 import { styleFont } from "@/styles/styleFont";
 import { UserType } from "@/types/authType";
 import { ReviewType } from "@/types/reviewType";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { styleColor } from "@/styles/styleColor";
-import SelectshopContainer from "./SelectshopTitleContainer";
+import ReviewContainer from "./ReviewContainer";
+import { PlaceType } from "@/types/placeType";
 
 interface PropsType {
   user: UserType;
+  selectshops : PlaceType[]
 }
 
-const ReviewListContainer = ({ user }: PropsType) => {
+const ReviewListContainer = ({ user,selectshops }: PropsType) => {
   const { nickName, review } = user;
+
+  const filteredReviews = review?.filter((v1)=>{
+    return selectshops.some((v2)=> v2.id === v1.selectshopId)
+  })
+
+  const reviewsWithShopInfo = filteredReviews?.map((v) => {
+    const shopInfo = selectshops.find((shop) => shop.id === v.selectshopId);
+    return { ...v, shopInfo };
+  });
 
   return (
     <S.ReviewListContainer>
       <S.Title>{nickName}님의 리뷰 리스트</S.Title>
       <S.ReviewWrap>
-        {review?.map((v: ReviewType) => {
+        {reviewsWithShopInfo?.map((review: ReviewType) => {
           return (
-            <li>
-              <h2>
-                {v.reviewImages === null || v.reviewImages === "" ? (
-                  <S.NoImage src="images/noImage.jpg" />
-                ) : (
-                  <img src={v.reviewImages}></img>
-                )}
-              </h2>
-              <S.TextWrap>
-                <SelectshopContainer selectshopId={v.selectshopId} />
-                <S.ReviewText>{v.description}</S.ReviewText>
-              </S.TextWrap>
-            </li>
+            <ReviewContainer key={review.selectshopId} review={review} />
           );
         })}
       </S.ReviewWrap>
@@ -64,34 +62,5 @@ const S = {
   `,
   ReviewWrap: styled.ul`
     padding: 20px 12px;
-    li {
-      border-radius: 4px;
-      box-shadow: 0px 0px 8px 1px rgba(182, 182, 182, 0.1);
-      margin-bottom: 20px;
-      h2 {
-        width: 100%;
-        height: 80px;
-        border-radius: 4px 4px 0px 0px;
-        overflow: hidden;
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
-    }
-  `,
-  TextWrap: styled.div`
-    padding: 16px 10px 10px 10px;
-  `,
-  ReviewText: styled.p`
-    background-color: ${styleColor.GRAY[0]};
-    ${styleFont.text.txt_sm}
-    padding: 6px;
-  `,
-  NoImage: styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   `,
 };

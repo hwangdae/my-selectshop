@@ -3,10 +3,11 @@ import { getAllUsers, getAllUsersAndReviewCount } from "@/api/user";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import UserProfileContainer from "./UserProfileContainer";
 import ReviewListContainer from "./ReviewListContainer";
+import useKakaoSearch from "@/hook/useKakaoSearch";
 
 const BestReviewer = () => {
   const [activeUserId, setActiveuserId] = useState();
@@ -14,6 +15,12 @@ const BestReviewer = () => {
     queryKey: ["usera"],
     queryFn: () => getAllUsersAndReviewCount(),
   });
+
+  const { searchAllPlaces, selectshops } = useKakaoSearch();
+
+  useEffect(() => {
+    searchAllPlaces();
+  }, []);
 
   return (
     <S.BestReviewerContainer>
@@ -25,8 +32,8 @@ const BestReviewer = () => {
           {users?.map((user) => {
             return (
               <li onClick={() => setActiveuserId(user.id)}>
-                <UserProfileContainer key={user.id} user={user} />
-                {activeUserId === user.id && <ReviewListContainer user={user} />}
+                <UserProfileContainer key={user.id} user={user} selectshops={selectshops} />
+                {activeUserId === user.id && <ReviewListContainer user={user} selectshops={selectshops} />}
               </li>
             );
           })}

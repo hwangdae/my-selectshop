@@ -43,7 +43,7 @@ const WriteReview = ({ selectshopId }: PropsType) => {
       tags: "",
     },
   });
-  console.log();
+  
   const {
     fields: advantageFields,
     append: advantageAppend,
