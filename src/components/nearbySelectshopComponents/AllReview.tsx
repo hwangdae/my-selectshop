@@ -5,6 +5,7 @@ import { ReviewType } from "@/types/reviewType";
 import React from "react";
 import styled from "styled-components";
 import Tags from "../utilityComponents/Tags";
+import FollowContainer from "../bestReviewerComponents/FollowContainer";
 
 interface PropsType {
   review: ReviewType;
@@ -21,11 +22,14 @@ const AllReview = ({ review, users }: PropsType) => {
   return (
     <S.ReviewWrap>
       <S.UserContainer>
-        <S.ProfileImage src={user?.profileImage} />
-        <S.writtenUser>{user?.nickName}님의 후기</S.writtenUser>
+        <S.UserInfo>
+          <S.ProfileImage src={user?.profileImage} />
+          <S.writtenUser>{user?.nickName}님의 후기</S.writtenUser>
+        </S.UserInfo>
+        <FollowContainer id={user?.id} />
       </S.UserContainer>
       <S.ReviewDescription>{description}</S.ReviewDescription>
-      <Tags tags={tags}/>
+      <Tags tags={tags} />
     </S.ReviewWrap>
   );
 };
@@ -42,8 +46,13 @@ const S = {
   UserContainer: styled.div`
     display: flex;
     align-items: center;
-    gap: 5px;
+    justify-content: space-between;
     margin-bottom: 10px;
+  `,
+  UserInfo: styled.div`
+    display: flex;
+    align-items: center;
+    gap: 5px;
   `,
   ProfileImage: styled.img`
     width: 32px;
@@ -63,5 +72,4 @@ const S = {
     ${styleFont.text.txt_sm}
     font-weight: 400;
   `,
-  
 };

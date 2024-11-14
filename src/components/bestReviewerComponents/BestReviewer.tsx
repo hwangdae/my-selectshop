@@ -1,5 +1,4 @@
-import { getAllReview } from "@/api/review";
-import { getAllUsers, getAllUsersAndReviewCount } from "@/api/user";
+import { getAllUsersAndReviewCount } from "@/api/user";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { useQuery } from "@tanstack/react-query";
@@ -11,8 +10,9 @@ import useKakaoSearch from "@/hook/useKakaoSearch";
 
 const BestReviewer = () => {
   const [activeUserId, setActiveuserId] = useState();
+
   const { data: users } = useQuery({
-    queryKey: ["usera"],
+    queryKey: ["allUser"],
     queryFn: () => getAllUsersAndReviewCount(),
   });
 

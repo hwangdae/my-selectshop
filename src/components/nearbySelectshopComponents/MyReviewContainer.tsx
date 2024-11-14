@@ -2,33 +2,45 @@ import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { ReviewType } from "@/types/reviewType";
 import NoImage from "@/assets/NoImage.svg";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import CommonSwiper from "./CommonSwiper";
+import { PlaceType } from "@/types/placeType";
+import { selectShopsState } from "@/globalState/recoilState";
+import { useRecoilState } from "recoil";
 
 interface PropsType {
-  review: ReviewType;
+  review: ReviewType & { shopInfo?: any };
 }
 
 const MyReviewContainer = ({ review }: PropsType) => {
+  console.log(review);
+  const { reviewImages, description, good, notGood, tags, shopInfo } = review;
+  const [,setSelectshops] = useRecoilState(selectShopsState);
+
+  // useEffect(()=>{
+  //   setSelectshops(shopInfo)
+  // })
 
   return (
-    <div>
-      {review.reviewImages === null && review.reviewImages === "" ? (
-        <NoImage />
+    <S.MyReviewContainer>
+      <S.ImageWrap>
+      {reviewImages === null || reviewImages === "" ? (
+        <NoImage/>
       ) : (
-        <CommonSwiper slideImages={review?.reviewImages} />
+        <CommonSwiper slideImages={reviewImages} />
       )}
+      </S.ImageWrap>
       <S.ReviewTextContainer>
         <S.ReviewTextRow>
           <S.ReviewTitle>📒 나의 후기</S.ReviewTitle>
-          <S.ReviewDescription>{review?.description}</S.ReviewDescription>
+          <S.ReviewDescription>{description}</S.ReviewDescription>
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
           <ul>
-            {review?.good !== null ? (
-              review?.good?.split(",").map((good) => {
+            {good !== null ? (
+              good?.split(",").map((good) => {
                 return <li key={good}>{good}</li>;
               })
             ) : (
@@ -39,8 +51,8 @@ const MyReviewContainer = ({ review }: PropsType) => {
         <S.ReviewTextRow>
           <S.ReviewTitle>👎 설렉샵 단점</S.ReviewTitle>
           <ul>
-            {review?.notGood !== null ? (
-              review?.notGood?.split(",").map((notGood) => {
+            {notGood !== null ? (
+              notGood?.split(",").map((notGood) => {
                 return <li key={notGood}>{notGood}</li>;
               })
             ) : (
@@ -51,24 +63,29 @@ const MyReviewContainer = ({ review }: PropsType) => {
         <S.ReviewTextRow>
           <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
           <S.TagList>
-            {review.tags === null
-              ? <li>추천할 브랜드가 없어요</li>
-              : review?.tags?.split(",").map((tag: string) => {
-                  return <li key={tag}>{tag}</li>;
-                })}
+            {tags === null ? (
+              <li>추천할 브랜드가 없어요</li>
+            ) : (
+              tags?.split(",").map((tag: string) => {
+                return <li key={tag}>{tag}</li>;
+              })
+            )}
           </S.TagList>
         </S.ReviewTextRow>
       </S.ReviewTextContainer>
-    </div>
+    </S.MyReviewContainer>
   );
 };
 
 export default MyReviewContainer;
 
 const S = {
-  ReviewImage: styled.img`
-    width: 100%;
-    height: auto;
+  MyReviewContainer : styled.div`
+    position: absolute; left: 0; top: 46px;
+  `,
+  ImageWrap : styled.div`
+    width: 300px;
+    /* position: absolute; left: 0; top: 46px; */
   `,
   ReviewTextContainer: styled.ul`
     padding: 0px 12px;

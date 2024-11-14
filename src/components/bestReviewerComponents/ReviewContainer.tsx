@@ -10,8 +10,8 @@ interface PropsType {
 }
 
 const ReviewContainer = ({ review }: PropsType) => {
-  const { reviewImages, selectshopId, description, shopInfo } = review;
-  console.log(shopInfo);
+  const { reviewImages, description, shopInfo } = review;
+
   return (
     <S.ReviewContainer>
       <h2>
@@ -42,6 +42,7 @@ export default ReviewContainer;
 
 const S = {
   ReviewContainer: styled.li`
+    cursor: pointer;
     border-radius: 4px;
     box-shadow: 0px 0px 8px 1px rgba(182, 182, 182, 0.1);
     margin-bottom: 20px;

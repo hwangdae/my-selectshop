@@ -5,14 +5,14 @@ import { UserType } from "@/types/authType";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import FollowContainer from "./FollowContainer";
-import {  PlaceType } from "@/types/placeType";
+import { PlaceType } from "@/types/placeType";
 
 interface PropsType {
   user: UserType;
-  selectshops:PlaceType[];
+  selectshops: PlaceType[];
 }
 
-const UserProfileContainer = ({ user,selectshops }: PropsType) => {
+const UserProfileContainer = ({ user, selectshops }: PropsType) => {
   const { id, profileImage, nickName, review } = user;
 
   const { data: followList } = useQuery({
@@ -21,7 +21,7 @@ const UserProfileContainer = ({ user,selectshops }: PropsType) => {
   });
 
   const filteredReviewCount = review?.filter((v1) => {
-    return selectshops.some((v2:PlaceType) => v2.id === v1.selectshopId);
+    return selectshops.some((v2: PlaceType) => v2.id === v1.selectshopId);
   }).length;
 
   const followerCount = followList?.filter((v) => {
@@ -49,7 +49,7 @@ const UserProfileContainer = ({ user,selectshops }: PropsType) => {
             </S.Activity>
           </S.UserActivity>
         </S.UserInfoWrap>
-        <FollowContainer id={id} followList={followList} />
+        <FollowContainer id={id} />
       </S.ProfileInfoInner>
     </S.ProfileInfoContainer>
   );

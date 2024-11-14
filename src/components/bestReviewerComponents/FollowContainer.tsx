@@ -1,4 +1,4 @@
-import { followWhether, getAllFollowList } from "@/api/follow";
+import { getAllFollowList } from "@/api/follow";
 import useFollowMutate from "@/hook/useFollowMutate";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { styleColor } from "@/styles/styleColor";
@@ -12,16 +12,20 @@ import { FollowType } from "@/types/followType";
 
 interface PropsType {
   id: string;
-  followList : any
 }
 
-const FollowContainer = ({ id,followList }: PropsType) => {
+const FollowContainer = ({ id }: PropsType) => {
   const loginUser = useLoginUserId();
   const { followMutate, unFollowMutate } = useFollowMutate(loginUser, id);
 
+  const { data: followList } = useQuery({
+    queryKey: ["followee"],
+    queryFn: () => getAllFollowList(),
+  });
+
   const router = useRouter();
 
-  const isFollowing = followList?.find((v:any) => {
+  const isFollowing = followList?.find((v: FollowType) => {
     return v.followee_id === id && v.follower_id === loginUser;
   });
 
@@ -74,6 +78,7 @@ export default FollowContainer;
 const S = {
   FollowContainer: styled.div`
     width: 30%;
+    height: 100%;
   `,
   FollowButton: styled.button<{ $followState: boolean | null | undefined }>`
     cursor: pointer;

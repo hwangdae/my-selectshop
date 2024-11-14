@@ -31,7 +31,7 @@ const MapComponent = () => {
   const router = useRouter()
   const {tab} = router.query
 
-  const { data: reviewData} = useQuery({
+  const { data: reviewData } = useQuery({
     queryKey: ["review"],
     queryFn: () => getAllReview(),
     refetchOnWindowFocus: false,
@@ -84,8 +84,10 @@ const MapComponent = () => {
       return filteredShops
     }else if(tab === "visitedSelectshop"){
       return getPaginatedItems(visitedSelectshops, currentPage);
-    }else{
+    }else if(tab === "notVisiteSelectshop"){
       return getPaginatedItems(notVisitedSelectshops,currentPage)
+    }else{
+      return []
     }
   }
 

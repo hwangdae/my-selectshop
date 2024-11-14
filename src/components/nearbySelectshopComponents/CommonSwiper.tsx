@@ -23,7 +23,7 @@ const CommonSwiper = ({slideImages}: PropsType) => {
         {slideImages?.split(',').map((img,index) => {
           return (
               <S.SwiperSlide key={index}>
-                <img src={img} alt="Image" />
+                <img src={img} alt="업로드 이미지" />
               </S.SwiperSlide>
           );
         })}
