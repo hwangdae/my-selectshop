@@ -18,8 +18,6 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
   const [detailReview, setDetailReview] = useState<any>();
   const [isReviewOpen, setIsReviewOpen] = useState(false);
 
-  console.log(detailReview, "디테일리뷰");
-
   const filteredReviews = review?.filter((v1) => {
     return selectshops.some((v2) => v2.id === v1.selectshopId);
   });

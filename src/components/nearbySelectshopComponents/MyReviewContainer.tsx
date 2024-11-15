@@ -10,17 +10,13 @@ import { selectShopsState } from "@/globalState/recoilState";
 import { useRecoilState } from "recoil";
 
 interface PropsType {
-  review: ReviewType & { shopInfo?: any };
+  review: ReviewType;
 }
 
 const MyReviewContainer = ({ review }: PropsType) => {
   console.log(review);
-  const { reviewImages, description, good, notGood, tags, shopInfo } = review;
+  const { reviewImages, description, good, notGood, tags } = review;
   const [,setSelectshops] = useRecoilState(selectShopsState);
-
-  // useEffect(()=>{
-  //   setSelectshops(shopInfo)
-  // })
 
   return (
     <S.MyReviewContainer>

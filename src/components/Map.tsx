@@ -1,10 +1,4 @@
-import {
-  boundsState,
-  currentPageState,
-  myLocationState,
-  searchTermState,
-  selectShopsState,
-} from "@/globalState/recoilState";
+import { boundsState, myLocationState } from "@/globalState/recoilState";
 import { useEffect, useState } from "react";
 import { Map } from "react-kakao-maps-sdk";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -12,48 +6,12 @@ import MyLocationMaker from "./MyLocationMaker";
 import styled from "styled-components";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import MarkerContainer from "./MarkerContainer";
-import { useRouter } from "next/router";
-import { useQuery } from "@tanstack/react-query";
-import { getAllReview } from "@/api/review";
-import { PlaceType } from "@/types/placeType";
-import { ReviewType } from "@/types/reviewType";
-import { getPaginatedItems } from "@/utilityFunction/pagenate";
+import RenderMarkers from "./RenderMarkers";
 
 const MapComponent = () => {
   const [map, setMap] = useState<any>();
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
-  const currentPage = useRecoilValue<number>(currentPageState);
-  const selectshops = useRecoilValue(selectShopsState);
   const bounds = useRecoilValue(boundsState);
-  const searchTerm = useRecoilValue(searchTermState);
-
-  const router = useRouter()
-  const {tab} = router.query
-
-  const { data: reviewData } = useQuery({
-    queryKey: ["review"],
-    queryFn: () => getAllReview(),
-    refetchOnWindowFocus: false,
-  });
-
-  const filteredShops = selectshops.filter((selectshop) =>
-    selectshop.place_name.includes(searchTerm)
-  );
-
-  const visitedSelectshops = selectshops?.filter(
-    (selectshop: PlaceType) =>
-      reviewData?.some(
-        (review: ReviewType) => review.selectshopId === selectshop.id
-      ) && selectshop.place_name.includes(searchTerm)
-  );
-
-  const notVisitedSelectshops = selectshops?.filter(
-    (selectshop: PlaceType) =>
-      !reviewData?.some(
-        (review: ReviewType) => review.selectshopId === selectshop.id
-      ) && selectshop.place_name.includes(searchTerm)
-  );
 
   useEffect(() => {
     if (map && bounds) {
@@ -79,18 +37,6 @@ const MapComponent = () => {
     }
   }, []);
 
-  const renderContent = () => {
-    if(tab === "nearbySelectshop"){
-      return filteredShops
-    }else if(tab === "visitedSelectshop"){
-      return getPaginatedItems(visitedSelectshops, currentPage);
-    }else if(tab === "notVisiteSelectshop"){
-      return getPaginatedItems(notVisitedSelectshops,currentPage)
-    }else{
-      return []
-    }
-  }
-
   return (
     <Map
       id="map"
@@ -98,9 +44,7 @@ const MapComponent = () => {
       style={{ width: "100%", height: "100%" }}
       onCreate={setMap}
     >
-      {renderContent().map((selectshop, index) => (
-        <MarkerContainer selectshop={selectshop} index={index} />
-      ))}
+      <RenderMarkers />
       {!myLocation.isLoading && <MyLocationMaker myLocation={myLocation} />}
     </Map>
   );

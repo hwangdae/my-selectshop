@@ -5,24 +5,18 @@ import { UserType } from "@/types/authType";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import FollowContainer from "./FollowContainer";
-import { PlaceType } from "@/types/placeType";
 
 interface PropsType {
-  user: UserType;
-  selectshops: PlaceType[];
+  user: UserType & {filteredReviewCount? : number};
 }
 
-const UserProfileContainer = ({ user, selectshops }: PropsType) => {
-  const { id, profileImage, nickName, review } = user;
+const UserProfileContainer = ({ user }: PropsType) => {
+  const { id, profileImage, nickName, filteredReviewCount } = user;
 
   const { data: followList } = useQuery({
     queryKey: ["followee"],
     queryFn: () => getAllFollowList(),
   });
-
-  const filteredReviewCount = review?.filter((v1) => {
-    return selectshops.some((v2: PlaceType) => v2.id === v1.selectshopId);
-  }).length;
 
   const followerCount = followList?.filter((v) => {
     return v.followee_id === id;
