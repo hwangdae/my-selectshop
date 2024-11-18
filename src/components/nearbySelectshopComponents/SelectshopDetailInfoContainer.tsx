@@ -31,7 +31,7 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
 
     bounds.extend(position);
     setBounds(bounds);
-  }, [id, x, y, setBounds]);
+  }, [setBounds]);
 
   const {
     data: users,

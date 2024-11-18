@@ -1,5 +1,6 @@
 import { registerReviewSchema } from "@/validators/review";
 import { z } from "zod";
+import { PlaceType } from "./placeType";
 
 export interface ReviewType {
   id:string;
@@ -11,6 +12,7 @@ export interface ReviewType {
   tags: string | null;
   userId: string;
   selectshopId: string;
+  shopInfo? : PlaceType | undefined;
 }
 
 export interface UploadReviewType {

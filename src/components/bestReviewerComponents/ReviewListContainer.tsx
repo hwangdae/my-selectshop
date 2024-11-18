@@ -1,13 +1,15 @@
 import { styleFont } from "@/styles/styleFont";
 import { UserType } from "@/types/authType";
 import { ReviewType } from "@/types/reviewType";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ReviewContainer from "./ReviewContainer";
 import { PlaceType } from "@/types/placeType";
 import MyReviewContainer from "../nearbySelectshopComponents/MyReviewContainer";
 import ArrowLeft from "@/assets/ArrowLeft.svg";
 import { styleColor } from "@/styles/styleColor";
+import { useRecoilState } from "recoil";
+import { selectShopsState, shopCoordinatesState } from "@/globalState/recoilState";
 interface PropsType {
   user: UserType;
   selectshops: PlaceType[];
@@ -17,6 +19,9 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
   const { nickName, review } = user;
   const [detailReview, setDetailReview] = useState<any>();
   const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const [,setShopCoordinates] = useRecoilState<any>(shopCoordinatesState)
+  const [,setSelectshops] = useRecoilState(selectShopsState)
+
 
   const filteredReviews = review?.filter((v1) => {
     return selectshops.some((v2) => v2.id === v1.selectshopId);
@@ -27,6 +32,11 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
     return { ...v, shopInfo };
   });
 
+  useEffect(()=>{
+    const shopCoordinates = reviewsWithShopInfo?.map((review) => review.shopInfo);
+    setShopCoordinates(shopCoordinates as PlaceType[]);
+  },[])
+
   return (
     <S.ReviewListContainer>
       {isReviewOpen ? (
@@ -34,7 +44,7 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
           <button onClick={() => setIsReviewOpen(false)}>
             <ArrowLeft width={"16px"} fill={`${styleColor.YELLOW.main}`} />
           </button>
-          <S.Title>{detailReview.shopInfo.place_name}</S.Title>
+          <S.Title>{detailReview?.shopInfo?.place_name}</S.Title>
         </S.TitleWrap>
       ) : (
         <S.TitleWrap>
@@ -46,18 +56,27 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
           <MyReviewContainer review={detailReview} />
         ) : (
           <>
-            {reviewsWithShopInfo?.map((review: ReviewType) => {
-              return (
-                <li
-                  onClick={() => {
-                    setDetailReview(review);
-                    setIsReviewOpen(true);
-                  }}
-                >
-                  <ReviewContainer key={review.selectshopId} review={review} />
-                </li>
-              );
-            })}
+            {reviewsWithShopInfo?.length === 0 ? (
+              <h1>없음</h1>
+            ) : (
+              <>
+                {reviewsWithShopInfo?.map((review: ReviewType) => {
+                  return (
+                    <li
+                      onClick={() => {
+                        setDetailReview(review);
+                        setIsReviewOpen(true);
+                      }}
+                    >
+                      <ReviewContainer
+                        key={review.selectshopId}
+                        review={review}
+                      />
+                    </li>
+                  );
+                })}
+              </>
+            )}
           </>
         )}
       </S.ReviewWrap>

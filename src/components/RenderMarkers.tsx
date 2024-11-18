@@ -3,6 +3,7 @@ import {
   currentPageState,
   searchTermState,
   selectShopsState,
+  shopCoordinatesState,
 } from "@/globalState/recoilState";
 import { PlaceType } from "@/types/placeType";
 import { ReviewType } from "@/types/reviewType";
@@ -17,6 +18,7 @@ const RenderMarkers = () => {
   const selectshops = useRecoilValue(selectShopsState);
   const searchTerm = useRecoilValue(searchTermState);
   const currentPage = useRecoilValue<number>(currentPageState);
+  const shopCoordinates = useRecoilValue(shopCoordinatesState);
 
   const router = useRouter();
   const { tab } = router.query;
@@ -53,7 +55,7 @@ const RenderMarkers = () => {
     } else if (tab === "notVisiteSelectshop") {
       return getPaginatedItems(notVisitedSelectshops, currentPage);
     } else {
-      return [];
+      return shopCoordinates;
     }
   };
 

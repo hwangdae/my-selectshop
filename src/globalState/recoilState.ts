@@ -7,6 +7,11 @@ export const selectShopsState = atom<PlaceType[]>({
   default: [],
 });
 
+export const shopCoordinatesState = atom<PlaceType[]>({
+  key : "shopCoordinatesState",
+  default : []
+})
+
 export const userState = atom<User | null>({
   key : "userState",
   default : null,

@@ -34,6 +34,7 @@ const BestReviewer = () => {
     })
     .sort((a, b) => b.filteredReviewCount - a.filteredReviewCount);
 
+    console.log(sortedUsers)
   return (
     <S.BestReviewerContainer>
       <S.InnerContainer>
