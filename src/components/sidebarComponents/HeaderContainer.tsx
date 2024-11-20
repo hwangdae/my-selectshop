@@ -1,5 +1,4 @@
 import { styleFont } from "@/styles/styleFont";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Search from "@/assets/Search.svg";
 import { useRouter } from "next/router";
@@ -26,15 +25,7 @@ const HeaderContainer = () => {
   const router = useRouter();
 
   const handleLogoClick = () => {
-    setSelectshops([]);
     router.push("/");
-    const bounds = new kakao.maps.LatLngBounds();
-    const position = new kakao.maps.LatLng(
-      myLocation.center.lat,
-      myLocation.center.lng
-    );
-    bounds.extend(position);
-    setBounds(bounds);
   };
 
   const logoutHandleSubmit = async () => {

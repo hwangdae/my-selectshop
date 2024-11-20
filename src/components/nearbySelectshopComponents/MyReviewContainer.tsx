@@ -8,6 +8,7 @@ import CommonSwiper from "./CommonSwiper";
 import { PlaceType } from "@/types/placeType";
 import { boundsState, myLocationState, selectShopsState } from "@/globalState/recoilState";
 import { useRecoilState, useRecoilValue } from "recoil";
+import useInitializeMapState from "@/hook/useInitializeMapState";
 
 interface PropsType {
   review: ReviewType & {shopInfo : PlaceType[]};
@@ -16,16 +17,8 @@ interface PropsType {
 const MyReviewContainer = ({ review }: PropsType) => {
 
   const { reviewImages, description, good, notGood, tags, shopInfo } = review;
-  const [_, setBounds] = useRecoilState<any>(boundsState);
-  const myLocation = useRecoilValue(myLocationState);
+  useInitializeMapState(shopInfo.y, shopInfo.x)
 
-
-  useEffect(() => {
-    const bounds = new kakao.maps.LatLngBounds();
-    const position = new kakao.maps.LatLng(shopInfo.y, shopInfo.x);
-    bounds.extend(position);
-    setBounds(bounds);
-  }, [setBounds]);
 
   return (
     <S.MyReviewContainer>

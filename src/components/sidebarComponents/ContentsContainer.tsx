@@ -5,10 +5,15 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProfileContainer from "../profileComponents/ProfileContainer";
 import MyAddressContainer from "./MyAddressContainer";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { PlaceType } from "@/types/placeType";
-import { selectShopsState } from "@/globalState/recoilState";
+import {
+  boundsState,
+  myLocationState,
+  selectShopsState,
+} from "@/globalState/recoilState";
 import useLoginUserId from "@/hook/useLoginUserId";
+import useInitializeMapState from "@/hook/useInitializeMapState";
 
 const CONTENTSTABNAV = [
   { id: "nearbySelectshop", name: "편집샵 보기" },
@@ -18,18 +23,16 @@ const CONTENTSTABNAV = [
 ];
 
 const ContentsContainer = () => {
-  const [,setSelectshops] =
-    useRecoilState<PlaceType[]>(selectShopsState);
-  const loginUser = useLoginUserId()
+  const [, setSelectshops] = useRecoilState<PlaceType[]>(selectShopsState);
+  const myLocation = useRecoilValue(myLocationState);
+  const loginUser = useLoginUserId();
   const router = useRouter();
 
-  useEffect(()=>{
-    setSelectshops([])
-  },[setSelectshops])
-  
+  useInitializeMapState(myLocation.center.lat,myLocation.center.lng)
+
   const viewSelectShopHandle = (id: string) => {
-    if(id !== "nearbySelectshop" && id !== "bestReviewer" && !loginUser){
-      alert('로그인이 필요한 서비스입니다.')
+    if (id !== "nearbySelectshop" && id !== "bestReviewer" && !loginUser) {
+      alert("로그인이 필요한 서비스입니다.");
       router.push("?modal=login");
       return;
     }
@@ -39,7 +42,7 @@ const ContentsContainer = () => {
   return (
     <S.ContentsContainer>
       <ProfileContainer />
-      <MyAddressContainer/>
+      <MyAddressContainer />
       <S.ContentsInner>
         {CONTENTSTABNAV.map((content) => {
           return (

@@ -9,7 +9,11 @@ import MyReviewContainer from "../nearbySelectshopComponents/MyReviewContainer";
 import ArrowLeft from "@/assets/ArrowLeft.svg";
 import { styleColor } from "@/styles/styleColor";
 import { useRecoilState } from "recoil";
-import { selectShopsState, shopCoordinatesState } from "@/globalState/recoilState";
+import {
+  boundsState,
+  selectShopsState,
+  shopCoordinatesState,
+} from "@/globalState/recoilState";
 interface PropsType {
   user: UserType;
   selectshops: PlaceType[];
@@ -19,9 +23,9 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
   const { nickName, review } = user;
   const [detailReview, setDetailReview] = useState<any>();
   const [isReviewOpen, setIsReviewOpen] = useState(false);
-  const [,setShopCoordinates] = useRecoilState<any>(shopCoordinatesState)
-  const [,setSelectshops] = useRecoilState(selectShopsState)
-
+  const [, setShopCoordinates] = useRecoilState<any>(shopCoordinatesState);
+  const [, setSelectshops] = useRecoilState(selectShopsState);
+  const [_, setBounds] = useRecoilState<any>(boundsState);
 
   const filteredReviews = review?.filter((v1) => {
     return selectshops.some((v2) => v2.id === v1.selectshopId);
@@ -32,10 +36,21 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
     return { ...v, shopInfo };
   });
 
-  useEffect(()=>{
-    const shopCoordinates = reviewsWithShopInfo?.map((review) => review.shopInfo);
+  useEffect(() => {
+    const bounds = new window.kakao.maps.LatLngBounds();
+    const shopCoordinates = reviewsWithShopInfo?.map(
+      (review) => review.shopInfo
+    );
+    shopCoordinates?.forEach((coordinate) => {
+      const position = {
+        lat: coordinate?.y as number,
+        lng: coordinate?.x as number,
+      };
+      bounds.extend(new window.kakao.maps.LatLng(position.lat, position.lng));
+    });
     setShopCoordinates(shopCoordinates as PlaceType[]);
-  },[])
+    setBounds(bounds)
+  }, []);
 
   return (
     <S.ReviewListContainer>

@@ -54,8 +54,10 @@ const RenderMarkers = () => {
       return getPaginatedItems(visitedSelectshops, currentPage);
     } else if (tab === "notVisiteSelectshop") {
       return getPaginatedItems(notVisitedSelectshops, currentPage);
-    } else {
+    } else if(tab === "bestReviewer") {
       return shopCoordinates;
+    } else {
+      return []
     }
   };
 

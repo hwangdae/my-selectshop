@@ -14,6 +14,7 @@ import { useRecoilState } from "recoil";
 import { boundsState } from "@/globalState/recoilState";
 import WriteReview from "../writeReviewComponents/WriteReview";
 import { getAllUsers, getUser } from "@/api/user";
+import useInitializeMapState from "@/hook/useInitializeMapState";
 
 interface PropsType {
   selectshop: PlaceType;
@@ -21,17 +22,9 @@ interface PropsType {
 
 const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const { id, place_name, x, y } = selectshop;
-  const [_, setBounds] = useRecoilState<any>(boundsState);
   const loginUser = useLoginUserId();
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
-
-  useEffect(() => {
-    const bounds = new kakao.maps.LatLngBounds();
-    const position = new kakao.maps.LatLng(y, x);
-
-    bounds.extend(position);
-    setBounds(bounds);
-  }, [setBounds]);
+  useInitializeMapState(y, x);
 
   const {
     data: users,
