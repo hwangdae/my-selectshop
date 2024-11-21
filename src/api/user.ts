@@ -2,19 +2,21 @@ import supabase from "@/lib/supabaseClient";
 import { updateProfileType } from "@/types/authType";
 
 const getUser = async (id: string) => {
-  try {
-    const { data: userLogin, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", id)
-      .single();
-    if (error) throw error;
-    return userLogin;
-  } catch (error) {
-    console.log(error);
-  }
+  const { data } = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", id)
+    .single();
+  return data;
 };
-
+const getUserWidthFollow = async (id: string) => {
+  const { data } = await supabase
+    .from("users")
+    .select('*,follows("*")')
+    .eq("id", id)
+    .single();
+    return data
+};
 const getAllUsers = async () => {
   try {
     const { data } = await supabase.from("users").select("*");
@@ -26,7 +28,10 @@ const getAllUsers = async () => {
 
 const getAllUsersAndReviewCount = async () => {
   try {
-    const { data } = await supabase.from("users").select('*,review("*")').limit(10);
+    const { data } = await supabase
+      .from("users")
+      .select('*,review("*")')
+      .limit(10);
     return data;
   } catch (error) {
     console.log(error);
@@ -56,4 +61,12 @@ const userProfileUpdate = async (
   await supabase.from("users").update(updateProfile).eq("id", id).select();
 };
 
-export { getUser, getAllUsers, signUp, logOut, userProfileUpdate,getAllUsersAndReviewCount };
+export {
+  getUser,
+  getAllUsers,
+  signUp,
+  logOut,
+  userProfileUpdate,
+  getAllUsersAndReviewCount,
+  getUserWidthFollow,
+};

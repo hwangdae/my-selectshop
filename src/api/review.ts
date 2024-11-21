@@ -10,6 +10,9 @@ const getReview = async(id:string) => {
     const {data} = await supabase.from('review').select("*").eq('selectshopId',id)
     return data
 }
+const getMyReview = async(selectshopId:string,userId:string) => {
+    const {data} = await supabase.from('review').select("*").eq('selectshopId',selectshopId).eq('userId',userId)
+}
 const getReviewAndUser = async(id:string) => {
     const {data} = await supabase.from('review').select('*,users("*")').eq('selectshopId',id)
     return data
@@ -21,4 +24,4 @@ const getReviewCount = async(loginUser:string) => {
 const addReview = async(review:UploadReviewType) => {
     await supabase.from("review").insert(review);
 }
-export {getAllReview, getReview,getReviewAndUser,getReviewCount,addReview}
+export {getAllReview, getReview,getMyReview,getReviewAndUser,getReviewCount,addReview}

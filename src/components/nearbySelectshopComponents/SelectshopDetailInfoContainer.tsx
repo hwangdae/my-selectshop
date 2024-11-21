@@ -3,7 +3,7 @@ import styled from "styled-components";
 import MyReviewContainer from "./MyReviewContainer";
 import SelectshopReviewContainer from "./SelectshopReviewContainer";
 import { useQuery } from "@tanstack/react-query";
-import { getReviewAndUser } from "@/api/review";
+import { getReview, getReviewAndUser } from "@/api/review";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
@@ -26,18 +26,14 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
   useInitializeMapState(y, x);
 
-  const {
-    data: users,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: users } = useQuery({
     queryKey: ["user"],
     queryFn: () => getAllUsers(),
   });
 
   const { data: reviewData } = useQuery({
     queryKey: ["review", id],
-    queryFn: () => getReviewAndUser(id),
+    queryFn: () => getReview(id),
     enabled: !!id,
     refetchOnWindowFocus: false,
   });

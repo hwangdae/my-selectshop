@@ -7,25 +7,18 @@ import React from "react";
 import styled from "styled-components";
 import ProfileUpdate from "@/assets/ProfileUpdate.svg";
 import { useRouter } from "next/router";
-import { getReviewCount } from "@/api/review";
+import UserActivity from "./UserActivity";
 
 const ProfileContainer = () => {
   const loginUser = useLoginUserId();
   const router = useRouter();
 
   const {
-    data: user,
-    isLoading,
-    error,
+    data: user
   } = useQuery({
     queryKey: ["user", loginUser],
     queryFn: () => getUser(loginUser),
     enabled: !!loginUser,
-  });
-
-  const { data: reviewCount } = useQuery({
-    queryKey: ["review", loginUser],
-    queryFn: () => getReviewCount(loginUser),
   });
 
   const updateProfileButtonhandle = () => {
@@ -50,20 +43,7 @@ const ProfileContainer = () => {
             </S.ProfileImageContainer>
             <S.ProfileInfo>
               <S.UserEmail>{user?.email}</S.UserEmail>
-              <S.UserActivity>
-                <S.Activity>
-                  <h3>리뷰수</h3>
-                  <p>{reviewCount}</p>
-                </S.Activity>
-                <S.Activity>
-                  <h3>팔로워</h3>
-                  <p>0</p>
-                </S.Activity>
-                <S.Activity>
-                  <h3>팔로잉</h3>
-                  <p>0</p>
-                </S.Activity>
-              </S.UserActivity>
+              <UserActivity loginUser={loginUser} user={user}/>
             </S.ProfileInfo>
           </S.ProfileInfoContainer>
         </S.ProfileContainer>
@@ -118,28 +98,5 @@ const S = {
   UserEmail: styled.h2`
     ${styleFont.text.txt_md}
     margin-bottom: 8px;
-  `,
-  UserActivity: styled.ul`
-    display: flex;
-    justify-content: space-between;
-    :first-child {
-      padding-left: 0px;
-    }
-    :last-child {
-      border-right: none;
-    }
-  `,
-  Activity: styled.li`
-    width: 33.3%;
-    border-right: solid 1px #eee;
-    padding-left: 10px;
-    h3 {
-      ${styleFont.text.txt_sm}
-      color: ${styleColor.GRAY[600]};
-    }
-    p {
-      ${styleFont.text.txt_sm}
-      color: ${styleColor.GRAY[600]};
-    }
   `,
 };

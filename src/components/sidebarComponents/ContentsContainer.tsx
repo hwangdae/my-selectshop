@@ -23,7 +23,6 @@ const CONTENTSTABNAV = [
 ];
 
 const ContentsContainer = () => {
-  const [, setSelectshops] = useRecoilState<PlaceType[]>(selectShopsState);
   const myLocation = useRecoilValue(myLocationState);
   const loginUser = useLoginUserId();
   const router = useRouter();

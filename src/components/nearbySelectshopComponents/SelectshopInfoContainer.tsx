@@ -3,7 +3,7 @@ import { styleFont } from "@/styles/styleFont";
 import styled from "styled-components";
 import { PlaceType } from "@/types/placeType";
 import { useQuery } from "@tanstack/react-query";
-import { getReview, getReviewAndUser } from "@/api/review";
+import { getReview } from "@/api/review";
 import PatchCheck from "@/assets/PatchCheck.svg";
 import FullfillPatchCheck from "@/assets/FullfillPatchCheck.svg";
 import useLoginUserId from "@/hook/useLoginUserId";

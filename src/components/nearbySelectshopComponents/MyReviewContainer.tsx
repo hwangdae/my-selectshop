@@ -2,12 +2,9 @@ import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { ReviewType } from "@/types/reviewType";
 import NoImage from "@/assets/NoImage.svg";
-import React, { useEffect } from "react";
 import styled from "styled-components";
 import CommonSwiper from "./CommonSwiper";
 import { PlaceType } from "@/types/placeType";
-import { boundsState, myLocationState, selectShopsState } from "@/globalState/recoilState";
-import { useRecoilState, useRecoilValue } from "recoil";
 import useInitializeMapState from "@/hook/useInitializeMapState";
 
 interface PropsType {

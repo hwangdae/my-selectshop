@@ -24,7 +24,6 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
   const [detailReview, setDetailReview] = useState<any>();
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [, setShopCoordinates] = useRecoilState<any>(shopCoordinatesState);
-  const [, setSelectshops] = useRecoilState(selectShopsState);
   const [_, setBounds] = useRecoilState<any>(boundsState);
 
   const filteredReviews = review?.filter((v1) => {
@@ -37,19 +36,26 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
   });
 
   useEffect(() => {
-    const bounds = new window.kakao.maps.LatLngBounds();
-    const shopCoordinates = reviewsWithShopInfo?.map(
-      (review) => review.shopInfo
-    );
-    shopCoordinates?.forEach((coordinate) => {
-      const position = {
-        lat: coordinate?.y as number,
-        lng: coordinate?.x as number,
-      };
-      bounds.extend(new window.kakao.maps.LatLng(position.lat, position.lng));
-    });
-    setShopCoordinates(shopCoordinates as PlaceType[]);
-    setBounds(bounds)
+    if (
+      typeof window !== "undefined" &&
+      window.kakao &&
+      window.kakao.maps &&
+      window.kakao.maps.services
+    ) {
+      const bounds = new window.kakao.maps.LatLngBounds();
+      const shopCoordinates = reviewsWithShopInfo?.map(
+        (review) => review.shopInfo
+      );
+      shopCoordinates?.forEach((coordinate) => {
+        const position = {
+          lat: coordinate?.y as number,
+          lng: coordinate?.x as number,
+        };
+        bounds.extend(new window.kakao.maps.LatLng(position.lat, position.lng));
+      });
+      setShopCoordinates(shopCoordinates as PlaceType[]);
+      setBounds(bounds);
+    }
   }, []);
 
   return (

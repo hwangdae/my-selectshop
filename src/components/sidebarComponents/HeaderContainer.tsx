@@ -17,16 +17,9 @@ import { styleColor } from "@/styles/styleColor";
 
 const HeaderContainer = () => {
   const [searchName, setSearchName] = useRecoilState(searchTermState);
-  const myLocation = useRecoilValue(myLocationState);
-  const [, setBounds] = useRecoilState<any>(boundsState);
-  const [, setSelectshops] = useRecoilState<PlaceType[]>(selectShopsState);
   const loginUser = useLoginUserId();
 
   const router = useRouter();
-
-  const handleLogoClick = () => {
-    router.push("/");
-  };
 
   const logoutHandleSubmit = async () => {
     try {
@@ -34,6 +27,7 @@ const HeaderContainer = () => {
         await logOut();
         alert("로그아웃 되었습니다.");
         window.location.reload();
+        router.push("/");
       }
     } catch (error) {
       console.log(error);
@@ -52,7 +46,7 @@ const HeaderContainer = () => {
       <S.HeaderInner>
         <S.HeaderTop>
           <S.Logo>
-            <button onClick={() => handleLogoClick()}>MySelectshop</button>
+            <button onClick={() => router.push("/")}>MySelectshop</button>
           </S.Logo>
           {!loginUser ? (
             <Button onClick={() => router.push("?modal=login")}>로그인</Button>

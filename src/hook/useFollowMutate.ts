@@ -1,4 +1,4 @@
-import { followWhether, userFollow, userUnfollow } from "@/api/follow";
+import { userFollow, userUnfollow } from "@/api/follow";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useFollowMutate = (loginUser: string, id: string) => {
