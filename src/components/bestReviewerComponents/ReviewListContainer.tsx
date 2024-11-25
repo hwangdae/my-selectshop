@@ -20,13 +20,13 @@ interface PropsType {
 }
 
 const ReviewListContainer = ({ user, selectshops }: PropsType) => {
-  const { nickName, review } = user;
+  const { nickName, reviews } = user;
   const [detailReview, setDetailReview] = useState<any>();
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [, setShopCoordinates] = useRecoilState<any>(shopCoordinatesState);
   const [_, setBounds] = useRecoilState<any>(boundsState);
 
-  const filteredReviews = review?.filter((v1) => {
+  const filteredReviews = reviews?.filter((v1) => {
     return selectshops.some((v2) => v2.id === v1.selectshopId);
   });
 

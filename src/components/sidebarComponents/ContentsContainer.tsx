@@ -1,17 +1,11 @@
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProfileContainer from "../profileComponents/ProfileContainer";
 import MyAddressContainer from "./MyAddressContainer";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { PlaceType } from "@/types/placeType";
-import {
-  boundsState,
-  myLocationState,
-  selectShopsState,
-} from "@/globalState/recoilState";
+import { useRecoilValue } from "recoil";
+import { myLocationState } from "@/globalState/recoilState";
 import useLoginUserId from "@/hook/useLoginUserId";
 import useInitializeMapState from "@/hook/useInitializeMapState";
 
@@ -27,7 +21,7 @@ const ContentsContainer = () => {
   const loginUser = useLoginUserId();
   const router = useRouter();
 
-  useInitializeMapState(myLocation.center.lat,myLocation.center.lng)
+  useInitializeMapState(myLocation.center.lat, myLocation.center.lng);
 
   const viewSelectShopHandle = (id: string) => {
     if (id !== "nearbySelectshop" && id !== "bestReviewer" && !loginUser) {

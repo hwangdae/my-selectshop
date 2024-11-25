@@ -14,7 +14,6 @@ import styled from "styled-components";
 import Trash from "@/assets/Trash.svg";
 import { ErrorMessage } from "@hookform/error-message";
 import { UploadReviewType } from "@/types/reviewType";
-import { addReview } from "@/api/review";
 import useReviewMutate from "@/hook/useReviewMutate";
 
 interface PropsType {

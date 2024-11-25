@@ -2,18 +2,18 @@ import { getAllFollowList } from "@/api/follow";
 import { getReviewCount } from "@/api/review";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import { AuthType } from "@/types/authType";
+import { AuthType, UserType } from "@/types/authType";
+import { FollowType } from "@/types/followType";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import styled from "styled-components";
 
 interface PropsType {
   loginUser: string;
-  user: AuthType;
+  userId: string;
 }
 
-const UserActivity = ({ loginUser, user }: PropsType) => {
-  const { id } = user;
+const UserActivity = ({ loginUser, userId }: PropsType) => {
 
   const { data: followList } = useQuery({
     queryKey: ["followee"],
@@ -25,12 +25,12 @@ const UserActivity = ({ loginUser, user }: PropsType) => {
     queryFn: () => getReviewCount(loginUser),
   });
 
-  const followerCount = followList?.filter((v) => {
-    return v.followee_id === id;
+  const followerCount = followList?.filter((v:FollowType) => {
+    return v.followee_id === userId;
   }).length;
 
-  const followingCount = followList?.filter((v) => {
-    return v.follower_id === id;
+  const followingCount = followList?.filter((v:FollowType) => {
+    return v.follower_id === userId;
   }).length;
 
   return (

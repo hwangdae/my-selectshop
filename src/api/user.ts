@@ -30,7 +30,7 @@ const getAllUsersAndReviewCount = async () => {
   try {
     const { data } = await supabase
       .from("users")
-      .select('*,review("*")')
+      .select('*,reviews("*")')
       .limit(10);
     return data;
   } catch (error) {

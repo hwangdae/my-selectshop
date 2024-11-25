@@ -5,6 +5,7 @@ import { UserType } from "@/types/authType";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import FollowContainer from "./FollowContainer";
+import { FollowType } from "@/types/followType";
 
 interface PropsType {
   user: UserType & {filteredReviewCount? : number};
@@ -18,7 +19,7 @@ const UserProfileContainer = ({ user }: PropsType) => {
     queryFn: () => getAllFollowList(),
   });
 
-  const followerCount = followList?.filter((v) => {
+  const followerCount = followList?.filter((v:FollowType) => {
     return v.followee_id === id;
   }).length;
 

@@ -14,7 +14,7 @@ interface PropsType {
 const MyReviewContainer = ({ review }: PropsType) => {
 
   const { reviewImages, description, good, notGood, tags, shopInfo } = review;
-  useInitializeMapState(shopInfo.y, shopInfo.x)
+  useInitializeMapState(shopInfo?.y, shopInfo?.x)
 
 
   return (
@@ -80,7 +80,6 @@ const S = {
   `,
   ImageWrap : styled.div`
     width: 300px;
-    /* position: absolute; left: 0; top: 46px; */
   `,
   ReviewTextContainer: styled.ul`
     padding: 0px 12px;

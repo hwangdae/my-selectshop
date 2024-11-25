@@ -9,7 +9,7 @@ import FollowContainer from "../bestReviewerComponents/FollowContainer";
 
 interface PropsType {
   review: ReviewType;
-  users: any;
+  users: UserType[];
 }
 
 const AllReview = ({ review, users }: PropsType) => {
@@ -26,7 +26,7 @@ const AllReview = ({ review, users }: PropsType) => {
           <S.ProfileImage src={user?.profileImage} />
           <S.writtenUser>{user?.nickName}님의 후기</S.writtenUser>
         </S.UserInfo>
-        <FollowContainer id={user?.id} />
+        <FollowContainer id={user!.id} />
       </S.UserContainer>
       <S.ReviewDescription>{description}</S.ReviewDescription>
       <Tags tags={tags} />

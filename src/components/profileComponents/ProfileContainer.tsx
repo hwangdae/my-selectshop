@@ -8,6 +8,7 @@ import styled from "styled-components";
 import ProfileUpdate from "@/assets/ProfileUpdate.svg";
 import { useRouter } from "next/router";
 import UserActivity from "./UserActivity";
+import { UserType } from "@/types/authType";
 
 const ProfileContainer = () => {
   const loginUser = useLoginUserId();
@@ -43,7 +44,7 @@ const ProfileContainer = () => {
             </S.ProfileImageContainer>
             <S.ProfileInfo>
               <S.UserEmail>{user?.email}</S.UserEmail>
-              <UserActivity loginUser={loginUser} user={user}/>
+              <UserActivity loginUser={loginUser} userId={user?.id}/>
             </S.ProfileInfo>
           </S.ProfileInfoContainer>
         </S.ProfileContainer>

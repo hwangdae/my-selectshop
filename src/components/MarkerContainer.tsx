@@ -16,7 +16,7 @@ const MarkerContainer = ({ selectshop, index }: PropsType) => {
   const { id, place_name, x, y } = selectshop;
   const position = { lat: y, lng: x };
 
-  const { data: reviewData }: any = useQuery({
+  const { data: reviewData } = useQuery({
     queryKey: ["review", id],
     queryFn: () => getReview(id),
     enabled: !!id,

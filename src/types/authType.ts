@@ -3,7 +3,7 @@ import { z } from "zod";
 import { ReviewType } from "./reviewType";
 
 export interface AuthType {
-  id: string;
+  id:string;
   email: string;
   password: string;
   checkPassword: string;
@@ -16,7 +16,8 @@ export interface UserType {
   email :string;
   nickName : string;
   profileImage : string;
-  review ? : ReviewType[]
+  filteredReviewCount ? : number
+  reviews ? : ReviewType[]
 }
 
 export interface updateProfileType {

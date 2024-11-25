@@ -7,6 +7,7 @@ interface PropsType {
 }
 
 const MyLocationMaker = ({ myLocation }: PropsType) => {
+  console.log(myLocation)
   return (
     <MapMarker
       position={myLocation.center}
