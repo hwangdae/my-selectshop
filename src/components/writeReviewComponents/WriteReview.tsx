@@ -13,7 +13,7 @@ import shortid from "shortid";
 import styled from "styled-components";
 import Trash from "@/assets/Trash.svg";
 import { ErrorMessage } from "@hookform/error-message";
-import { UploadReviewType } from "@/types/reviewType";
+import { NewReviewType, ReviewType, UploadReviewType } from "@/types/reviewType";
 import useReviewMutate from "@/hook/useReviewMutate";
 
 interface PropsType {
@@ -22,7 +22,6 @@ interface PropsType {
 
 const WriteReview = ({ selectshopId }: PropsType) => {
   const router = useRouter();
-  const { id } = router.query;
   const loginUser = useLoginUserId();
   const [files, setFiles] = useState<File[]>([]);
   const {reviewMutate} = useReviewMutate(selectshopId)
@@ -36,7 +35,7 @@ const WriteReview = ({ selectshopId }: PropsType) => {
     resolver: zodResolver(registerReviewSchema),
     defaultValues: {
       files: null,
-      review: "",
+      description: "",
       advantage: [{ value: "" }],
       disAdvantage: [{ value: "" }],
       tags: "",
@@ -62,7 +61,7 @@ const WriteReview = ({ selectshopId }: PropsType) => {
   });
 
   const addReviewSubmit: SubmitHandler<UploadReviewType> = async ({
-    review,
+    description,
     advantage,
     disAdvantage,
     tags,
@@ -91,15 +90,14 @@ const WriteReview = ({ selectshopId }: PropsType) => {
     const newReview = {
       selectshopId,
       reviewImages: files === null ? null : imagesString.join(","),
-      description: review,
-      visited: true,
-      good: advantage?.map((item) => item.value).join(","),
-      notGood: disAdvantage?.map((item) => item.value).join(","),
+      description: description,
+      advantage: advantage?.map((item) => item.value).join(","),
+      disAdvantage: disAdvantage?.map((item) => item.value).join(","),
       tags: tags,
       userId: loginUser,
     };
     try {
-      reviewMutate.mutate(newReview as any)
+      reviewMutate.mutate(newReview as NewReviewType)
       alert("작성이 완료 되었습니다.");
     } catch (error) {
       console.log(error);
@@ -115,17 +113,17 @@ const WriteReview = ({ selectshopId }: PropsType) => {
             <WriteReviewInputImage files={files} setFiles={setFiles} />
           </S.InputLiRow>
           <S.InputLiRow>
-            <S.Label htmlFor="review">후기</S.Label>
+            <S.Label htmlFor="description">후기</S.Label>
             <S.TextAreaWrap>
-              <S.TextArea id="review" {...register("review")} maxLength={50} />
+              <S.TextArea id="description" {...register("description")} maxLength={50} />
               <S.StringLength>
-                {watch("review").length}
+                {watch("description").length}
                 /50
               </S.StringLength>
             </S.TextAreaWrap>
             <ErrorMessage
               errors={errors}
-              name="review"
+              name="description"
               render={({ message }) => (
                 <S.ReviewErrorMessage>{message}</S.ReviewErrorMessage>
               )}

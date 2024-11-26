@@ -74,7 +74,7 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
       )}
       <S.ReviewWrap>
         {isReviewOpen ? (
-          <MyReviewContainer review={detailReview} />
+          <MyReviewContainer review={detailReview} nickName={nickName} type={"bestReviewerList"}/>
         ) : (
           <>
             {reviewsWithShopInfo?.length === 0 ? (

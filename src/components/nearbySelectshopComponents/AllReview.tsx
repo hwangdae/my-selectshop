@@ -6,14 +6,20 @@ import React from "react";
 import styled from "styled-components";
 import Tags from "../utilityComponents/Tags";
 import FollowContainer from "../bestReviewerComponents/FollowContainer";
+import { useQuery } from "@tanstack/react-query";
+import { getAllUsers } from "@/api/user";
 
 interface PropsType {
   review: ReviewType;
-  users: UserType[];
 }
 
-const AllReview = ({ review, users }: PropsType) => {
+const AllReview = ({ review }: PropsType) => {
   const { userId, description, tags } = review;
+
+  const { data: users } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getAllUsers(),
+  });
 
   const user = users?.find((user: UserType) => {
     return user.id === userId;
@@ -26,7 +32,7 @@ const AllReview = ({ review, users }: PropsType) => {
           <S.ProfileImage src={user?.profileImage} />
           <S.writtenUser>{user?.nickName}님의 후기</S.writtenUser>
         </S.UserInfo>
-        <FollowContainer id={user!.id} />
+        <FollowContainer id={user?.id} />
       </S.UserContainer>
       <S.ReviewDescription>{description}</S.ReviewDescription>
       <Tags tags={tags} />

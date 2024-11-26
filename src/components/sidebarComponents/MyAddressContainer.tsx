@@ -1,6 +1,6 @@
-import { myLocationState } from "@/globalState/recoilState";
+import { myAddressState, myLocationState } from "@/globalState/recoilState";
 import React, { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import LocationDot from "@/assets/LocationDot.svg";
 import { styleFont } from "@/styles/styleFont";
@@ -8,7 +8,7 @@ import { styleColor } from "@/styles/styleColor";
 
 const MyAddressContainer = () => {
   const myLocaion = useRecoilValue(myLocationState);
-  const [myAddress, setMyAddress] = useState<string>("");
+  const [myAddress, setMyAddress] = useRecoilState<string>(myAddressState);
 
   useEffect(() => {
     if (

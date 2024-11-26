@@ -34,6 +34,11 @@ export const myLocationState = atom<MyLocationType>({
   }
 })
 
+export const myAddressState = atom<string>({
+  key : "myAddressState",
+  default : ""
+})
+
 export const markersState = atom<MarkersType[]>({
   key : "markersState",
   default : []

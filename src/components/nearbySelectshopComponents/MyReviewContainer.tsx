@@ -8,35 +8,38 @@ import { PlaceType } from "@/types/placeType";
 import useInitializeMapState from "@/hook/useInitializeMapState";
 
 interface PropsType {
-  review: ReviewType & {shopInfo : PlaceType[]};
+  review: ReviewType & { shopInfo: PlaceType[] };
+  nickName? : string;
+  type?: string;
 }
 
-const MyReviewContainer = ({ review }: PropsType) => {
+const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
+  const { reviewImages, description, advantage, disAdvantage, tags, shopInfo } = review;
 
-  const { reviewImages, description, good, notGood, tags, shopInfo } = review;
-  useInitializeMapState(shopInfo?.y, shopInfo?.x)
-
+  if (type === "bestReviewerList") {
+    useInitializeMapState(shopInfo?.y, shopInfo?.x);
+  }
 
   return (
     <S.MyReviewContainer>
       <S.ImageWrap>
-      {reviewImages === null || reviewImages === "" ? (
-        <NoImage/>
-      ) : (
-        <CommonSwiper slideImages={reviewImages} />
-      )}
+        {reviewImages === null && reviewImages === "" ? (
+          <NoImage />
+        ) : (
+          <CommonSwiper slideImages={reviewImages} />
+        )}
       </S.ImageWrap>
       <S.ReviewTextContainer>
         <S.ReviewTextRow>
-          <S.ReviewTitle>📒 나의 후기</S.ReviewTitle>
+          <S.ReviewTitle>📒{type === "bestReviewerList" ? `${nickName}님의` : "나의"} 후기</S.ReviewTitle>
           <S.ReviewDescription>{description}</S.ReviewDescription>
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
           <ul>
-            {good !== null ? (
-              good?.split(",").map((good) => {
-                return <li key={good}>{good}</li>;
+            {advantage !== null ? (
+              advantage?.split(",").map((advantage) => {
+                return <li key={advantage}>{advantage}</li>;
               })
             ) : (
               <li>장점이 없어요</li>
@@ -46,9 +49,9 @@ const MyReviewContainer = ({ review }: PropsType) => {
         <S.ReviewTextRow>
           <S.ReviewTitle>👎 설렉샵 단점</S.ReviewTitle>
           <ul>
-            {notGood !== null ? (
-              notGood?.split(",").map((notGood) => {
-                return <li key={notGood}>{notGood}</li>;
+            {disAdvantage !== null ? (
+              disAdvantage?.split(",").map((disAdvantage) => {
+                return <li key={disAdvantage}>{disAdvantage}</li>;
               })
             ) : (
               <li>단점이 없어요</li>
@@ -75,10 +78,12 @@ const MyReviewContainer = ({ review }: PropsType) => {
 export default MyReviewContainer;
 
 const S = {
-  MyReviewContainer : styled.div`
-    position: absolute; left: 0; top: 46px;
+  MyReviewContainer: styled.div`
+    position: relative;
+    left: 0;
+    top: 0;
   `,
-  ImageWrap : styled.div`
+  ImageWrap: styled.div`
     width: 300px;
   `,
   ReviewTextContainer: styled.ul`

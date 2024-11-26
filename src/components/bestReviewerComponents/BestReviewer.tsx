@@ -10,10 +10,13 @@ import useKakaoSearch from "@/hook/useKakaoSearch";
 import { ReviewType } from "@/types/reviewType";
 import { PlaceType } from "@/types/placeType";
 import { UserType } from "@/types/authType";
+import { useRecoilValue } from "recoil";
+import { myAddressState } from "@/globalState/recoilState";
 
 const BestReviewer = () => {
   const [activeUserId, setActiveuserId] = useState<String>();
   const { searchAllPlaces, selectshops } = useKakaoSearch();
+  const myAddress = useRecoilValue(myAddressState);
 
   const { data: users } = useQuery({
     queryKey: ["allUser"],
@@ -39,12 +42,24 @@ const BestReviewer = () => {
         {sortedUsers?.filter((user) => {
           return user.filteredReviewCount > 0;
         }).length === 0 ? (
-          <S.NoBestReviewer>🏆 베스트 리뷰어가 아직 없어요.</S.NoBestReviewer>
+          <S.NoBestReviewer>
+            <span>🏆</span>
+            <div>
+              <p>{myAddress}</p>
+              <p>베스트 리뷰어가 아직 없어요.</p>
+            </div>
+          </S.NoBestReviewer>
         ) : (
           <div>
-            <S.Title>
-              <span>🏆 TOP 10</span> 베스트 리뷰어
-            </S.Title>
+            <S.BestReviewerTitle>
+              <S.Trophy>🏆</S.Trophy>
+              <div>
+                <p>{myAddress}</p>
+                <h1>
+                  <span>TOP 10</span> 베스트 리뷰어
+                </h1>
+              </div>
+            </S.BestReviewerTitle>
             <ul>
               {sortedUsers?.map((user: UserType) => {
                 return (
@@ -81,20 +96,45 @@ const S = {
     padding: 0px 12px;
     height: 100%;
   `,
-  NoBestReviewer: styled.h1`
+  NoBestReviewer: styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 6px;
     height: 100%;
-    ${styleFont.title.tit_lg};
+    ${styleFont.title.tit_md};
     color: ${styleColor.GRAY[400]};
-  `,
-  Title: styled.h1`
-    margin: 20px 0px 30px 0px;
-    ${styleFont.title.tit_lg}
     span {
-      color: ${styleColor.YELLOW.main};
-      font-weight: 700;
+      font-size: 24px;
+    }
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      p {
+        &:first-child {
+          font-size: 15px;
+        }
+      }
     }
   `,
+  BestReviewerTitle: styled.div`
+    display: flex;
+    align-items: center;
+    margin: 20px 0px 30px 0px;
+    ${styleFont.title.tit_lg}
+    div {
+      p {
+        font-size: 15px;
+      }
+      span {
+        color: ${styleColor.YELLOW.main};
+        font-weight: 600;
+      }
+    }
+  `,
+  Trophy : styled.span`
+    font-size: 28px;
+  `,
 };
+

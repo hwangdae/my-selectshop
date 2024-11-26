@@ -26,10 +26,7 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
   useInitializeMapState(y, x);
 
-  const { data: users } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getAllUsers(),
-  });
+
 
   const { data: reviewData } = useQuery({
     queryKey: ["review", id],
@@ -50,7 +47,7 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
       ) : (
         <>
           {myReview ? (
-            <MyReviewContainer review={myReview} />
+            <MyReviewContainer review={myReview}/>
           ) : (
             <SelectshopReviewContainer
               onWriteReviewClick={() => setIsWriteReviewOpen(true)}
@@ -61,7 +58,7 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
       {!isWriteReviewOpen && (
         <S.AllReviewContainer>
           {reviewData?.map((review: ReviewType) => (
-            <AllReview key={review.id} review={review} users={users} />
+            <AllReview key={review.id} review={review} />
           ))}
         </S.AllReviewContainer>
       )}

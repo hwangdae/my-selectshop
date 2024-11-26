@@ -49,6 +49,8 @@ const NotVisiteSelectshop = () => {
 
   const currentItems = getPaginatedItems(notVisitedSelectshops, currentPage);
 
+  console.log(currentItems,"커런트 아이템")
+
   return (
     <S.SearchResultsContainer ref={scrollRef}>
       <S.SearchResultsInner>
