@@ -64,7 +64,7 @@ const RenderMarkers = () => {
   return (
     <>
       {renderContent().map((selectshop, index) => (
-        <MarkerContainer selectshop={selectshop} index={index} />
+        <MarkerContainer key={selectshop.id} selectshop={selectshop} index={index} />
       ))}
     </>
   );

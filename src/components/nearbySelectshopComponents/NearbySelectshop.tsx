@@ -7,7 +7,7 @@ import SelectshopInfoContainer from "./SelectshopInfoContainer";
 import useKakaoSearch from "@/hook/useKakaoSearch";
 import { useRecoilValue } from "recoil";
 import { searchTermState } from "@/globalState/recoilState";
-import NoSearchResultContainer from "../NoSearchResultContainer";
+import NoSearchResultContainer from "../utilityComponents/NoSearchResultContainer";
 
 const NearbySelectshop = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);

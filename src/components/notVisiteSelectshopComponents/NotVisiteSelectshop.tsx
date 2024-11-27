@@ -11,7 +11,9 @@ import CustomPaginationContainer from "../utilityComponents/CustomPaginationCont
 import { getPaginatedItems } from "@/utilityFunction/pagenate";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { currentPageState, searchTermState } from "@/globalState/recoilState";
-import NoSearchResultContainer from "../NoSearchResultContainer";
+import NoSearchResultContainer from "../utilityComponents/NoSearchResultContainer";
+import { styleFont } from "@/styles/styleFont";
+import { styleColor } from "@/styles/styleColor";
 
 const NotVisiteSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
@@ -49,12 +51,14 @@ const NotVisiteSelectshop = () => {
 
   const currentItems = getPaginatedItems(notVisitedSelectshops, currentPage);
 
-  console.log(currentItems,"커런트 아이템")
-
   return (
     <S.SearchResultsContainer ref={scrollRef}>
       <S.SearchResultsInner>
-        {currentItems.length > 0 ? (
+        {currentItems.length === 0 && searchTerm === "" ? (
+          <S.VisitedShopMessage>
+            🏬 모든 편집샵을 다 방문 했어요.
+          </S.VisitedShopMessage>
+        ) : currentItems.length > 0 ? (
           currentItems?.map((selectshop: PlaceType) => (
             <li
               key={selectshop.id}
@@ -67,7 +71,7 @@ const NotVisiteSelectshop = () => {
             </li>
           ))
         ) : (
-          <NoSearchResultContainer/>
+          <NoSearchResultContainer />
         )}
       </S.SearchResultsInner>
       {currentItems.length < 15 ? (
@@ -96,4 +100,12 @@ const S = {
     }
   `,
   SearchResultsInner: styled.ul``,
+  VisitedShopMessage: styled.h1`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    ${styleFont.title.tit_md};
+    color: ${styleColor.GRAY[400]};
+  `,
 };

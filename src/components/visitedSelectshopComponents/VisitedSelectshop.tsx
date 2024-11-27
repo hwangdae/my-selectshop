@@ -11,7 +11,9 @@ import { getPaginatedItems } from "@/utilityFunction/pagenate";
 import CustomPaginationContainer from "../utilityComponents/CustomPaginationContainer";
 import { useRecoilValue } from "recoil";
 import { searchTermState } from "@/globalState/recoilState";
-import NoSearchResultContainer from "../NoSearchResultContainer";
+import NoSearchResultContainer from "../utilityComponents/NoSearchResultContainer";
+import { styleFont } from "@/styles/styleFont";
+import { styleColor } from "@/styles/styleColor";
 
 const VisitedSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
@@ -51,7 +53,11 @@ const VisitedSelectshop = () => {
   return (
     <>
       <S.SearchResultsInner>
-        {currentItems.length > 0 ? (
+        {currentItems.length === 0 && searchTerm === "" ? (
+          <S.VisitedShopMessage>
+            🏬 아직 방문한 편집샵이 없어요.
+          </S.VisitedShopMessage>
+        ) : currentItems.length > 0 ? (
           currentItems?.map((selectshop: PlaceType) => (
             <li
               onClick={() => {
@@ -91,5 +97,15 @@ const VisitedSelectshop = () => {
 export default VisitedSelectshop;
 
 const S = {
-  SearchResultsInner: styled.ul``,
+  SearchResultsInner: styled.ul`
+    height: 100%;
+  `,
+  VisitedShopMessage: styled.h1`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    ${styleFont.title.tit_md};
+    color: ${styleColor.GRAY[400]};
+  `,
 };
