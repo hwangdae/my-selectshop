@@ -6,14 +6,22 @@ import { styleFont } from "@/styles/styleFont";
 import { registerReviewSchema } from "@/validators/review";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@mui/material";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import {
+  useForm,
+  useFieldArray,
+  SubmitHandler,
+  FieldArrayWithId,
+} from "react-hook-form";
 import shortid from "shortid";
 import styled from "styled-components";
 import Trash from "@/assets/Trash.svg";
 import { ErrorMessage } from "@hookform/error-message";
-import { NewReviewType, ReviewType, UploadReviewType } from "@/types/reviewType";
+import {
+  NewReviewType,
+  ReviewType,
+  UploadReviewType,
+} from "@/types/reviewType";
 import useReviewMutate from "@/hook/useReviewMutate";
 
 interface PropsType {
@@ -21,10 +29,10 @@ interface PropsType {
 }
 
 const WriteReview = ({ selectshopId }: PropsType) => {
-  const router = useRouter();
   const loginUser = useLoginUserId();
   const [files, setFiles] = useState<File[]>([]);
-  const {reviewMutate} = useReviewMutate(selectshopId)
+  const { reviewMutate } = useReviewMutate(selectshopId);
+
   const {
     register,
     handleSubmit,
@@ -34,21 +42,22 @@ const WriteReview = ({ selectshopId }: PropsType) => {
   } = useForm<UploadReviewType>({
     resolver: zodResolver(registerReviewSchema),
     defaultValues: {
-      files: null,
+      reviewImages: null,
       description: "",
-      advantage: [{ value: "" }],
-      disAdvantage: [{ value: "" }],
+      advantages: [{ value: "" }],
+      disAdvantages: [{ value: "" }],
       tags: "",
+      test:""
     },
   });
-  
+
   const {
     fields: advantageFields,
     append: advantageAppend,
     remove: advantageRemove,
   } = useFieldArray({
     control,
-    name: "advantage",
+    name: "advantages",
   });
 
   const {
@@ -57,25 +66,27 @@ const WriteReview = ({ selectshopId }: PropsType) => {
     remove: disAdvantageRemove,
   } = useFieldArray({
     control,
-    name: "disAdvantage",
+    name: "disAdvantages",
   });
 
-  const addReviewSubmit: SubmitHandler<UploadReviewType> = async ({
-    description,
-    advantage,
-    disAdvantage,
-    tags,
-  }: UploadReviewType) => {
+
+  console.log("description",watch("description"))
+  console.log("Advantages:", watch("advantages"));
+  console.log("DisAdvantages:", watch("disAdvantages"));
+  console.log("Test:", watch("test"));
+
+  const addReviewSubmit: SubmitHandler<UploadReviewType> = async ({description,advantages,disAdvantages,tags,test}) => {
     let imagesString: string[] = [];
-    if (files) {
+
+    if (files && files.length > 0) {
       for (const file of files) {
-        const imageName = file.name;
-        const fileExtension = imageName?.split(".").pop();
+        const fileExtension = file.name.split(".").pop();
         const randomFileName = `${shortid.generate()}.${fileExtension}`;
         try {
           await supabase.storage
             .from("images")
             .upload(`reviewImages/${randomFileName}`, file);
+
           imagesString.push(
             `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/reviewImages/${randomFileName}`
           );
@@ -86,18 +97,21 @@ const WriteReview = ({ selectshopId }: PropsType) => {
         }
       }
     }
-
-    const newReview = {
+    
+    const newReview:NewReviewType = {
       selectshopId,
-      reviewImages: files === null ? null : imagesString.join(","),
-      description: description,
-      advantage: advantage?.map((item) => item.value).join(","),
-      disAdvantage: disAdvantage?.map((item) => item.value).join(","),
-      tags: tags,
+      reviewImages: imagesString.length > 0 ? imagesString.join(",") : null,
+      description,
+      advantages: advantages?.map((item) => item.value).join(",") ,
+      disAdvantages: disAdvantages?.map((item) => item.value).join(","),
+      tags : tags,
       userId: loginUser,
     };
+
+    console.log(newReview, "최종 데이터");
+
     try {
-      reviewMutate.mutate(newReview as NewReviewType)
+      reviewMutate.mutate(newReview);
       alert("작성이 완료 되었습니다.");
     } catch (error) {
       console.log(error);
@@ -115,7 +129,11 @@ const WriteReview = ({ selectshopId }: PropsType) => {
           <S.InputLiRow>
             <S.Label htmlFor="description">후기</S.Label>
             <S.TextAreaWrap>
-              <S.TextArea id="description" {...register("description")} maxLength={50} />
+              <S.TextArea
+                id="description"
+                {...register("description")}
+                maxLength={50}
+              />
               <S.StringLength>
                 {watch("description").length}
                 /50
@@ -139,19 +157,24 @@ const WriteReview = ({ selectshopId }: PropsType) => {
                 +
               </S.AddButton>
             </S.Label>
-            {advantageFields.map((field, index) => (
-              <S.InputWrap key={field.id}>
-                <S.Input
-                  id={`advantage-${index}`}
-                  {...register(`advantage.${index}.value`)}
-                />
-                {index > 0 && (
-                  <button onClick={() => advantageRemove(index)}>
-                    <Trash fill={`${styleColor.GRAY[200]}`} />
-                  </button>
-                )}
-              </S.InputWrap>
-            ))}
+            {advantageFields.map(
+              (
+                field: FieldArrayWithId<UploadReviewType, "advantages", "id">,
+                index
+              ) => (
+                <S.InputWrap key={field.id}>
+                  <S.Input
+                    id={`advantage-${index}`}
+                    {...register(`advantages.${index}.value` as const)}
+                  />
+                  {index > 0 && (
+                    <button onClick={() => advantageRemove(index)}>
+                      <Trash fill={`${styleColor.GRAY[200]}`} />
+                    </button>
+                  )}
+                </S.InputWrap>
+              )
+            )}
           </S.InputLiRow>
           <S.InputLiRow>
             <S.Label htmlFor="disAdvantage">
@@ -163,27 +186,32 @@ const WriteReview = ({ selectshopId }: PropsType) => {
                 +
               </S.AddButton>
             </S.Label>
-            {disAdvantageFields.map((field, index) => {
-              return (
-                <S.InputWrap key={field.id}>
-                  <S.Input
-                    id={`disAdvantage-${index}`}
-                    {...register(`disAdvantage.${index}.value`)}
-                  />
-                  {index > 0 && (
-                    <button onClick={() => disAdvantageRemove(index)}>
-                      <Trash fill={`${styleColor.GRAY[200]}`} />
-                    </button>
-                  )}
-                </S.InputWrap>
-              );
-            })}
+            {disAdvantageFields.map(
+              (
+                field: FieldArrayWithId<UploadReviewType, "disAdvantages", "id">,
+                index
+              ) => {
+                return (
+                  <S.InputWrap key={field.id}>
+                    <S.Input
+                      id={`disAdvantage-${index}`}
+                      {...register(`disAdvantages.${index}.value` as const)}
+                    />
+                    {index > 0 && (
+                      <button onClick={() => disAdvantageRemove(index)}>
+                        <Trash fill={`${styleColor.GRAY[200]}`} />
+                      </button>
+                    )}
+                  </S.InputWrap>
+                );
+              }
+            )}
           </S.InputLiRow>
           <S.InputLiRow>
-            <S.Label htmlFor="brand">추천 브랜드</S.Label>
+            <S.Label htmlFor="tags">추천 브랜드</S.Label>
             <S.InputWrap>
               <S.Input
-                id="brand"
+                id="tags"
                 placeholder="쉼표(,)로 구분하면 멋진 태그가 될거에요!"
                 {...register("tags")}
               />

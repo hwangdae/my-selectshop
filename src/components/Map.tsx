@@ -24,8 +24,8 @@ const MapComponent = () => {
       kakao.maps.load(() => {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition((position) => {
-            const lat = 37.22222;
-            const lng = 127.222222;
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
             setMyLocation((prev) => ({
               ...prev,
               center: { lat, lng },

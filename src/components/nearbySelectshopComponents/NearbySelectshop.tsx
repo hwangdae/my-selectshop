@@ -1,4 +1,4 @@
-import PaginationContainer from "@/components/nearbySelectshopComponents/PaginationContainer";
+import PaginationContainer from "@/components/utilityComponents/PaginationContainer";
 import { PlaceType } from "@/types/placeType";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";

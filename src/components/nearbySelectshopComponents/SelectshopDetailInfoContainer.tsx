@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import MyReviewContainer from "./MyReviewContainer";
 import SelectshopReviewContainer from "./SelectshopReviewContainer";
 import { useQuery } from "@tanstack/react-query";
-import { getReview, getReviewAndUser } from "@/api/review";
+import { getReview } from "@/api/review";
 import useLoginUserId from "@/hook/useLoginUserId";
-import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { PlaceType } from "@/types/placeType";
 import { ReviewType } from "@/types/reviewType";
 import AllReview from "./AllReview";
-import { useRecoilState } from "recoil";
-import { boundsState } from "@/globalState/recoilState";
 import WriteReview from "../writeReviewComponents/WriteReview";
-import { getAllUsers, getUser } from "@/api/user";
 import useInitializeMapState from "@/hook/useInitializeMapState";
+import MyReviewContainer from "../utilityComponents/MyReviewContainer";
 
 interface PropsType {
   selectshop: PlaceType;
@@ -32,7 +28,6 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
     queryKey: ["review", id],
     queryFn: () => getReview(id),
     enabled: !!id,
-    refetchOnWindowFocus: false,
   });
 
   const myReview = reviewData?.find((review: ReviewType) => {

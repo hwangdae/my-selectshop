@@ -3,27 +3,35 @@ import { styleFont } from "@/styles/styleFont";
 import { ReviewType } from "@/types/reviewType";
 import NoImage from "@/assets/NoImage.svg";
 import styled from "styled-components";
-import CommonSwiper from "./CommonSwiper";
 import { PlaceType } from "@/types/placeType";
 import useInitializeMapState from "@/hook/useInitializeMapState";
+import CommonSwiper from "./CommonSwiper";
 
 interface PropsType {
   review: ReviewType & { shopInfo: PlaceType[] };
-  nickName? : string;
+  nickName?: string;
   type?: string;
 }
 
 const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
-  const { reviewImages, description, advantage, disAdvantage, tags, shopInfo } = review;
+  const {
+    reviewImages,
+    description,
+    advantages,
+    disAdvantages,
+    tags,
+    shopInfo,
+  } = review;
 
   if (type === "bestReviewerList") {
     useInitializeMapState(shopInfo?.y, shopInfo?.x);
   }
 
+  console.log(review);
   return (
     <S.MyReviewContainer>
       <S.ImageWrap>
-        {reviewImages === null && reviewImages === "" ? (
+        {reviewImages === null || reviewImages === "" ? (
           <NoImage />
         ) : (
           <CommonSwiper slideImages={reviewImages} />
@@ -31,43 +39,33 @@ const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
       </S.ImageWrap>
       <S.ReviewTextContainer>
         <S.ReviewTextRow>
-          <S.ReviewTitle>📒{type === "bestReviewerList" ? `${nickName}님의` : "나의"} 후기</S.ReviewTitle>
+          <S.ReviewTitle>
+            📒{type === "bestReviewerList" ? `${nickName}님의` : "나의"} 후기
+          </S.ReviewTitle>
           <S.ReviewDescription>{description}</S.ReviewDescription>
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
           <ul>
-            {advantage !== null ? (
-              advantage?.split(",").map((advantage) => {
-                return <li key={advantage}>{advantage}</li>;
-              })
-            ) : (
-              <li>장점이 없어요</li>
-            )}
+            {advantages?.split(",").map((advantage: string, index) => {
+              return <li key={`${advantage}-${index}`}>{advantage}</li>;
+            })}
           </ul>
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>👎 설렉샵 단점</S.ReviewTitle>
           <ul>
-            {disAdvantage !== null ? (
-              disAdvantage?.split(",").map((disAdvantage) => {
-                return <li key={disAdvantage}>{disAdvantage}</li>;
-              })
-            ) : (
-              <li>단점이 없어요</li>
-            )}
+            {disAdvantages?.split(",").map((disAdvantage: string, index) => {
+              return <li key={`${disAdvantage}-${index}`}>{disAdvantage}</li>;
+            })}
           </ul>
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
           <S.TagList>
-            {tags === null ? (
-              <li>추천할 브랜드가 없어요</li>
-            ) : (
-              tags?.split(",").map((tag: string) => {
-                return <li key={tag}>{tag}</li>;
-              })
-            )}
+            {tags?.split(",").map((tag: string, index) => {
+              return <li key={`${tag}-${index}`}>{tag}</li>;
+            })}
           </S.TagList>
         </S.ReviewTextRow>
       </S.ReviewTextContainer>

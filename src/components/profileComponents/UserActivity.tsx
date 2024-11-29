@@ -2,7 +2,6 @@ import { getAllFollowList } from "@/api/follow";
 import { getReviewCount } from "@/api/review";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import { AuthType, UserType } from "@/types/authType";
 import { FollowType } from "@/types/followType";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";

@@ -5,15 +5,15 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ReviewContainer from "./ReviewContainer";
 import { PlaceType } from "@/types/placeType";
-import MyReviewContainer from "../nearbySelectshopComponents/MyReviewContainer";
 import ArrowLeft from "@/assets/ArrowLeft.svg";
 import { styleColor } from "@/styles/styleColor";
 import { useRecoilState } from "recoil";
 import {
   boundsState,
-  selectShopsState,
   shopCoordinatesState,
 } from "@/globalState/recoilState";
+import MyReviewContainer from "../utilityComponents/MyReviewContainer";
+
 interface PropsType {
   user: UserType;
   selectshops: PlaceType[];
