@@ -30,7 +30,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   } = useQuery({
     queryKey: ["user", loginUser],
     queryFn: () => getUser(loginUser),
-    enabled : !!loginUser
+    enabled: !!loginUser,
   });
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
     try {
       let url: string | undefined = "";
       if (uploadImageFile) {
-        const { data, error } = await supabase.storage
+        const { data } = await supabase.storage
           .from("images")
           .upload(`profileImages/${uploadImage}`, uploadImageFile);
         url = data?.path.split("/")[1];
@@ -126,15 +126,8 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
             />
           </S.ProfileContents>
           <S.ProfileFn>
-            <Button
-              type="submit"
-            >
-              수정
-            </Button>
-            <Button
-              type="button"
-              onClick={logoutHandleSubmit}
-            >
+            <Button type="submit">수정</Button>
+            <Button type="button" onClick={logoutHandleSubmit}>
               로그아웃
             </Button>
           </S.ProfileFn>

@@ -27,7 +27,6 @@ const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
     useInitializeMapState(shopInfo?.y, shopInfo?.x);
   }
 
-  console.log(review);
   return (
     <S.MyReviewContainer>
       <S.ImageWrap>
@@ -44,7 +43,7 @@ const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
           </S.ReviewTitle>
           <S.ReviewDescription>{description}</S.ReviewDescription>
         </S.ReviewTextRow>
-        <S.ReviewTextRow>
+        {/* <S.ReviewTextRow>
           <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
           <ul>
             {advantages?.split(",").map((advantage: string, index) => {
@@ -59,7 +58,7 @@ const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
               return <li key={`${disAdvantage}-${index}`}>{disAdvantage}</li>;
             })}
           </ul>
-        </S.ReviewTextRow>
+        </S.ReviewTextRow> */}
         <S.ReviewTextRow>
           <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
           <S.TagList>

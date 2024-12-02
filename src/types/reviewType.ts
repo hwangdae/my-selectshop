@@ -3,11 +3,10 @@ import { z } from "zod";
 import { PlaceType } from "./placeType";
 
 export interface ReviewType {
-  id: string;
   reviewImages: string | null;
   description: string;
-  advantages: string | null;
-  disAdvantages: string | null;
+  advantages: string[] | null;
+  disAdvantages: string[] | null;
   tags: string | null;
   userId: string;
   selectshopId: string;
@@ -30,8 +29,8 @@ export interface NewReviewType {
   selectshopId: string;
   reviewImages: string | null;
   description: string;
-  advantages: string | null | undefined;
-  disAdvantages: string | null | undefined;
+  advantages: string[] | null | undefined;
+  disAdvantages: string[] | null | undefined;
   tags: string | null;
   userId: string;
 }

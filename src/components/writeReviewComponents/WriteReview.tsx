@@ -1,12 +1,11 @@
 import WriteReviewInputImage from "@/components/writeReviewComponents/WriteReviewInputImage";
 import useLoginUserId from "@/hook/useLoginUserId";
-import supabase from "@/lib/supabaseClient";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { registerReviewSchema } from "@/validators/review";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   useForm,
   useFieldArray,
@@ -17,12 +16,9 @@ import shortid from "shortid";
 import styled from "styled-components";
 import Trash from "@/assets/Trash.svg";
 import { ErrorMessage } from "@hookform/error-message";
-import {
-  NewReviewType,
-  ReviewType,
-  UploadReviewType,
-} from "@/types/reviewType";
+import { NewReviewType, UploadReviewType } from "@/types/reviewType";
 import useReviewMutate from "@/hook/useReviewMutate";
+import { uploadReviewImages } from "@/api/storage";
 
 interface PropsType {
   selectshopId: string;
@@ -47,7 +43,6 @@ const WriteReview = ({ selectshopId }: PropsType) => {
       advantages: [{ value: "" }],
       disAdvantages: [{ value: "" }],
       tags: "",
-      test:""
     },
   });
 
@@ -69,13 +64,16 @@ const WriteReview = ({ selectshopId }: PropsType) => {
     name: "disAdvantages",
   });
 
-
-  console.log("description",watch("description"))
+  console.log("description", watch("description"));
   console.log("Advantages:", watch("advantages"));
   console.log("DisAdvantages:", watch("disAdvantages"));
-  console.log("Test:", watch("test"));
 
-  const addReviewSubmit: SubmitHandler<UploadReviewType> = async ({description,advantages,disAdvantages,tags,test}) => {
+  const addReviewSubmit: SubmitHandler<UploadReviewType> = async ({
+    description,
+    advantages,
+    disAdvantages,
+    tags,
+  }) => {
     let imagesString: string[] = [];
 
     if (files && files.length > 0) {
@@ -83,10 +81,7 @@ const WriteReview = ({ selectshopId }: PropsType) => {
         const fileExtension = file.name.split(".").pop();
         const randomFileName = `${shortid.generate()}.${fileExtension}`;
         try {
-          await supabase.storage
-            .from("images")
-            .upload(`reviewImages/${randomFileName}`, file);
-
+          await uploadReviewImages(randomFileName, file);
           imagesString.push(
             `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/reviewImages/${randomFileName}`
           );
@@ -97,14 +92,17 @@ const WriteReview = ({ selectshopId }: PropsType) => {
         }
       }
     }
-    
-    const newReview:NewReviewType = {
+    console.log(
+      advantages?.map((item) => item.value),
+      "어드밴티지"
+    );
+    const newReview: NewReviewType = {
       selectshopId,
       reviewImages: imagesString.length > 0 ? imagesString.join(",") : null,
       description,
-      advantages: advantages?.map((item) => item.value).join(",") ,
-      disAdvantages: disAdvantages?.map((item) => item.value).join(","),
-      tags : tags,
+      advantages: advantages?.map((item) => item.value) || null,
+      disAdvantages: disAdvantages?.map((item) => item.value) || null,
+      tags: tags,
       userId: loginUser,
     };
 
@@ -188,7 +186,11 @@ const WriteReview = ({ selectshopId }: PropsType) => {
             </S.Label>
             {disAdvantageFields.map(
               (
-                field: FieldArrayWithId<UploadReviewType, "disAdvantages", "id">,
+                field: FieldArrayWithId<
+                  UploadReviewType,
+                  "disAdvantages",
+                  "id"
+                >,
                 index
               ) => {
                 return (
