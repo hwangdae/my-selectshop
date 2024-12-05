@@ -39,14 +39,14 @@ const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
       <S.ReviewTextContainer>
         <S.ReviewTextRow>
           <S.ReviewTitle>
-            📒{type === "bestReviewerList" ? `${nickName}님의` : "나의"} 후기
+            📒 {type === "bestReviewerList" ? `${nickName}님의` : "나의"} 후기
           </S.ReviewTitle>
           <S.ReviewDescription>{description}</S.ReviewDescription>
         </S.ReviewTextRow>
-        {/* <S.ReviewTextRow>
+        <S.ReviewTextRow>
           <S.ReviewTitle>👍 셀렉샵 장점</S.ReviewTitle>
           <ul>
-            {advantages?.split(",").map((advantage: string, index) => {
+            {advantages?.map((advantage: string, index) => {
               return <li key={`${advantage}-${index}`}>{advantage}</li>;
             })}
           </ul>
@@ -54,11 +54,11 @@ const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
         <S.ReviewTextRow>
           <S.ReviewTitle>👎 설렉샵 단점</S.ReviewTitle>
           <ul>
-            {disAdvantages?.split(",").map((disAdvantage: string, index) => {
+            {disAdvantages?.map((disAdvantage: string, index) => {
               return <li key={`${disAdvantage}-${index}`}>{disAdvantage}</li>;
             })}
           </ul>
-        </S.ReviewTextRow> */}
+        </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
           <S.TagList>
@@ -99,6 +99,7 @@ const S = {
   `,
   ReviewTitle: styled.h1`
     ${styleFont.title.tit_md}
+    font-weight: 500;
     margin-bottom: 15px;
   `,
   ReviewDescription: styled.p`

@@ -64,10 +64,6 @@ const WriteReview = ({ selectshopId }: PropsType) => {
     name: "disAdvantages",
   });
 
-  console.log("description", watch("description"));
-  console.log("Advantages:", watch("advantages"));
-  console.log("DisAdvantages:", watch("disAdvantages"));
-
   const addReviewSubmit: SubmitHandler<UploadReviewType> = async ({
     description,
     advantages,
@@ -87,15 +83,12 @@ const WriteReview = ({ selectshopId }: PropsType) => {
           );
         } catch (error) {
           alert("이미지 업로드 중 오류가 발생했습니다.");
-          console.error("Unexpected error:", error);
+          console.error(error);
           return;
         }
       }
     }
-    console.log(
-      advantages?.map((item) => item.value),
-      "어드밴티지"
-    );
+
     const newReview: NewReviewType = {
       selectshopId,
       reviewImages: imagesString.length > 0 ? imagesString.join(",") : null,
@@ -105,8 +98,6 @@ const WriteReview = ({ selectshopId }: PropsType) => {
       tags: tags,
       userId: loginUser,
     };
-
-    console.log(newReview, "최종 데이터");
 
     try {
       reviewMutate.mutate(newReview);

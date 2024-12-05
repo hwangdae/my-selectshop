@@ -54,11 +54,11 @@ const ContentsContainer = () => {
 export default ContentsContainer;
 
 const S = {
-  ContentsContainer: styled.ul`
+  ContentsContainer: styled.div`
     width: 100%;
   `,
 
-  ContentsInner: styled.div`
+  ContentsInner: styled.ul`
     padding: 20px 12px;
   `,
   Content: styled.li`

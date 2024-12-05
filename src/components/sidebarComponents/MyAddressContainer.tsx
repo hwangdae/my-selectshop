@@ -6,6 +6,22 @@ import LocationDot from "@/assets/LocationDot.svg";
 import { styleFont } from "@/styles/styleFont";
 import { styleColor } from "@/styles/styleColor";
 
+interface Address {
+  address_name: string;
+}
+
+interface RoadAddress {
+  address_name: string;
+  building_name?: string;
+  main_building_no: string;
+  sub_building_no?: string;
+}
+
+interface GeocodeResult {
+  address: Address;
+  road_address: RoadAddress | null;
+}
+
 const MyAddressContainer = () => {
   const myLocaion = useRecoilValue(myLocationState);
   const [myAddress, setMyAddress] = useRecoilState<string>(myAddressState);
@@ -35,7 +51,7 @@ const MyAddressContainer = () => {
   return (
     <S.MyAddress>
       <LocationDot width={"16px"} fill={`${styleColor.YELLOW.main}`} />
-      {myAddress.length === 0 ? (
+      {myAddress?.length === 0 ? (
         <h1>위치를 찾지 못했어요</h1>
       ) : (
         <h1>

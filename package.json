@@ -18,6 +18,7 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@supabase/supabase-js": "^2.44.4",
     "@tanstack/react-query": "^5.51.15",
+    "browser-image-compression": "^2.0.2",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
@@ -26,6 +27,7 @@
     "react-paginate": "^8.2.0",
     "recoil": "^0.7.7",
     "shortid": "^2.2.16",
+    "spdy": "^4.0.2",
     "styled-components": "^6.1.12",
     "swiper": "^11.1.12",
     "zod": "^3.23.8"

@@ -12,6 +12,7 @@ import shortId from "shortid";
 import { styleColor } from "@/styles/styleColor";
 import { useRouter } from "next/router";
 import { ModalProps } from "../ModalMap";
+import imageCompression from "browser-image-compression";
 
 const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [previewProfileImage, setPreviewProfileImage] = useState<
@@ -42,18 +43,29 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const uploadImageFile = e.target.files![0];
-    const uploadImageName = uploadImageFile?.name;
-    const fileExtension = uploadImageName?.split(".").pop();
-    const randomFileName = `${shortId.generate()}.${fileExtension}`;
-    if (uploadImageFile) {
-      const reader = new FileReader();
-      reader.readAsDataURL(uploadImageFile);
-      reader.onloadend = () => {
-        setPreviewProfileImage(reader.result);
-      };
+    const options = {
+      maxSizeMB: 0.1,
+      maxWidthOrHeight: 256,
+    };
+    try {
+      const compressionFile = await imageCompression(uploadImageFile, options);
+      console.log(uploadImageFile, "압축 안된 파일")
+      console.log(compressionFile, "압축파일")
+      const uploadImageName = compressionFile?.name;
+      const fileExtension = uploadImageName?.split(".").pop();
+      const randomFileName = `${shortId.generate()}.${fileExtension}`;
+      if (compressionFile) {
+        const reader = new FileReader();
+        reader.readAsDataURL(compressionFile);
+        reader.onloadend = () => {
+          setPreviewProfileImage(reader.result);
+        };
+      }
+      setUploadImageFile(compressionFile);
+      setUploadImage(randomFileName);
+    } catch (error) {
+      console.log(error);
     }
-    setUploadImageFile(uploadImageFile);
-    setUploadImage(randomFileName);
   };
 
   const profileUpdateHandle = async (e: React.FormEvent) => {
@@ -95,7 +107,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
       onClose();
     }
   };
-
+  // console.log(previewProfileImage)
   return (
     <S.ProfileUpdateContainer onClick={modalClose}>
       <S.ProfileUpdateInner>
@@ -103,7 +115,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
         <S.ProfileFormContainer onSubmit={profileUpdateHandle}>
           <S.ProfileContents>
             <S.ProfileImageContainer>
-              <S.ProfileImage src={`${previewProfileImage}`} />
+              <S.ProfileImage src={previewProfileImage !== undefined ? `${previewProfileImage}` : '/images/basicUserImage.png'} />
               <S.ImageLabel htmlFor="profileImg">
                 <Camera
                   width={"25px"}
