@@ -13,6 +13,7 @@ import { styleColor } from "@/styles/styleColor";
 import { useRouter } from "next/router";
 import { ModalProps } from "../ModalMap";
 import imageCompression from "browser-image-compression";
+import { imageCompressionFn } from "@/utilityFunction/imagecompression";
 
 const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [previewProfileImage, setPreviewProfileImage] = useState<
@@ -42,15 +43,9 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const onchangeImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const uploadImageFile = e.target.files![0];
-    const options = {
-      maxSizeMB: 0.1,
-      maxWidthOrHeight: 256,
-    };
     try {
-      const compressionFile = await imageCompression(uploadImageFile, options);
-      console.log(uploadImageFile, "압축 안된 파일")
-      console.log(compressionFile, "압축파일")
+      const uploadImageFile = e.target.files![0];
+      const compressionFile = await imageCompressionFn(uploadImageFile,"small");
       const uploadImageName = compressionFile?.name;
       const fileExtension = uploadImageName?.split(".").pop();
       const randomFileName = `${shortId.generate()}.${fileExtension}`;
@@ -107,7 +102,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
       onClose();
     }
   };
-  // console.log(previewProfileImage)
+
   return (
     <S.ProfileUpdateContainer onClick={modalClose}>
       <S.ProfileUpdateInner>
@@ -115,7 +110,13 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
         <S.ProfileFormContainer onSubmit={profileUpdateHandle}>
           <S.ProfileContents>
             <S.ProfileImageContainer>
-              <S.ProfileImage src={previewProfileImage !== undefined ? `${previewProfileImage}` : '/images/basicUserImage.png'} />
+              <S.ProfileImage
+                src={
+                  previewProfileImage !== undefined
+                    ? `${previewProfileImage}`
+                    : "/images/basicUserImage.png"
+                }
+              />
               <S.ImageLabel htmlFor="profileImg">
                 <Camera
                   width={"25px"}

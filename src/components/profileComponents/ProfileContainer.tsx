@@ -8,7 +8,6 @@ import styled from "styled-components";
 import ProfileUpdate from "@/assets/ProfileUpdate.svg";
 import { useRouter } from "next/router";
 import UserActivity from "./UserActivity";
-import { UserType } from "@/types/authType";
 
 const ProfileContainer = () => {
   const loginUser = useLoginUserId();

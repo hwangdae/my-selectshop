@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
+import { imageCompressionFn } from "@/utilityFunction/imagecompression";
 
 interface PropsType extends React.InputHTMLAttributes<HTMLInputElement> {
   files: File[];
@@ -19,10 +20,13 @@ const WriteReviewInputImage = forwardRef<HTMLInputElement, PropsType>(
     id = "file-upload",
     ...props
   }) => {
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
         const files = Array.from(e.target.files);
-        setFiles(files);
+        const compressionFiles = await Promise.all(
+          files.map((file) => imageCompressionFn(file, "medium"))
+        );
+        setFiles(compressionFiles);
       }
     };
 
@@ -71,9 +75,9 @@ const S = {
     display: none;
   `,
   UploadImage: styled.img`
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   `,
   NoImageWrapper: styled.div`
     width: 100%;
@@ -85,9 +89,9 @@ const S = {
     width: 100%;
     height: 180px;
   `,
-  SwiperSlide : styled(SwiperSlide)`
+  SwiperSlide: styled(SwiperSlide)`
     width: 100%;
     height: 100%;
     background-image: cover;
-  `
+  `,
 };
