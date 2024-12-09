@@ -13,23 +13,20 @@ import { styleColor } from "@/styles/styleColor";
 import { useRouter } from "next/router";
 import { ModalProps } from "../ModalMap";
 import imageCompression from "browser-image-compression";
-import { imageCompressionFn } from "@/utilityFunction/imagecompression";
+import { imageCompressionFn } from "@/utilityFunction/imageCompression";
 
 const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [previewProfileImage, setPreviewProfileImage] = useState<
     string | ArrayBuffer | null
   >("");
-  const [uploadImageFile, setUploadImageFile] = useState<File | null>();
+  const [uploadImageFile, setUploadImageFile] = useState<File | null>(null);
   const [uploadImage, setUploadImage] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
   const router = useRouter();
   const loginUser = useLoginUserId();
+  console.log(uploadImageFile, "압축 파일");
 
-  const {
-    data: user,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: user } = useQuery({
     queryKey: ["user", loginUser],
     queryFn: () => getUser(loginUser),
     enabled: !!loginUser,
@@ -44,8 +41,27 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     try {
+      // const option = {
+      //   maxSizeMB: 0.3,
+      //   maxWidthOrHeight: 200,
+      // };
       const uploadImageFile = e.target.files![0];
-      const compressionFile = await imageCompressionFn(uploadImageFile,"small");
+      const fileType = uploadImageFile.type.split("/")[1];
+      console.log(fileType)
+      console.log(fileType.includes("png"))
+        if (
+          !fileType.includes("jpg") &&
+          !fileType.includes("jpeg") &&
+          !fileType.includes("png")
+        ) {
+          alert('파일은 "*jpg, *jpeg, *png" 만 가능합니다.\n이미지를 다시 업로드 해주세요.')
+          return;
+        }
+      console.log(uploadImageFile, "원본 파일");
+      const compressionFile = await imageCompressionFn(
+        uploadImageFile,
+        "medium"
+      );
       const uploadImageName = compressionFile?.name;
       const fileExtension = uploadImageName?.split(".").pop();
       const randomFileName = `${shortId.generate()}.${fileExtension}`;
@@ -126,7 +142,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
               </S.ImageLabel>
               <S.ImageInput
                 type="file"
-                accept="image/*"
+                accept="image/*, .jpg, .jpeg, .png"
                 id="profileImg"
                 onChange={onchangeImageUpload}
               ></S.ImageInput>
