@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { modal, modalContent } from "@/styles/modal";
 import { styleFont } from "@/styles/styleFont";
@@ -10,10 +10,11 @@ import { getUser, userProfileUpdate } from "@/api/user";
 import Camera from "@/assets/Camera.svg";
 import shortId from "shortid";
 import { styleColor } from "@/styles/styleColor";
-import { useRouter } from "next/router";
 import { ModalProps } from "../ModalMap";
-import imageCompression from "browser-image-compression";
 import { imageCompressionFn } from "@/utilityFunction/imageCompression";
+import useUserMutate from "@/hook/useUserMutate";
+import { updateProfileType } from "@/types/authType";
+import LogoutButton from "../utilityComponents/LogoutButton";
 
 const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [previewProfileImage, setPreviewProfileImage] = useState<
@@ -22,15 +23,15 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [uploadImageFile, setUploadImageFile] = useState<File | null>(null);
   const [uploadImage, setUploadImage] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
-  const router = useRouter();
   const loginUser = useLoginUserId();
-  console.log(uploadImageFile, "압축 파일");
 
   const { data: user } = useQuery({
     queryKey: ["user", loginUser],
     queryFn: () => getUser(loginUser),
     enabled: !!loginUser,
   });
+
+  const { userMutate, confirmUpdateProfileButton } = useUserMutate();
 
   useEffect(() => {
     setPreviewProfileImage(user?.profileImage as string);
@@ -41,26 +42,21 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     try {
-      // const option = {
-      //   maxSizeMB: 0.3,
-      //   maxWidthOrHeight: 200,
-      // };
       const uploadImageFile = e.target.files![0];
       const fileType = uploadImageFile.type.split("/")[1];
-      console.log(fileType)
-      console.log(fileType.includes("png"))
-        if (
-          !fileType.includes("jpg") &&
-          !fileType.includes("jpeg") &&
-          !fileType.includes("png")
-        ) {
-          alert('파일은 "*jpg, *jpeg, *png" 만 가능합니다.\n이미지를 다시 업로드 해주세요.')
-          return;
-        }
-      console.log(uploadImageFile, "원본 파일");
+      if (
+        !fileType.includes("jpg") &&
+        !fileType.includes("jpeg") &&
+        !fileType.includes("png")
+      ) {
+        alert(
+          '파일은 "*jpg, *jpeg, *png" 만 가능합니다.\n이미지를 다시 업로드 해주세요.'
+        );
+        return;
+      }
       const compressionFile = await imageCompressionFn(
         uploadImageFile,
-        "medium"
+        "small"
       );
       const uploadImageName = compressionFile?.name;
       const fileExtension = uploadImageName?.split(".").pop();
@@ -89,7 +85,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
           .upload(`profileImages/${uploadImage}`, uploadImageFile);
         url = data?.path.split("/")[1];
       }
-      const updateProfile = {
+      const updateProfile: updateProfileType = {
         profileImage: url
           ? `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/profileImages/${url}`
           : user?.profileImage,
@@ -97,17 +93,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
       };
       userProfileUpdate(updateProfile, user?.id);
       alert("수정완료");
-      router.push("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const logoutHandleSubmit = async () => {
-    try {
-      await supabase.auth.signOut();
-      alert("로그아웃 되었습니다.");
-      router.push("/");
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -156,9 +142,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
           </S.ProfileContents>
           <S.ProfileFn>
             <Button type="submit">수정</Button>
-            <Button type="button" onClick={logoutHandleSubmit}>
-              로그아웃
-            </Button>
+            <LogoutButton />
           </S.ProfileFn>
         </S.ProfileFormContainer>
       </S.ProfileUpdateInner>

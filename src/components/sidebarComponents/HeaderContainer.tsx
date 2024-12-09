@@ -4,35 +4,16 @@ import Search from "@/assets/Search.svg";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";
 import useLoginUserId from "@/hook/useLoginUserId";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  boundsState,
-  myLocationState,
-  searchTermState,
-  selectShopsState,
-} from "@/globalState/recoilState";
-import { PlaceType } from "@/types/placeType";
-import { logOut } from "@/api/user";
+import { useRecoilState } from "recoil";
+import { searchTermState } from "@/globalState/recoilState";
 import { styleColor } from "@/styles/styleColor";
+import LogoutButton from "../utilityComponents/LogoutButton";
 
 const HeaderContainer = () => {
   const [searchName, setSearchName] = useRecoilState(searchTermState);
   const loginUser = useLoginUserId();
 
   const router = useRouter();
-
-  const logoutHandleSubmit = async () => {
-    try {
-      if (window.confirm("로그아웃 하시겠습니까?")) {
-        await logOut();
-        alert("로그아웃 되었습니다.");
-        window.location.reload();
-        router.push("/");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const searchSelectshopSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +32,7 @@ const HeaderContainer = () => {
           {!loginUser ? (
             <Button onClick={() => router.push("?modal=login")}>로그인</Button>
           ) : (
-            <Button onClick={logoutHandleSubmit}>로그아웃</Button>
+            <LogoutButton/>
           )}
         </S.HeaderTop>
         <S.SearchForm onSubmit={searchSelectshopSubmit}>

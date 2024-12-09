@@ -2,9 +2,8 @@ import React, { forwardRef } from "react";
 import NoImage from "@/assets/NoImage.svg";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
-
 import "swiper/css";
-import { imageCompressionFn } from "@/utilityFunction/imagecompression";
+import { imageCompressionFn } from "@/utilityFunction/imageCompression";
 
 interface PropsType extends React.InputHTMLAttributes<HTMLInputElement> {
   files: File[];
