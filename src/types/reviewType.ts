@@ -3,6 +3,7 @@ import { z } from "zod";
 import { PlaceType } from "./placeType";
 
 export interface ReviewType {
+  id: string;
   reviewImages: string | null;
   description: string;
   advantages: string[] | null;

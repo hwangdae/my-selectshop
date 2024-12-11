@@ -19,6 +19,7 @@ export const styleColor = {
   },
   BLUE: {
     0: "#83B8CD",
+    100:"#00374e",
     main:'#004a6a',
   },
   BROWN: {
@@ -26,8 +27,8 @@ export const styleColor = {
     100: "#574144",
   },
   YELLOW:{
-    0:"#96722f",
-    main:"#EDD9A3"
+    0:"#d18b21",
+    main:"#e89b26"
   },
   PURPLE: {
     0: "#8E7391",

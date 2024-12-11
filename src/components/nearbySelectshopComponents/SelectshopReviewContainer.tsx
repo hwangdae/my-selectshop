@@ -19,6 +19,7 @@ const SelectshopReviewContainer = ({ onWriteReviewClick }: PropsType) => {
       <S.MySelectshopReview>
         <S.NoReview>등록된 후기가 없습니다.</S.NoReview>
         <Button
+          color="secondary"
           onClick={() => {
             if (!loginUser) {
               alert("로그인이 필요한 서비스 입니다.");

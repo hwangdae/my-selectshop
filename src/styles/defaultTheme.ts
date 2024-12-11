@@ -2,6 +2,16 @@ import { createTheme } from "@mui/material";
 import { styleColor } from "./styleColor";
 
 export let theme = createTheme({
+  palette: {
+    primary: {
+      main: `${styleColor.BLUE.main}`,
+      dark : `${styleColor.BLUE[100]}`
+    },
+    secondary: {
+      main: `${styleColor.YELLOW.main}`,
+      dark: `${styleColor.YELLOW[0]}`
+    },
+  },
   components: {
     MuiButton: {
       defaultProps: {
@@ -12,7 +22,7 @@ export let theme = createTheme({
       styleOverrides: {
         root: {
           padding: "5px 30px",
-          background: `${styleColor.BLUE.main}`,
+          color: `${styleColor.WHITE}`,
         },
       },
     },

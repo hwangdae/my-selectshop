@@ -61,21 +61,19 @@ const BestReviewer = () => {
               </div>
             </S.BestReviewerTitle>
             <ul>
-              {sortedUsers?.map((user: UserType) => {
+              {sortedUsers?.map((user: UserType, index:number) => {
                 return (
-                  <>
-                    {user.filteredReviewCount !== 0 && (
-                      <li onClick={() => setActiveuserId(user.id)}>
-                        <UserProfileContainer key={user.id} user={user} />
-                        {activeUserId === user.id && (
-                          <ReviewListContainer
-                            user={user}
-                            selectshops={selectshops}
-                          />
-                        )}
-                      </li>
-                    )}
-                  </>
+                  user.filteredReviewCount !== 0 && (
+                    <li key={user.id} onClick={() => setActiveuserId(user.id)}>
+                      <UserProfileContainer user={user} index={index} />
+                      {activeUserId === user.id && (
+                        <ReviewListContainer
+                          user={user}
+                          selectshops={selectshops}
+                        />
+                      )}
+                    </li>
+                  )
                 );
               })}
             </ul>
@@ -93,7 +91,7 @@ const S = {
     height: 100%;
   `,
   InnerContainer: styled.div`
-    padding: 0px 12px;
+    padding: 20px 12px;
     height: 100%;
   `,
   NoBestReviewer: styled.div`
@@ -121,10 +119,11 @@ const S = {
   BestReviewerTitle: styled.div`
     display: flex;
     align-items: center;
-    margin: 20px 0px 30px 0px;
+    margin-bottom: 30px;
     ${styleFont.title.tit_lg}
     div {
       p {
+        color: ${styleColor.GRAY[400]};
         font-size: 15px;
       }
       span {
@@ -133,8 +132,7 @@ const S = {
       }
     }
   `,
-  Trophy : styled.span`
+  Trophy: styled.span`
     font-size: 28px;
   `,
 };
-

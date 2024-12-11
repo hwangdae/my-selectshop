@@ -35,7 +35,7 @@ const AllReview = ({ review }: PropsType) => {
         <FollowContainer id={user?.id} />
       </S.UserContainer>
       <S.ReviewDescription>{description}</S.ReviewDescription>
-      <Tags tags={tags} />
+      <Tags tags={tags} type={"allReview"} />
     </S.ReviewWrap>
   );
 };

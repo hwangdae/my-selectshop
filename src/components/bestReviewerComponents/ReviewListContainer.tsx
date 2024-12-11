@@ -8,10 +8,7 @@ import { PlaceType } from "@/types/placeType";
 import ArrowLeft from "@/assets/ArrowLeft.svg";
 import { styleColor } from "@/styles/styleColor";
 import { useRecoilState } from "recoil";
-import {
-  boundsState,
-  shopCoordinatesState,
-} from "@/globalState/recoilState";
+import { boundsState, shopCoordinatesState } from "@/globalState/recoilState";
 import MyReviewContainer from "../utilityComponents/MyReviewContainer";
 
 interface PropsType {
@@ -30,7 +27,7 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
     return selectshops.some((v2) => v2.id === v1.selectshopId);
   });
 
-  const reviewsWithShopInfo = filteredReviews?.map((v) => {
+  const reviewsWithShopInfo = filteredReviews?.map((v: ReviewType) => {
     const shopInfo = selectshops.find((shop) => shop.id === v.selectshopId);
     return { ...v, shopInfo };
   });
@@ -72,35 +69,29 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
           <S.Title>{nickName}님의 리뷰 리스트</S.Title>
         </S.TitleWrap>
       )}
-      <S.ReviewWrap>
-        {isReviewOpen ? (
-          <MyReviewContainer review={detailReview} nickName={nickName} type={"bestReviewerList"}/>
-        ) : (
-          <>
-            {reviewsWithShopInfo?.length === 0 ? (
-              <h1>없음</h1>
-            ) : (
-              <>
-                {reviewsWithShopInfo?.map((review: ReviewType) => {
-                  return (
-                    <li
-                      onClick={() => {
-                        setDetailReview(review);
-                        setIsReviewOpen(true);
-                      }}
-                    >
-                      <ReviewContainer
-                        key={review.selectshopId}
-                        review={review}
-                      />
-                    </li>
-                  );
-                })}
-              </>
-            )}
-          </>
-        )}
-      </S.ReviewWrap>
+      {isReviewOpen ? (
+        <MyReviewContainer
+          review={detailReview}
+          nickName={nickName}
+          type={"bestReviewerList"}
+        />
+      ) : (
+        <S.ReviewListWrap>
+          {reviewsWithShopInfo?.map((review: ReviewType) => {
+            return (
+              <li
+                key={review.id}
+                onClick={() => {
+                  setDetailReview(review);
+                  setIsReviewOpen(true);
+                }}
+              >
+                <ReviewContainer key={review.selectshopId} review={review} />
+              </li>
+            );
+          })}
+        </S.ReviewListWrap>
+      )}
     </S.ReviewListContainer>
   );
 };
@@ -140,6 +131,9 @@ const S = {
     font-weight: 600;
   `,
   ReviewWrap: styled.ul`
+    /* padding: 20px 12px; */
+  `,
+  ReviewListWrap: styled.ul`
     padding: 20px 12px;
   `,
 };

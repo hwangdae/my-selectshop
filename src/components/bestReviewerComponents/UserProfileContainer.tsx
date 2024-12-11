@@ -9,9 +9,10 @@ import { FollowType } from "@/types/followType";
 
 interface PropsType {
   user: UserType & {filteredReviewCount? : number};
+  index:number;
 }
 
-const UserProfileContainer = ({ user }: PropsType) => {
+const UserProfileContainer = ({ user,index }: PropsType) => {
   const { id, profileImage, nickName, filteredReviewCount } = user;
 
   const { data: followList } = useQuery({
@@ -26,6 +27,7 @@ const UserProfileContainer = ({ user }: PropsType) => {
   return (
     <S.ProfileInfoContainer>
       <S.ProfileInfoInner>
+        <S.Rank>{index+1}</S.Rank>
         <S.ProfileImageWrap>
           <S.ProfileImage src={profileImage} />
         </S.ProfileImageWrap>
@@ -65,6 +67,13 @@ const S = {
     align-items: center;
     gap: 10px;
     padding: 20px 18px;
+  `,
+  Rank: styled.span`
+    ${styleFont.title.tit_sm}
+    background: linear-gradient(to right, #fbff0c 0%, #efff08 100%);
+    color: ${styleColor.WHITE};
+    padding: 5px;
+    border-radius: 4px;
   `,
   ProfileImageWrap: styled.div`
     width: 20%;

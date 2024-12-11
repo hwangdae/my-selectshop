@@ -4,15 +4,18 @@ import React from "react";
 import styled from "styled-components";
 
 interface PropsType {
-  tags : string | null;
+  tags: string | null;
+  type: string;
 }
 
-const Tags = ({tags}:PropsType) => {
+const Tags = ({ tags, type }: PropsType) => {
   return (
-    <S.TagList>
-      {tags !== null ? tags?.split(",").map((tag) => {
-        return <li>{tag}</li>;
-      }) : "추천할 브랜드가 없어요"}
+    <S.TagList $type={type}>
+      {tags !== ""
+        ? tags?.split(",").map((tag,index) => {
+            return <li key={`${tag}-${index}`}>{tag}</li>;
+          })
+        : "추천할 브랜드가 없어요"}
     </S.TagList>
   );
 };
@@ -20,10 +23,11 @@ const Tags = ({tags}:PropsType) => {
 export default Tags;
 
 const S = {
-  TagList: styled.ul`
+  TagList: styled.ul<{ $type: string }>`
     list-style: none !important ;
-    background-color: ${styleColor.GRAY[0]};
-    padding: 10px;
+    background-color: ${(props) =>
+      props.$type === "allReview" ? `${styleColor.GRAY[0]}` : ""};
+    padding: ${(props) => (props.$type === "allReview" ? `10px` : "")};
     ${styleFont.text.txt_sm}
     font-weight: 400;
     li {

@@ -19,6 +19,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { NewReviewType, UploadReviewType } from "@/types/reviewType";
 import useReviewMutate from "@/hook/useReviewMutate";
 import { uploadReviewImages } from "@/api/storage";
+import { boolean } from "zod";
 
 interface PropsType {
   selectshopId: string;
@@ -151,17 +152,26 @@ const WriteReview = ({ selectshopId }: PropsType) => {
                 field: FieldArrayWithId<UploadReviewType, "advantages", "id">,
                 index
               ) => (
-                <S.InputWrap key={field.id}>
-                  <S.Input
-                    id={`advantage-${index}`}
-                    {...register(`advantages.${index}.value` as const)}
+                <div key={field.id} style={{ marginBottom: "10px" }}>
+                  <S.InputWrap>
+                    <S.Input
+                      id={`advantage-${index}`}
+                      {...register(`advantages.${index}.value` as const)}
+                    />
+                    {index > 0 && (
+                      <button onClick={() => advantageRemove(index)}>
+                        <Trash fill={`${styleColor.GRAY[200]}`} />
+                      </button>
+                    )}
+                  </S.InputWrap>
+                  <ErrorMessage
+                    errors={errors}
+                    name={`advantages.${index}.value`}
+                    render={({ message }) => (
+                      <S.ReviewErrorMessage>{message}</S.ReviewErrorMessage>
+                    )}
                   />
-                  {index > 0 && (
-                    <button onClick={() => advantageRemove(index)}>
-                      <Trash fill={`${styleColor.GRAY[200]}`} />
-                    </button>
-                  )}
-                </S.InputWrap>
+                </div>
               )
             )}
           </S.InputLiRow>
@@ -185,17 +195,26 @@ const WriteReview = ({ selectshopId }: PropsType) => {
                 index
               ) => {
                 return (
-                  <S.InputWrap key={field.id}>
-                    <S.Input
-                      id={`disAdvantage-${index}`}
-                      {...register(`disAdvantages.${index}.value` as const)}
+                  <div key={field.id} style={{ marginBottom: "10px" }}>
+                    <S.InputWrap>
+                      <S.Input
+                        id={`disAdvantage-${index}`}
+                        {...register(`disAdvantages.${index}.value` as const)}
+                      />
+                      {index > 0 && (
+                        <button onClick={() => disAdvantageRemove(index)}>
+                          <Trash fill={`${styleColor.GRAY[200]}`} />
+                        </button>
+                      )}
+                    </S.InputWrap>
+                    <ErrorMessage
+                      errors={errors}
+                      name={`disAdvantages.${index}.value`}
+                      render={({ message }) => (
+                        <S.ReviewErrorMessage>{message}</S.ReviewErrorMessage>
+                      )}
                     />
-                    {index > 0 && (
-                      <button onClick={() => disAdvantageRemove(index)}>
-                        <Trash fill={`${styleColor.GRAY[200]}`} />
-                      </button>
-                    )}
-                  </S.InputWrap>
+                  </div>
                 );
               }
             )}
@@ -211,7 +230,7 @@ const WriteReview = ({ selectshopId }: PropsType) => {
             </S.InputWrap>
           </S.InputLiRow>
         </S.WriteReviewUl>
-        <Button type="submit">저장</Button>
+        <Button color="secondary" type="submit">저장</Button>
       </S.WriteReviewInner>
     </S.WriteReviewContainer>
   );

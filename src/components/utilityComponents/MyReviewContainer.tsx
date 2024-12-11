@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { PlaceType } from "@/types/placeType";
 import useInitializeMapState from "@/hook/useInitializeMapState";
 import CommonSwiper from "./CommonSwiper";
+import Tags from "./Tags";
 
 interface PropsType {
   review: ReviewType & { shopInfo: PlaceType[] };
@@ -61,11 +62,7 @@ const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
         </S.ReviewTextRow>
         <S.ReviewTextRow>
           <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
-          <S.TagList>
-            {tags?.split(",").map((tag: string, index) => {
-              return <li key={`${tag}-${index}`}>{tag}</li>;
-            })}
-          </S.TagList>
+          <Tags tags={tags} type={"myReview"} />
         </S.ReviewTextRow>
       </S.ReviewTextContainer>
     </S.MyReviewContainer>
