@@ -19,16 +19,16 @@ import { ErrorMessage } from "@hookform/error-message";
 import { NewReviewType, UploadReviewType } from "@/types/reviewType";
 import useReviewMutate from "@/hook/useReviewMutate";
 import { uploadReviewImages } from "@/api/storage";
-import { boolean } from "zod";
 
 interface PropsType {
   selectshopId: string;
+  setIsWriteReviewOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const WriteReview = ({ selectshopId }: PropsType) => {
+const WriteReview = ({ selectshopId, setIsWriteReviewOpen }: PropsType) => {
   const loginUser = useLoginUserId();
   const [files, setFiles] = useState<File[]>([]);
-  const { reviewMutate } = useReviewMutate(selectshopId);
+  const { addReviewMutate } = useReviewMutate(loginUser,selectshopId);
 
   const {
     register,
@@ -101,8 +101,9 @@ const WriteReview = ({ selectshopId }: PropsType) => {
     };
 
     try {
-      reviewMutate.mutate(newReview);
+      addReviewMutate.mutate(newReview);
       alert("작성이 완료 되었습니다.");
+      setIsWriteReviewOpen(false);
     } catch (error) {
       console.log(error);
     }
@@ -230,7 +231,11 @@ const WriteReview = ({ selectshopId }: PropsType) => {
             </S.InputWrap>
           </S.InputLiRow>
         </S.WriteReviewUl>
-        <Button color="secondary" type="submit">저장</Button>
+        <S.WriteButtonWrap>
+          <Button color="secondary" type="submit" sx={{width:"100%"}}>
+            저장
+          </Button>
+        </S.WriteButtonWrap>
       </S.WriteReviewInner>
     </S.WriteReviewContainer>
   );
@@ -245,6 +250,7 @@ const S = {
   `,
   WriteReviewTitle: styled.h1`
     ${styleFont.title.tit_md}
+    font-weight: 600;
     margin-bottom: 15px;
   `,
   WriteReviewUl: styled.ul`
@@ -262,6 +268,7 @@ const S = {
     gap: 7px;
     margin-bottom: 10px;
     ${styleFont.text.txt_md}
+    font-weight: 500;
   `,
   ImageInput: styled.input`
     display: none;
@@ -325,6 +332,9 @@ const S = {
     ${styleFont.text.txt_sm}
     color: #fff;
     border-radius: 4px;
+  `,
+  WriteButtonWrap: styled.div`
+    padding: 0px 12px;
   `,
   ReviewErrorMessage: styled.p`
     color: red;

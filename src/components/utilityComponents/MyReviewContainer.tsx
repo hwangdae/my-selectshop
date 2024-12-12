@@ -37,7 +37,7 @@ const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
           <CommonSwiper slideImages={reviewImages} />
         )}
       </S.ImageWrap>
-      <S.ReviewTextContainer>
+      <S.ReviewTextWrap>
         <S.ReviewTextRow>
           <S.ReviewTitle>
             📒 {type === "bestReviewerList" ? `${nickName}님의` : "나의"} 후기
@@ -64,7 +64,7 @@ const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
           <S.ReviewTitle>🏷️ 태그</S.ReviewTitle>
           <Tags tags={tags} type={"myReview"} />
         </S.ReviewTextRow>
-      </S.ReviewTextContainer>
+      </S.ReviewTextWrap>
     </S.MyReviewContainer>
   );
 };
@@ -80,11 +80,11 @@ const S = {
   ImageWrap: styled.div`
     width: 300px;
   `,
-  ReviewTextContainer: styled.ul`
+  ReviewTextWrap: styled.ul`
     padding: 0px 12px;
   `,
   ReviewTextRow: styled.li`
-    margin: 40px 0px;
+    margin: 36px 0px;
     ul {
       list-style: disc;
       margin-left: 36px;

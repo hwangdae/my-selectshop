@@ -51,17 +51,17 @@ const BestReviewer = () => {
           </S.NoBestReviewer>
         ) : (
           <div>
-            <S.BestReviewerTitle>
+            <S.BestReviewerTitleWrap>
               <S.Trophy>🏆</S.Trophy>
-              <div>
-                <p>{myAddress}</p>
+              <S.BestReviewerText>
+                <S.BestReviewerAddress>{myAddress}</S.BestReviewerAddress>
                 <h1>
                   <span>TOP 10</span> 베스트 리뷰어
                 </h1>
-              </div>
-            </S.BestReviewerTitle>
+              </S.BestReviewerText>
+            </S.BestReviewerTitleWrap>
             <ul>
-              {sortedUsers?.map((user: UserType, index:number) => {
+              {sortedUsers?.map((user: UserType, index: number) => {
                 return (
                   user.filteredReviewCount !== 0 && (
                     <li key={user.id} onClick={() => setActiveuserId(user.id)}>
@@ -109,30 +109,28 @@ const S = {
       display: flex;
       flex-direction: column;
       gap: 2px;
-      p {
-        &:first-child {
-          font-size: 15px;
-        }
+      p:first-child {
+        font-size: 12px;
       }
     }
   `,
-  BestReviewerTitle: styled.div`
+  BestReviewerTitleWrap: styled.div`
     display: flex;
     align-items: center;
     margin-bottom: 30px;
     ${styleFont.title.tit_lg}
-    div {
-      p {
-        color: ${styleColor.GRAY[400]};
-        font-size: 15px;
-      }
-      span {
-        color: ${styleColor.YELLOW.main};
-        font-weight: 600;
-      }
-    }
   `,
   Trophy: styled.span`
     font-size: 28px;
+  `,
+  BestReviewerText: styled.div`
+    span {
+      color: ${styleColor.YELLOW.main};
+      font-weight: 600;
+    }
+  `,
+  BestReviewerAddress: styled.p`
+    color: ${styleColor.GRAY[400]};
+    font-size: 13px;
   `,
 };

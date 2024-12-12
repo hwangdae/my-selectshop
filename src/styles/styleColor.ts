@@ -38,7 +38,7 @@ export const styleColor = {
     main : "#96df7c",
   },
   GRAY: {
-    0: "#f8f9fa",
+    0: "#f5f5f5",
     100: "#e9ecef",
     200: "#dee2e6",
     300: "#ced4da",

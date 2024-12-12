@@ -28,14 +28,15 @@ const S = {
     background-color: ${(props) =>
       props.$type === "allReview" ? `${styleColor.GRAY[0]}` : ""};
     padding: ${(props) => (props.$type === "allReview" ? `10px` : "")};
-    ${styleFont.text.txt_sm}
+    ${styleFont.text.txt_md}
+    font-size : ${(props)=> props.$type === "allReview" ? "14px" : "16px"};
     font-weight: 400;
     li {
       position: relative;
       left: 0;
       top: 0;
       display: inline-block;
-      background-color: ${styleColor.RED[0]};
+      background-color: ${styleColor.GRAY[500]};
       padding: 4px 10px;
       border-radius: 4px;
       text-indent: 4px;

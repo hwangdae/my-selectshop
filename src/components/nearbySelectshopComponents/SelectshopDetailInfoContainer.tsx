@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import SelectshopReviewContainer from "./SelectshopReviewContainer";
 import { useQuery } from "@tanstack/react-query";
-import { getReview } from "@/api/review";
+import { deleteReview, getReview } from "@/api/review";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { styleFont } from "@/styles/styleFont";
 import { PlaceType } from "@/types/placeType";
@@ -12,7 +12,7 @@ import WriteReview from "../writeReviewComponents/WriteReview";
 import useInitializeMapState from "@/hook/useInitializeMapState";
 import MyReviewContainer from "../utilityComponents/MyReviewContainer";
 import { Button } from "@mui/material";
-import { styleColor } from "@/styles/styleColor";
+import useReviewMutate from "@/hook/useReviewMutate";
 
 interface PropsType {
   selectshop: PlaceType;
@@ -21,6 +21,7 @@ interface PropsType {
 const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const { id, place_name, x, y } = selectshop;
   const loginUser = useLoginUserId();
+  const { deleteReviewMutate } = useReviewMutate(loginUser, id);
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
   useInitializeMapState(y, x);
 
@@ -33,15 +34,48 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const myReview = reviewData?.find((review: ReviewType) => {
     return review?.selectshopId === id && review?.userId === loginUser;
   });
-
+  
+  const deleteReviewButton = async () => {
+    try {
+      if (confirm("리뷰를 삭제 하시겠어요?")) {
+        deleteReviewMutate.mutate();
+        alert("삭제가 완료 되었습니다.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <S.DetailContainer>
       <S.DetailSelectshopHeader>
         <S.DetailSelectshopName>{place_name}</S.DetailSelectshopName>
-        {myReview && <Button color="secondary"  size="small">수정</Button>}
+        {myReview && (
+          <S.ActionButtons>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="small"
+              sx={{ padding: "5px" }}
+            >
+              수정
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              sx={{ padding: "5px" }}
+              onClick={deleteReviewButton}
+            >
+              삭제
+            </Button>
+          </S.ActionButtons>
+        )}
       </S.DetailSelectshopHeader>
       {isWriteReviewOpen ? (
-        <WriteReview selectshopId={id} />
+        <WriteReview
+          selectshopId={id}
+          setIsWriteReviewOpen={setIsWriteReviewOpen}
+        />
       ) : (
         <>
           {myReview ? (
@@ -80,7 +114,7 @@ const S = {
       display: none;
     }
   `,
-  DetailSelectshopHeader :styled.div`
+  DetailSelectshopHeader: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -91,6 +125,15 @@ const S = {
     padding: 14px 0px;
     ${styleFont.title.tit_md}
     font-weight: 600;
+  `,
+  ActionButtons: styled.div`
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    align-items: center;
+    button {
+      ${styleFont.text.txt_xs}
+    }
   `,
   AllReviewContainer: styled.ul`
     padding: 0px 18px;

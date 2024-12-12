@@ -8,11 +8,11 @@ import FollowContainer from "./FollowContainer";
 import { FollowType } from "@/types/followType";
 
 interface PropsType {
-  user: UserType & {filteredReviewCount? : number};
-  index:number;
+  user: UserType & { filteredReviewCount?: number };
+  index: number;
 }
 
-const UserProfileContainer = ({ user,index }: PropsType) => {
+const UserProfileContainer = ({ user, index }: PropsType) => {
   const { id, profileImage, nickName, filteredReviewCount } = user;
 
   const { data: followList } = useQuery({
@@ -20,14 +20,14 @@ const UserProfileContainer = ({ user,index }: PropsType) => {
     queryFn: () => getAllFollowList(),
   });
 
-  const followerCount = followList?.filter((v:FollowType) => {
+  const followerCount = followList?.filter((v: FollowType) => {
     return v.followee_id === id;
   }).length;
 
   return (
     <S.ProfileInfoContainer>
       <S.ProfileInfoInner>
-        <S.Rank>{index+1}</S.Rank>
+          <S.Rank>{index + 1}</S.Rank>
         <S.ProfileImageWrap>
           <S.ProfileImage src={profileImage} />
         </S.ProfileImageWrap>
@@ -56,6 +56,10 @@ export default UserProfileContainer;
 
 const S = {
   ProfileInfoContainer: styled.div`
+    overflow: hidden;
+    position: relative;
+    left: 0;
+    top: 0;
     cursor: pointer;
     width: 100%;
     margin-bottom: 20px;
@@ -65,15 +69,19 @@ const S = {
   ProfileInfoInner: styled.div`
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 20px 18px;
+    gap: 7px;
+    padding: 20px 18px 20px 10px;
   `,
   Rank: styled.span`
-    ${styleFont.title.tit_sm}
-    background: linear-gradient(to right, #fbff0c 0%, #efff08 100%);
+    position: absolute;
+    left: -20px;
+    top: -32px;
+    ${styleFont.title.tit_4xl}
+    font-size: 130px;
+    font-weight: 600;
     color: ${styleColor.WHITE};
-    padding: 5px;
-    border-radius: 4px;
+    z-index: -1;
+    text-shadow: 1px 1px 60px rgba(0, 0, 0, 0.1);
   `,
   ProfileImageWrap: styled.div`
     width: 20%;

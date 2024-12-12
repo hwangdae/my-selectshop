@@ -1,16 +1,25 @@
-import { addReview, getReview } from "@/api/review";
+import { addReview, deleteReview, getReview } from "@/api/review";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const useReviewMutate = (selectshopId: string) => {
+
+
+const useReviewMutate = (userId:string,selectshopId:string) => {
   const queryClient = useQueryClient();
 
-  const reviewMutate = useMutation({
+  const success = () => {
+    queryClient.invalidateQueries({ queryKey: ["review", selectshopId] });
+  };
+
+  const addReviewMutate = useMutation({
     mutationFn: addReview,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["review", selectshopId] });
-    },
+    onSuccess: success,
   });
-  return { reviewMutate };
+
+  const deleteReviewMutate = useMutation({
+    mutationFn:()=>deleteReview(userId,selectshopId),
+    onSuccess:success
+  })
+  return { addReviewMutate,deleteReviewMutate };
 };
 
 export default useReviewMutate;

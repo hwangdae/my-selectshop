@@ -46,6 +46,13 @@ const addReview = async (review: NewReviewType) => {
     throw new Error(error.message);
   }
 };
+const deleteReview = async(userId:string,selectshopId:string) => {
+  const {error} = await supabase.from("reviews").delete().eq("userId",userId).eq("selectshopId",selectshopId)
+  if(error){
+    console.log("supabase delete error",error)
+    throw new Error(error.message);
+  }
+}
 
 export {
   getAllReview,
@@ -54,4 +61,5 @@ export {
   getReviewAndUser,
   getReviewCount,
   addReview,
+  deleteReview
 };
