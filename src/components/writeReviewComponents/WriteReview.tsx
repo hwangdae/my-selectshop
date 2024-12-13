@@ -16,19 +16,37 @@ import shortid from "shortid";
 import styled from "styled-components";
 import Trash from "@/assets/Trash.svg";
 import { ErrorMessage } from "@hookform/error-message";
-import { NewReviewType, UploadReviewType } from "@/types/reviewType";
+import {
+  NewReviewType,
+  ReviewType,
+  UploadReviewType,
+} from "@/types/reviewType";
 import useReviewMutate from "@/hook/useReviewMutate";
 import { uploadReviewImages } from "@/api/storage";
 
 interface PropsType {
-  selectshopId: string;
-  setIsWriteReviewOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  selectshopId?: string;
+  setIsWriteReviewOpen?: React.Dispatch<
+    React.SetStateAction<boolean | undefined>
+  >;
+  type?: string;
+  prevReview?: ReviewType;
 }
 
-const WriteReview = ({ selectshopId, setIsWriteReviewOpen }: PropsType) => {
+const WriteReview = ({
+  selectshopId,
+  setIsWriteReviewOpen,
+  type,
+  prevReview,
+}: PropsType) => {
   const loginUser = useLoginUserId();
   const [files, setFiles] = useState<File[]>([]);
-  const { addReviewMutate } = useReviewMutate(loginUser,selectshopId);
+  const { addReviewMutate, updateReviewMutate } = useReviewMutate(
+    loginUser,
+    selectshopId
+  );
+
+  console.log(prevReview, "이전 리뷰");
 
   const {
     register,
@@ -39,11 +57,17 @@ const WriteReview = ({ selectshopId, setIsWriteReviewOpen }: PropsType) => {
   } = useForm<UploadReviewType>({
     resolver: zodResolver(registerReviewSchema),
     defaultValues: {
-      reviewImages: null,
-      description: "",
-      advantages: [{ value: "" }],
-      disAdvantages: [{ value: "" }],
-      tags: "",
+      reviewImages: prevReview?.reviewImages || null,
+      description: prevReview?.description || "",
+      advantages: prevReview?.advantages
+        ? prevReview.advantages.map((advantage) => ({ value: advantage }))
+        : [{ value: "" }],
+      disAdvantages: prevReview?.disAdvantages
+        ? prevReview.disAdvantages.map((disAdvantage) => ({
+            value: disAdvantage,
+          }))
+        : [{ value: "" }],
+      tags: prevReview?.tags || "",
     },
   });
 
@@ -101,9 +125,18 @@ const WriteReview = ({ selectshopId, setIsWriteReviewOpen }: PropsType) => {
     };
 
     try {
-      addReviewMutate.mutate(newReview);
-      alert("작성이 완료 되었습니다.");
-      setIsWriteReviewOpen(false);
+      if (type !== "edit") {
+        addReviewMutate.mutate(newReview);
+        alert("작성이 완료 되었습니다.");
+        setIsWriteReviewOpen!(false);
+      } else {
+        updateReviewMutate.mutate({
+          review: newReview,
+          id: prevReview?.id || "",
+        });
+        alert("수정이 완료 되었습니다.");
+        setIsWriteReviewOpen!(false);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -232,7 +265,7 @@ const WriteReview = ({ selectshopId, setIsWriteReviewOpen }: PropsType) => {
           </S.InputLiRow>
         </S.WriteReviewUl>
         <S.WriteButtonWrap>
-          <Button color="secondary" type="submit" sx={{width:"100%"}}>
+          <Button color="secondary" type="submit" sx={{ width: "100%" }}>
             저장
           </Button>
         </S.WriteButtonWrap>

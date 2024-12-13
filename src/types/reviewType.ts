@@ -16,7 +16,7 @@ export interface ReviewType {
 
 export interface UploadReviewType {
   id?: string;
-  reviewImages: File | null;
+  reviewImages: string | null;
   description: string;
   advantages: { value: string }[] | null;
   disAdvantages: { value: string }[] | null;
@@ -27,7 +27,7 @@ export interface UploadReviewType {
 }
 
 export interface NewReviewType {
-  selectshopId: string;
+  selectshopId: string | undefined;
   reviewImages: string | null;
   description: string;
   advantages: string[] | null | undefined;

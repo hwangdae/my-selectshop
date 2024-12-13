@@ -23,6 +23,7 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const loginUser = useLoginUserId();
   const { deleteReviewMutate } = useReviewMutate(loginUser, id);
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
+  const [isEditReview, setIsEditReview] = useState(false);
   useInitializeMapState(y, x);
 
   const { data: reviewData } = useQuery({
@@ -34,7 +35,7 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const myReview = reviewData?.find((review: ReviewType) => {
     return review?.selectshopId === id && review?.userId === loginUser;
   });
-  
+
   const deleteReviewButton = async () => {
     try {
       if (confirm("리뷰를 삭제 하시겠어요?")) {
@@ -52,19 +53,20 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
         {myReview && (
           <S.ActionButtons>
             <Button
+              onClick={()=>setIsEditReview(!isEditReview)}
               variant="outlined"
               color="primary"
               size="small"
               sx={{ padding: "5px" }}
             >
-              수정
+              {isEditReview ? "취소" : "수정"}
             </Button>
             <Button
+              onClick={deleteReviewButton}
               variant="contained"
               color="primary"
               size="small"
               sx={{ padding: "5px" }}
-              onClick={deleteReviewButton}
             >
               삭제
             </Button>
@@ -79,7 +81,7 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
       ) : (
         <>
           {myReview ? (
-            <MyReviewContainer review={myReview} />
+            <MyReviewContainer review={myReview} isEditReview={isEditReview} />
           ) : (
             <SelectshopReviewContainer
               onWriteReviewClick={() => setIsWriteReviewOpen(true)}

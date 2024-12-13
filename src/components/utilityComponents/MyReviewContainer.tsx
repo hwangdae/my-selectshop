@@ -7,28 +7,31 @@ import { PlaceType } from "@/types/placeType";
 import useInitializeMapState from "@/hook/useInitializeMapState";
 import CommonSwiper from "./CommonSwiper";
 import Tags from "./Tags";
+import WriteReview from "../writeReviewComponents/WriteReview";
 
 interface PropsType {
   review: ReviewType & { shopInfo: PlaceType[] };
   nickName?: string;
   type?: string;
+  isEditReview: boolean;
 }
 
-const MyReviewContainer = ({ review, nickName, type }: PropsType) => {
-  const {
-    reviewImages,
-    description,
-    advantages,
-    disAdvantages,
-    tags,
-    shopInfo,
-  } = review;
+const MyReviewContainer = ({
+  review,
+  nickName,
+  type,
+  isEditReview,
+}: PropsType) => {
+
+  const {reviewImages,description,advantages,disAdvantages,tags,shopInfo} = review;
 
   if (type === "bestReviewerList") {
     useInitializeMapState(shopInfo?.y, shopInfo?.x);
   }
 
-  return (
+  return isEditReview ? (
+    <WriteReview type={"edit"} prevReview={review}/>
+  ) : (
     <S.MyReviewContainer>
       <S.ImageWrap>
         {reviewImages === null || reviewImages === "" ? (
