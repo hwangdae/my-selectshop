@@ -27,10 +27,13 @@ import { uploadReviewImages } from "@/api/storage";
 interface PropsType {
   selectshopId?: string;
   setIsWriteReviewOpen?: React.Dispatch<
-    React.SetStateAction<boolean | undefined>
+    React.SetStateAction<boolean>
   >;
   type?: string;
   prevReview?: ReviewType;
+  setIsEditReview? : React.Dispatch<
+  React.SetStateAction<boolean>
+>;
 }
 
 const WriteReview = ({
@@ -38,6 +41,7 @@ const WriteReview = ({
   setIsWriteReviewOpen,
   type,
   prevReview,
+  setIsEditReview
 }: PropsType) => {
   const loginUser = useLoginUserId();
   const [files, setFiles] = useState<File[]>([]);
@@ -57,7 +61,7 @@ const WriteReview = ({
   } = useForm<UploadReviewType>({
     resolver: zodResolver(registerReviewSchema),
     defaultValues: {
-      reviewImages: prevReview?.reviewImages || null,
+      reviewImages: prevReview?.reviewImages ? prevReview?.reviewImages : null,
       description: prevReview?.description || "",
       advantages: prevReview?.advantages
         ? prevReview.advantages.map((advantage) => ({ value: advantage }))
@@ -123,19 +127,19 @@ const WriteReview = ({
       tags: tags,
       userId: loginUser,
     };
-
+    console.log(newReview,"뉴리뷰")
     try {
       if (type !== "edit") {
         addReviewMutate.mutate(newReview);
         alert("작성이 완료 되었습니다.");
         setIsWriteReviewOpen!(false);
       } else {
-        updateReviewMutate.mutate({
-          review: newReview,
-          id: prevReview?.id || "",
-        });
+        const updateReview = {
+          ...newReview,id:prevReview?.id
+        }
+        updateReviewMutate.mutate(updateReview)
         alert("수정이 완료 되었습니다.");
-        setIsWriteReviewOpen!(false);
+        setIsEditReview!(false);
       }
     } catch (error) {
       console.log(error);

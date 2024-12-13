@@ -61,8 +61,8 @@ const deleteReview = async (
   }
 };
 
-const updateReview = async (review: NewReviewType, id: string | undefined) => {
-  const { error } = await supabase.from("reviews").update(review).eq("id", id);
+const updateReview = async (review: NewReviewType) => {
+  const { error } = await supabase.from("reviews").update(review).eq("id", review.id);
   if (error) {
     console.log("supabase delete error", error);
     throw new Error(error.message);

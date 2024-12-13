@@ -14,6 +14,7 @@ interface PropsType {
   nickName?: string;
   type?: string;
   isEditReview: boolean;
+  setIsEditReview: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MyReviewContainer = ({
@@ -21,16 +22,27 @@ const MyReviewContainer = ({
   nickName,
   type,
   isEditReview,
+  setIsEditReview,
 }: PropsType) => {
-
-  const {reviewImages,description,advantages,disAdvantages,tags,shopInfo} = review;
+  const {
+    reviewImages,
+    description,
+    advantages,
+    disAdvantages,
+    tags,
+    shopInfo,
+  } = review;
 
   if (type === "bestReviewerList") {
     useInitializeMapState(shopInfo?.y, shopInfo?.x);
   }
 
   return isEditReview ? (
-    <WriteReview type={"edit"} prevReview={review}/>
+    <WriteReview
+      type={"edit"}
+      prevReview={review}
+      setIsEditReview={setIsEditReview}
+    />
   ) : (
     <S.MyReviewContainer>
       <S.ImageWrap>
