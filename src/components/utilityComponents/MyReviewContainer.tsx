@@ -13,8 +13,8 @@ interface PropsType {
   review: ReviewType & { shopInfo: PlaceType[] };
   nickName?: string;
   type?: string;
-  isEditReview: boolean;
-  setIsEditReview: React.Dispatch<React.SetStateAction<boolean>>;
+  isEditReview?: boolean;
+  setIsEditReview?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MyReviewContainer = ({

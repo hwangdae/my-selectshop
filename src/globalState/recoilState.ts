@@ -63,3 +63,8 @@ export const searchTermState = atom<string>({
   key: "searchTermState",
   default: "",
 });
+
+export const showFollowState = atom<boolean>({
+  key : "showFollowState",
+  default:false
+})

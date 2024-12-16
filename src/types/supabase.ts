@@ -37,33 +37,33 @@ export type Database = {
       follows: {
         Row: {
           created_at: string
-          followee_id: string | null
           follower_id: string | null
+          following_id: string | null
           id: string
         }
         Insert: {
           created_at?: string
-          followee_id?: string | null
           follower_id?: string | null
+          following_id?: string | null
           id?: string
         }
         Update: {
           created_at?: string
-          followee_id?: string | null
           follower_id?: string | null
+          following_id?: string | null
           id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "follows_followee_id_fkey"
-            columns: ["followee_id"]
+            foreignKeyName: "follows_follower_id_fkey"
+            columns: ["follower_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "follows_follower_id_fkey"
-            columns: ["follower_id"]
+            foreignKeyName: "follows_following_id_fkey"
+            columns: ["following_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -72,68 +72,47 @@ export type Database = {
       }
       reviews: {
         Row: {
-          advatages: string | null
+          advantages: Json | null
           created_at: string
           description: string | null
-          disAdvantages: string | null
+          disAdvantages: Json | null
           id: string
           reviewImages: string | null
           selectshopId: string | null
           tags: string | null
-          test: string | null
           userId: string | null
         }
         Insert: {
-          advatages?: string | null
+          advantages?: Json | null
           created_at?: string
           description?: string | null
-          disAdvantages?: string | null
+          disAdvantages?: Json | null
           id?: string
           reviewImages?: string | null
           selectshopId?: string | null
           tags?: string | null
-          test?: string | null
           userId?: string | null
         }
         Update: {
-          advatages?: string | null
+          advantages?: Json | null
           created_at?: string
           description?: string | null
-          disAdvantages?: string | null
+          disAdvantages?: Json | null
           id?: string
           reviewImages?: string | null
           selectshopId?: string | null
           tags?: string | null
-          test?: string | null
           userId?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "review_userId_fkey"
+            foreignKeyName: "reviews_userId_fkey"
             columns: ["userId"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
-      }
-      selectShop_bookmark: {
-        Row: {
-          id: string
-          selectShopId: string
-          userId: string | null
-        }
-        Insert: {
-          id?: string
-          selectShopId: string
-          userId?: string | null
-        }
-        Update: {
-          id?: string
-          selectShopId?: string
-          userId?: string | null
-        }
-        Relationships: []
       }
       users: {
         Row: {

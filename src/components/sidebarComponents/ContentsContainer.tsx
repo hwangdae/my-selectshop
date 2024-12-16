@@ -5,7 +5,7 @@ import styled from "styled-components";
 import ProfileContainer from "../profileComponents/ProfileContainer";
 import MyAddressContainer from "./MyAddressContainer";
 import { useRecoilValue } from "recoil";
-import { myLocationState } from "@/globalState/recoilState";
+import { myLocationState, showFollowState } from "@/globalState/recoilState";
 import useLoginUserId from "@/hook/useLoginUserId";
 import useInitializeMapState from "@/hook/useInitializeMapState";
 
@@ -18,6 +18,7 @@ const CONTENTSTABNAV = [
 
 const ContentsContainer = () => {
   const myLocation = useRecoilValue(myLocationState);
+  const showFollow = useRecoilValue(showFollowState);
   const loginUser = useLoginUserId();
   const router = useRouter();
 
@@ -35,18 +36,26 @@ const ContentsContainer = () => {
   return (
     <S.ContentsContainer>
       <ProfileContainer />
-      <MyAddressContainer />
-      <S.ContentsInner>
-        {CONTENTSTABNAV.map((content) => {
-          return (
-            <S.Content key={content.id}>
-              <S.ContentButton onClick={() => viewSelectShopHandle(content.id)}>
-                {content.name}
-              </S.ContentButton>
-            </S.Content>
-          );
-        })}
-      </S.ContentsInner>
+      {showFollow ? (
+        <div>aaa</div>
+      ) : (
+        <>
+          <MyAddressContainer />
+          <S.ContentsInner>
+            {CONTENTSTABNAV.map((content) => {
+              return (
+                <S.Content key={content.id}>
+                  <S.ContentButton
+                    onClick={() => viewSelectShopHandle(content.id)}
+                  >
+                    {content.name}
+                  </S.ContentButton>
+                </S.Content>
+              );
+            })}
+          </S.ContentsInner>
+        </>
+      )}
     </S.ContentsContainer>
   );
 };

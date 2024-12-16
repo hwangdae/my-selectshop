@@ -1,10 +1,12 @@
 import { getAllFollowList } from "@/api/follow";
 import { getReviewCount } from "@/api/review";
+import { showFollowState } from "@/globalState/recoilState";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { FollowType } from "@/types/followType";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 interface PropsType {
@@ -14,8 +16,12 @@ interface PropsType {
 
 const UserActivity = ({ loginUser, userId }: PropsType) => {
 
+  const [showFollower,setShowFollower] = useRecoilState(showFollowState)
+
+
+
   const { data: followList } = useQuery({
-    queryKey: ["followee"],
+    queryKey: ["follow"],
     queryFn: () => getAllFollowList(),
   });
 
@@ -25,7 +31,7 @@ const UserActivity = ({ loginUser, userId }: PropsType) => {
   });
 
   const followerCount = followList?.filter((v:FollowType) => {
-    return v.followee_id === userId;
+    return v.following_id === userId;
   }).length;
 
   const followingCount = followList?.filter((v:FollowType) => {
@@ -39,8 +45,10 @@ const UserActivity = ({ loginUser, userId }: PropsType) => {
         <p>{reviewCount}</p>
       </S.Activity>
       <S.Activity>
+        <button onClick={()=>setShowFollower(!showFollower)}>
         <h3>팔로워</h3>
         <p>{followerCount}</p>
+        </button>
       </S.Activity>
       <S.Activity>
         <h3>팔로잉</h3>

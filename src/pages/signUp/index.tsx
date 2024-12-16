@@ -123,9 +123,9 @@ const SignUp = ({ onClose }:ModalProps) => {
                     onClick={handleCheckPasswordToggle}
                   >
                     {showCheckPassword ? (
-                      <Eye width="20px" height="auto" fill="#a0a0a0" />
+                      <Eye width="20px" height="20px" fill="#a0a0a0" />
                     ) : (
-                      <EyeInvisible width="20px" height="auto" fill="#a0a0a0" />
+                      <EyeInvisible width="20px" height="20px" fill="#a0a0a0" />
                     )}
                   </S.ShowPasswordToggle>
                 </S.InputContainer>
@@ -148,7 +148,7 @@ const SignUp = ({ onClose }:ModalProps) => {
                 />
               </S.SignUpListItem>
             </S.SignUpFormInner>
-            <CommonButton
+            <Button
               type="submit"
               variant="contained"
               color="secondary"
@@ -156,7 +156,7 @@ const SignUp = ({ onClose }:ModalProps) => {
               fullWidth
             >
               회원가입
-            </CommonButton>
+            </Button>
           </S.SignUpForm>
         </S.SignUpInner>
       </S.SignUpContainer>

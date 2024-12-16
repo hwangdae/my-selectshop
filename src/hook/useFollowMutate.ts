@@ -5,7 +5,7 @@ const useFollowMutate = (loginUser: string, id: string) => {
   const queryClient = useQueryClient();
 
   const success = () => {
-    queryClient.invalidateQueries({ queryKey: ["followee"] });
+    queryClient.invalidateQueries({ queryKey: ["follow"] });
   };
 
   const followMutate = useMutation({

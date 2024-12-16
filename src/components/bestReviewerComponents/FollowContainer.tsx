@@ -19,14 +19,14 @@ const FollowContainer = ({ id }: PropsType) => {
   const { followMutate, unFollowMutate } = useFollowMutate(loginUser, id);
 
   const { data: followList } = useQuery({
-    queryKey: ["followee"],
+    queryKey: ["follow"],
     queryFn: () => getAllFollowList(),
   });
 
   const router = useRouter();
 
   const isFollowing = followList?.find((v: FollowType) => {
-    return v.followee_id === id && v.follower_id === loginUser;
+    return v.following_id === id && v.follower_id === loginUser;
   });
 
   const followButtonHandler = async (
@@ -43,7 +43,7 @@ const FollowContainer = ({ id }: PropsType) => {
     } else {
       followMutate.mutate({
         follower_id: loginUser,
-        followee_id: id,
+        following_id: id,
       });
     }
   };

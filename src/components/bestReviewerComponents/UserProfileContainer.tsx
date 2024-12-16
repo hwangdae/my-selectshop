@@ -16,12 +16,12 @@ const UserProfileContainer = ({ user, index }: PropsType) => {
   const { id, profileImage, nickName, filteredReviewCount } = user;
 
   const { data: followList } = useQuery({
-    queryKey: ["followee"],
+    queryKey: ["follow"],
     queryFn: () => getAllFollowList(),
   });
 
   const followerCount = followList?.filter((v: FollowType) => {
-    return v.followee_id === id;
+    return v.follower_id === id;
   }).length;
 
   return (

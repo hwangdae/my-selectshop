@@ -15,7 +15,6 @@ const CommonSwiper = ({slideImages}: PropsType) => {
   return (
     <S.SwiperWrap>
       <S.CustomSwiper
-        spaceBetween={10}
         slidesPerView={1}
         pagination={{clickable: true,}}
         modules={[Pagination, Navigation]}

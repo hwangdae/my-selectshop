@@ -61,7 +61,7 @@ const WriteReview = ({
   } = useForm<UploadReviewType>({
     resolver: zodResolver(registerReviewSchema),
     defaultValues: {
-      reviewImages: prevReview?.reviewImages ? prevReview?.reviewImages : null,
+      reviewImages: null,
       description: prevReview?.description || "",
       advantages: prevReview?.advantages
         ? prevReview.advantages.map((advantage) => ({ value: advantage }))
@@ -74,7 +74,7 @@ const WriteReview = ({
       tags: prevReview?.tags || "",
     },
   });
-
+  console.log(files,"파일")
   const {
     fields: advantageFields,
     append: advantageAppend,
@@ -152,7 +152,7 @@ const WriteReview = ({
         <S.WriteReviewTitle>✍ 후기 등록하기</S.WriteReviewTitle>
         <S.WriteReviewUl>
           <S.InputLiRow>
-            <WriteReviewInputImage files={files} setFiles={setFiles} />
+            <WriteReviewInputImage files={files} setFiles={setFiles} prevReview={prevReview?.reviewImages} />
           </S.InputLiRow>
           <S.InputLiRow>
             <S.Label htmlFor="description">후기</S.Label>

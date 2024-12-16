@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState } from "react";
 import NoImage from "@/assets/NoImage.svg";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,36 +8,47 @@ import { imageCompressionFn } from "@/utilityFunction/imageCompression";
 interface PropsType extends React.InputHTMLAttributes<HTMLInputElement> {
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  prevReview: string | null | undefined;
 }
 
 const WriteReviewInputImage = ({
   files,
   setFiles,
+  prevReview,
   type = "file",
-  accept = 'accept="image/*"',
+  accept = "image/*",
   id = "file-upload",
   ...props
 }: PropsType) => {
+  const [previewImages, setPreviewImages] = useState<string[]>(
+    prevReview ? prevReview.split(",") : []
+  );
 
-  const onChangeImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (e.target.files) {
-      const files = Array.from(e.target.files);
-      const compressionFiles = await Promise.all(
-        files.map((file) => imageCompressionFn(file, "medium"))
+      const newFiles = Array.from(e.target.files);
+      const compressedFiles = await Promise.all(
+        newFiles.map((file) => imageCompressionFn(file, "medium"))
       );
-      setFiles(compressionFiles);
+      setFiles(compressedFiles);
     }
   };
 
   return (
     <>
-      <S.Label htmlFor="file-upload">
-        {files.length === 0 ? (
-          <S.NoImageWrapper>
-            <NoImage />
-          </S.NoImageWrapper>
-        ) : (
-          <S.ImageSwiper spaceBetween={50} slidesPerView={1}>
+      <S.Label htmlFor={id}>
+        {files.length === 0 && previewImages.length > 0 ? (
+          <S.ImageSwiper slidesPerView={1}>
+            {previewImages.map((file: string, index: number) => (
+              <S.SwiperSlide key={index}>
+                <S.UploadImage src={file} alt={`preview-${index}`} />
+              </S.SwiperSlide>
+            ))}
+          </S.ImageSwiper>
+        ) : files.length > 0 ? (
+          <S.ImageSwiper slidesPerView={1}>
             {files.map((file, index) => (
               <S.SwiperSlide key={index}>
                 <S.UploadImage
@@ -47,6 +58,10 @@ const WriteReviewInputImage = ({
               </S.SwiperSlide>
             ))}
           </S.ImageSwiper>
+        ) : (
+          <S.NoImageWrapper>
+            <NoImage />
+          </S.NoImageWrapper>
         )}
       </S.Label>
       <S.ImageInput

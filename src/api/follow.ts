@@ -11,7 +11,7 @@ const followWhether = async (loginUser: string, id: string) => {
     .from("follows")
     .select("*")
     .eq("follower_id", loginUser)
-    .eq("followee_id", id);
+    .eq("following_id", id);
   return data;
 };
 
@@ -24,6 +24,6 @@ const userUnfollow = async (loginUser:string,id:string) => {
   .from("follows")
   .delete()
   .eq("follower_id", loginUser)
-  .eq("followee_id", id);
+  .eq("following_id", id);
 }
 export { getAllFollowList, followWhether ,userFollow, userUnfollow};

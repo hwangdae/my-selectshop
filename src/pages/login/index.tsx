@@ -2,13 +2,14 @@ import { getUser } from "@/api/user";
 import { ModalProps } from "@/components/ModalMap";
 import { userState } from "@/globalState/recoilState";
 import supabase from "@/lib/supabaseClient";
-import { CommonButton } from "@/styles/commonButton";
 import { modal, modalContent } from "@/styles/modal";
+import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
 import { RegisterLoginInput } from "@/types/authType";
 import { registerLoginSchema } from "@/validators/auth";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -100,7 +101,7 @@ const Login = ({ onClose }: ModalProps) => {
               />
             </S.LoginListItem>
           </S.LoginFormInner>
-          <CommonButton
+          <Button
             type="submit"
             variant="contained"
             color="secondary"
@@ -108,7 +109,7 @@ const Login = ({ onClose }: ModalProps) => {
             fullWidth
           >
             로그인
-          </CommonButton>
+          </Button>
         </S.LoginForm>
         <S.SignUpLinkContainer>
           회원이 아니신가요? <button onClick={()=>router.push('?modal=signUp')}>회원가입</button>
@@ -172,13 +173,17 @@ const S = {
     font-size: 14px;
   `,
   SignUpLinkContainer: styled.div`
-    ${styleFont.textsmall}
-    color: #28323c;
+    ${styleFont.text.txt_sm}
+    color: ${styleColor.GRAY[800]};
     text-align: center;
     margin-top: 24px;
     letter-spacing: -0.5px;
-    a {
+    button {
+      cursor: pointer;
+      ${styleFont.text.txt_sm}
       text-decoration: underline;
+      color: ${styleColor.PURPLE[100]};
+      margin-left: 2px;
     }
   `,
 };

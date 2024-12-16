@@ -1,7 +1,7 @@
 import { getReview } from "@/api/review";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
-import { MarkersType, PlaceType } from "@/types/placeType";
+import { PlaceType } from "@/types/placeType";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { CustomOverlayMap } from "react-kakao-maps-sdk";
@@ -24,16 +24,16 @@ const MarkerContainer = ({ selectshop, index }: PropsType) => {
 
   return (
     <CustomOverlayMap key={`marker-${y},${x}-${index}`} position={position}>
-      <S.MarkerWrap>
-        <S.SelectshopInfoWindow>
-          {place_name}
-          {reviewData?.length !== 0 ? (
+      <S.MarkerContainer>
+        {/* <S.MarkerInner> */}
+        <S.SelectshopPlaceName>{place_name}</S.SelectshopPlaceName>
+        {reviewData?.length !== 0 ? (
           <S.SelectshopReviewCount>
             +{reviewData?.length}
           </S.SelectshopReviewCount>
         ) : null}
-        </S.SelectshopInfoWindow>
-      </S.MarkerWrap>
+        {/* </S.MarkerInner> */}
+      </S.MarkerContainer>
     </CustomOverlayMap>
   );
 };
@@ -41,15 +41,14 @@ const MarkerContainer = ({ selectshop, index }: PropsType) => {
 export default MarkerContainer;
 
 const S = {
-  MarkerWrap: styled.div`
+  MarkerContainer: styled.div`
     position: relative;
     left: 0px;
     bottom: 0px;
     padding: 8px 30px;
     border: solid 2px ${styleColor.RED[0]};
     border-radius: 20px;
-    background: #fff;
-    z-index: 99;
+    background: ${styleColor.WHITE};
     &::before {
       display: block;
       content: "";
@@ -58,7 +57,7 @@ const S = {
       border-right: 2px solid ${styleColor.RED[0]};
       border-bottom: 2px solid ${styleColor.RED[0]};
       transform: rotate(45deg);
-      background-color: #fff;
+      background-color: ${styleColor.WHITE};
       position: absolute;
       bottom: -5px;
       left: 50%;
@@ -77,10 +76,13 @@ const S = {
       border-radius: 10px;
       background-color: rgba(0, 0, 0, 0.5);
       filter: blur(3px);
-      z-index: -999;
     }
   `,
-  SelectshopInfoWindow: styled.h1`
+  MarkerInner: styled.div`
+    width: 100%;
+  `,
+  SelectshopPlaceName: styled.h1`
+    width: 100%;
     ${styleFont.text.txt_md}
     font-weight: 600;
   `,
@@ -99,5 +101,6 @@ const S = {
     background: #fff;
     border: solid 2px ${styleColor.RED[0]};
     border-radius: 100%;
+    z-index: 999;
   `,
 };

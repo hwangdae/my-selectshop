@@ -53,6 +53,9 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
       setShopCoordinates(shopCoordinates as PlaceType[]);
       setBounds(bounds);
     }
+    return () => {
+      setShopCoordinates([])
+    }
   }, []);
 
   return (

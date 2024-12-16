@@ -3,7 +3,6 @@ import { z } from "zod";
 import { ReviewType } from "./reviewType";
 
 export interface AuthType {
-  id:string;
   email: string;
   password: string;
   checkPassword: string;
