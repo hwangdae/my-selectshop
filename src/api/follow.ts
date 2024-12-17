@@ -15,15 +15,27 @@ const followWhether = async (loginUser: string, id: string) => {
   return data;
 };
 
-const userFollow = async (follow:FollowType) => {
+const userFollow = async (follow: FollowType) => {
   await supabase.from("follows").insert(follow);
-}
+};
 
-const userUnfollow = async (loginUser:string,id:string) => {
+const userUnfollow = async (loginUser: string, id: string) => {
   await supabase
-  .from("follows")
-  .delete()
-  .eq("follower_id", loginUser)
-  .eq("following_id", id);
-}
-export { getAllFollowList, followWhether ,userFollow, userUnfollow};
+    .from("follows")
+    .delete()
+    .eq("follower_id", loginUser)
+    .eq("following_id", id);
+};
+
+const getFollowingUsers = async (userId:string) => {
+  const { data, error } = await supabase
+    .from("follows")
+    .select("users!inner(email)")
+    .eq("follower_id", userId);
+
+  if (error) {
+    console.error("Error fetching following users:", error);
+  }
+  return data;
+};
+export { getAllFollowList, followWhether, userFollow, userUnfollow, getFollowingUsers };

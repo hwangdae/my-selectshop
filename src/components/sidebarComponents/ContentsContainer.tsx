@@ -8,6 +8,7 @@ import { useRecoilValue } from "recoil";
 import { myLocationState, showFollowState } from "@/globalState/recoilState";
 import useLoginUserId from "@/hook/useLoginUserId";
 import useInitializeMapState from "@/hook/useInitializeMapState";
+import ShowFollowContainer from "./ShowFollowContainer";
 
 const CONTENTSTABNAV = [
   { id: "nearbySelectshop", name: "편집샵 보기" },
@@ -37,7 +38,7 @@ const ContentsContainer = () => {
     <S.ContentsContainer>
       <ProfileContainer />
       {showFollow ? (
-        <div>aaa</div>
+        <ShowFollowContainer/>
       ) : (
         <>
           <MyAddressContainer />

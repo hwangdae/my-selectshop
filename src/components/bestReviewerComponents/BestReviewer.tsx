@@ -22,7 +22,7 @@ const BestReviewer = () => {
     queryKey: ["allUser"],
     queryFn: () => getAllUsersAndReviewCount(),
   });
-
+  console.log(users,"유져스")
   useEffect(() => {
     searchAllPlaces();
   }, []);
