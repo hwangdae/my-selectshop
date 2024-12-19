@@ -8,6 +8,7 @@ import Tags from "../utilityComponents/Tags";
 import FollowContainer from "../bestReviewerComponents/FollowContainer";
 import { useQuery } from "@tanstack/react-query";
 import { getAllUsers } from "@/api/user";
+import UserContainer from "../utilityComponents/UserContainer";
 
 interface PropsType {
   review: ReviewType;
@@ -27,13 +28,7 @@ const AllReview = ({ review }: PropsType) => {
 
   return (
     <S.ReviewWrap>
-      <S.UserContainer>
-        <S.UserInfo>
-          <S.ProfileImage src={user?.profileImage} />
-          <S.writtenUser>{user?.nickName}님의 후기</S.writtenUser>
-        </S.UserInfo>
-        <FollowContainer id={user?.id} />
-      </S.UserContainer>
+      <UserContainer user={user} type={"allReview"}/>
       <S.ReviewDescription>{description}</S.ReviewDescription>
       <Tags tags={tags} type={"allReview"} />
     </S.ReviewWrap>
@@ -48,28 +43,6 @@ const S = {
     border-radius: 4px;
     padding: 10px;
     margin-bottom: 10px;
-  `,
-  UserContainer: styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  `,
-  UserInfo: styled.div`
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  `,
-  ProfileImage: styled.img`
-    width: 32px;
-    height: 32px;
-    border: solid 1px ${styleColor.GRAY[200]};
-    border-radius: 70%;
-    object-fit: cover;
-  `,
-  writtenUser: styled.p`
-    ${styleFont.text.txt_sm}
-    font-weight: 400;
   `,
   ReviewDescription: styled.h1`
     background-color: ${styleColor.GRAY[0]};

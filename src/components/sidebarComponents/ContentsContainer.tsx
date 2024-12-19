@@ -25,7 +25,7 @@ const ContentsContainer = () => {
 
   useInitializeMapState(myLocation.center.lat, myLocation.center.lng);
 
-  const viewSelectShopHandle = (id: string) => {
+  const viewSelectshopHandle = (id: string) => {
     if (id !== "nearbySelectshop" && id !== "bestReviewer" && !loginUser) {
       alert("로그인이 필요한 서비스입니다.");
       router.push("?modal=login");
@@ -38,7 +38,7 @@ const ContentsContainer = () => {
     <S.ContentsContainer>
       <ProfileContainer />
       {showFollow ? (
-        <ShowFollowContainer/>
+        <ShowFollowContainer showFollow={showFollow}/>
       ) : (
         <>
           <MyAddressContainer />
@@ -47,7 +47,7 @@ const ContentsContainer = () => {
               return (
                 <S.Content key={content.id}>
                   <S.ContentButton
-                    onClick={() => viewSelectShopHandle(content.id)}
+                    onClick={() => viewSelectshopHandle(content.id)}
                   >
                     {content.name}
                   </S.ContentButton>

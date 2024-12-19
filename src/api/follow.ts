@@ -27,15 +27,44 @@ const userUnfollow = async (loginUser: string, id: string) => {
     .eq("following_id", id);
 };
 
-const getFollowingUsers = async (userId:string) => {
-  const { data, error } = await supabase
-    .from("follows")
-    .select("users!inner(email)")
-    .eq("follower_id", userId);
-
-  if (error) {
+const getFollowerUsers = async (loginUser: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("follows")
+      .select("users!follows_follower_id_fkey(*)")
+      .eq("following_id", loginUser);
+      if (error) {
+        console.error("Supabase error:", error);
+        return null;
+      }
+      const flattenedData = data?.map((data)=> data.users)
+    return flattenedData;
+  } catch (error) {
     console.error("Error fetching following users:", error);
   }
-  return data;
 };
-export { getAllFollowList, followWhether, userFollow, userUnfollow, getFollowingUsers };
+
+const getFollowingUsers = async (loginUser: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("follows")
+      .select("users!follows_following_id_fkey(*)")
+      .eq("follower_id", loginUser);
+      if (error) {
+        console.error("Supabase error:", error);
+        return null;
+      }
+      const flattenedData = data?.map((data)=> data.users)
+    return flattenedData;
+  } catch (error) {
+    console.error("Error fetching following users:", error);
+  }
+};
+export {
+  getAllFollowList,
+  followWhether,
+  userFollow,
+  userUnfollow,
+  getFollowerUsers,
+  getFollowingUsers,
+};

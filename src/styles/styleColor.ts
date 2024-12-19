@@ -1,6 +1,17 @@
 export const styleColor = {
-  WHITE : "#FFFFFF",
-  BLACK : "#111111",
+  WHITE: "#FFFFFF",
+  BLACK: {
+    0: "#111111",
+    100: "#1a1a1a",
+    200: "#333333",
+    300: "#4d4d4d",
+    400: "#666666",
+    500: "#808080",
+    600: "#999999",
+    700: "#b3b3b3",
+    800: "#cccccc",
+    900: "#e6e6e6",
+  },
   INDIGO: {
     0: "#4E8397",
     100: "#32697C",
@@ -15,27 +26,27 @@ export const styleColor = {
     200: "#7D2F3F",
     300: "#611429",
     400: "#450014",
-    main: "#a04b7e"
+    main: "#a04b7e",
   },
   BLUE: {
     0: "#83B8CD",
-    100:"#00374e",
-    main:'#004a6a',
+    100: "#00374e",
+    main: "#004a6a",
   },
   BROWN: {
     0: "#8F7159",
     100: "#574144",
   },
-  YELLOW:{
-    0:"#d18b21",
-    main:"#e89b26"
+  YELLOW: {
+    0: "#d18b21",
+    main: "#e89b26",
   },
   PURPLE: {
     0: "#8E7391",
     100: "#5C435E",
   },
-  GREEN : {
-    main : "#96df7c",
+  GREEN: {
+    main: "#96df7c",
   },
   GRAY: {
     0: "#f5f5f5",

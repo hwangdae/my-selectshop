@@ -91,7 +91,7 @@ const S = {
     border-radius: 4px;
     box-shadow: 0px 0px 5px 1px rgba(124, 124, 124, 0.1);
     background-color: ${(props) =>
-      props.$followState ? `${styleColor.BLACK}` : `${styleColor.RED.main}`};
+      props.$followState ? `${styleColor.BLACK[300]}` : `${styleColor.RED.main}`};
   `,
   Following: styled.p`
     display: flex;

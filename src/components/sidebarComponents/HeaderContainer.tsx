@@ -5,12 +5,13 @@ import { useRouter } from "next/router";
 import { Button } from "@mui/material";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { useRecoilState } from "recoil";
-import { searchTermState } from "@/globalState/recoilState";
+import { searchTermState, showFollowState } from "@/globalState/recoilState";
 import { styleColor } from "@/styles/styleColor";
 import LogoutButton from "../utilityComponents/LogoutButton";
 
 const HeaderContainer = () => {
   const [searchName, setSearchName] = useRecoilState(searchTermState);
+  const [_, setShowFollow] = useRecoilState(showFollowState);
   const loginUser = useLoginUserId();
 
   const router = useRouter();
@@ -27,12 +28,19 @@ const HeaderContainer = () => {
       <S.HeaderInner>
         <S.HeaderTop>
           <S.Logo>
-            <button onClick={() => router.push("/")}>MySelectshop</button>
+            <button
+              onClick={() => {
+                router.push("/");
+                setShowFollow(false);
+              }}
+            >
+              MySelectshop
+            </button>
           </S.Logo>
           {!loginUser ? (
             <Button onClick={() => router.push("?modal=login")}>로그인</Button>
           ) : (
-            <LogoutButton/>
+            <LogoutButton />
           )}
         </S.HeaderTop>
         <S.SearchForm onSubmit={searchSelectshopSubmit}>
