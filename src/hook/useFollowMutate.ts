@@ -6,6 +6,8 @@ const useFollowMutate = (loginUser: string, id: string) => {
 
   const success = () => {
     queryClient.invalidateQueries({ queryKey: ["follow"] });
+    queryClient.invalidateQueries({ queryKey: ["follower"] });
+    queryClient.invalidateQueries({ queryKey: ["following"] });
   };
 
   const followMutate = useMutation({
@@ -13,10 +15,10 @@ const useFollowMutate = (loginUser: string, id: string) => {
     onSuccess: success,
   });
   const unFollowMutate = useMutation({
-    mutationFn: ()=>userUnfollow(loginUser,id),
-    onSuccess : success
-  })
-  return { followMutate,unFollowMutate };
+    mutationFn: () => userUnfollow(loginUser, id),
+    onSuccess: success,
+  });
+  return { followMutate, unFollowMutate };
 };
 
 export default useFollowMutate;

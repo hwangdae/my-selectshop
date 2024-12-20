@@ -102,7 +102,7 @@ const S = {
     left: 0;
     top: 0;
     height: calc(100vh - 272.5px);
-    background-color: ${styleColor.BLACK[400]};
+    background-color: ${styleColor.BLACK[300]};
   `,
   FollowNavWrap: styled.ul`
     padding: 0px 12px;

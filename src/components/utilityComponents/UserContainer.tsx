@@ -1,6 +1,6 @@
 import { UserType } from "@/types/authType";
 import React from "react";
-import FollowContainer from "../bestReviewerComponents/FollowContainer";
+import FollowContainer from "./FollowContainer";
 import styled from "styled-components";
 import { styleColor } from "@/styles/styleColor";
 import { styleFont } from "@/styles/styleFont";
@@ -11,7 +11,7 @@ interface PropsType {
 }
 const UserContainer = ({ user, type }: PropsType) => {
   return (
-    <S.UserContainer>
+    <S.UserContainer $type={type}>
       <S.UserInfo>
         <S.ProfileImage src={user?.profileImage} />
         <S.UserName $type={type}>{user?.nickName}</S.UserName>
@@ -24,12 +24,12 @@ const UserContainer = ({ user, type }: PropsType) => {
 export default UserContainer;
 
 const S = {
-  UserContainer: styled.div`
+  UserContainer: styled.div<{ $type: string }>`
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
-    padding: 0px 12px;
+    padding: ${props => props.$type === "follow" ? "0px 12px" : ""};
   `,
   UserInfo: styled.div`
     display: flex;

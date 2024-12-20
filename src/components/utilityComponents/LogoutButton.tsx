@@ -19,7 +19,11 @@ const LogoutButton = () => {
     }
   };
 
-  return <Button onClick={logoutHandleSubmit}>로그아웃</Button>;
+  return (
+    <Button variant="contained" color="primary" onClick={logoutHandleSubmit}>
+      로그아웃
+    </Button>
+  );
 };
 
 export default LogoutButton;

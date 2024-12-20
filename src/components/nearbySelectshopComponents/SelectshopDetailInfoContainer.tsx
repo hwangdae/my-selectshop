@@ -13,6 +13,7 @@ import useInitializeMapState from "@/hook/useInitializeMapState";
 import MyReviewContainer from "../utilityComponents/MyReviewContainer";
 import { Button } from "@mui/material";
 import useReviewMutate from "@/hook/useReviewMutate";
+import { styleColor } from "@/styles/styleColor";
 
 interface PropsType {
   selectshop: PlaceType;
@@ -135,6 +136,7 @@ const S = {
     align-items: center;
     button {
       ${styleFont.text.txt_xs}
+      color: ${styleColor.WHITE};
     }
   `,
   AllReviewContainer: styled.ul`

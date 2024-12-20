@@ -4,7 +4,7 @@ import { styleFont } from "@/styles/styleFont";
 import { UserType } from "@/types/authType";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
-import FollowContainer from "./FollowContainer";
+import FollowContainer from "../utilityComponents/FollowContainer";
 import { FollowType } from "@/types/followType";
 
 interface PropsType {

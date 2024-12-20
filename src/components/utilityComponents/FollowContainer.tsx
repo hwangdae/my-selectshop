@@ -17,13 +17,12 @@ interface PropsType {
 const FollowContainer = ({ id }: PropsType) => {
   const loginUser = useLoginUserId();
   const { followMutate, unFollowMutate } = useFollowMutate(loginUser, id);
+  const router = useRouter();
 
   const { data: followList } = useQuery({
     queryKey: ["follow"],
     queryFn: () => getAllFollowList(),
   });
-
-  const router = useRouter();
 
   const isFollowing = followList?.find((v: FollowType) => {
     return v.following_id === id && v.follower_id === loginUser;

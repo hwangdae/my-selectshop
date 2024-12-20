@@ -50,8 +50,6 @@ const WriteReview = ({
     selectshopId
   );
 
-  console.log(prevReview, "이전 리뷰");
-
   const {
     register,
     handleSubmit,
@@ -149,7 +147,7 @@ const WriteReview = ({
   return (
     <S.WriteReviewContainer>
       <S.WriteReviewInner onSubmit={handleSubmit(addReviewSubmit)}>
-        <S.WriteReviewTitle>✍ 후기 등록하기</S.WriteReviewTitle>
+        <S.WriteReviewTitle>✍ 후기 {type === "edit" ? "수정" : "등록"}하기</S.WriteReviewTitle>
         <S.WriteReviewUl>
           <S.InputLiRow>
             <WriteReviewInputImage files={files} setFiles={setFiles} prevReview={prevReview?.reviewImages} />

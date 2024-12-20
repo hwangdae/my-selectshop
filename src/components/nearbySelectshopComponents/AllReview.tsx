@@ -5,7 +5,7 @@ import { ReviewType } from "@/types/reviewType";
 import React from "react";
 import styled from "styled-components";
 import Tags from "../utilityComponents/Tags";
-import FollowContainer from "../bestReviewerComponents/FollowContainer";
+import FollowContainer from "../utilityComponents/FollowContainer";
 import { useQuery } from "@tanstack/react-query";
 import { getAllUsers } from "@/api/user";
 import UserContainer from "../utilityComponents/UserContainer";
