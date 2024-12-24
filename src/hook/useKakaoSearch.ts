@@ -6,10 +6,10 @@ import {
 } from "@/globalState/recoilState";
 import {
   MarkersType,
-  MyLocationType,
   PaginationType,
   PlaceType,
 } from "@/types/placeType";
+import { Console } from "console";
 import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -38,6 +38,7 @@ const useKakaoSearch = () => {
       options
     );
   };
+
   const searchAllPlaces = (
     currentPage: number = 1,
     accumulatedShops: PlaceType[] = []
@@ -69,7 +70,7 @@ const useKakaoSearch = () => {
   ) => {
     if (status === window.kakao.maps.services.Status.OK) {
       const updatedShops = [...accumulatedShops, ...data];
-
+      
       if (isAllPages && pagination.current < pagination.last) {
         searchAllPlaces(pagination.current + 1, updatedShops);
       } else {

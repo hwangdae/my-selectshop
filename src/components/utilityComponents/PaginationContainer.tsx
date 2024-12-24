@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Chevron from "@/assets/Chevron.svg";
 import Chevrons from "@/assets/Chevrons.svg";
 import { styleColor } from "@/styles/styleColor";
+import { PaginationType } from "@/types/placeType";
 
 interface PropsType {
   pagination: any;
@@ -27,7 +28,7 @@ const PaginationContainer = ({
   const nextPageButtonHandler = () => {
     if (pagination && pagination.hasNextPage) {
       setCurrentPage(currentPage + 1);
-      pagination.nextpage;
+      pagination.nextPage;
     }
   };
 

@@ -14,17 +14,20 @@ import { currentPageState, searchTermState } from "@/globalState/recoilState";
 import NoSearchResultContainer from "../utilityComponents/NoSearchResultContainer";
 import { styleFont } from "@/styles/styleFont";
 import { styleColor } from "@/styles/styleColor";
+import useLoginUserId from "@/hook/useLoginUserId";
 
 const NotVisiteSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] =
     useRecoilState<number>(currentPageState);
+  const loginUser = useLoginUserId();
   const searchTerm = useRecoilValue(searchTermState);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { data: reviewData } = useQuery({
     queryKey: ["review"],
     queryFn: () => getAllReview(),
+    enabled: !!loginUser,
     refetchOnWindowFocus: false,
   });
   const { searchAllPlaces, selectshops, myLocation } = useKakaoSearch();
@@ -45,7 +48,8 @@ const NotVisiteSelectshop = () => {
   const notVisitedSelectshops = selectshops?.filter(
     (selectshop: PlaceType) =>
       !reviewData?.some(
-        (review: ReviewType) => review.selectshopId === selectshop.id
+        (review: ReviewType) =>
+          review.selectshopId === selectshop.id && review.userId === loginUser
       ) && selectshop.place_name.includes(searchTerm)
   );
 
@@ -74,16 +78,16 @@ const NotVisiteSelectshop = () => {
           <NoSearchResultContainer />
         )}
       </S.SearchResultsInner>
-      {/* {currentItems.length < 15 ? (
+      {currentItems.length < 15 ? (
         ""
-      ) : ( */}
+      ) : (
         <CustomPaginationContainer
           selectshops={notVisitedSelectshops}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           scrollRef={scrollRef}
         />
-      {/* )} */}
+      )}
     </S.SearchResultsContainer>
   );
 };

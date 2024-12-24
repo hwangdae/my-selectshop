@@ -14,18 +14,22 @@ import { searchTermState } from "@/globalState/recoilState";
 import NoSearchResultContainer from "../utilityComponents/NoSearchResultContainer";
 import { styleFont } from "@/styles/styleFont";
 import { styleColor } from "@/styles/styleColor";
+import useLoginUserId from "@/hook/useLoginUserId";
 
 const VisitedSelectshop = () => {
   const [activeShopId, setActiveShopId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const loginUser = useLoginUserId();
   const searchTerm = useRecoilValue(searchTermState);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { data: reviewData } = useQuery({
     queryKey: ["review"],
     queryFn: () => getAllReview(),
+    enabled: !!loginUser,
     refetchOnWindowFocus: false,
   });
+  console.log(reviewData);
   const { searchAllPlaces, selectshops, myLocation } = useKakaoSearch();
 
   useEffect(() => {
@@ -44,14 +48,17 @@ const VisitedSelectshop = () => {
   const visitedSelectshops = selectshops?.filter(
     (selectshop: PlaceType) =>
       reviewData?.some(
-        (review: ReviewType) => review.selectshopId === selectshop.id
+        (review: ReviewType) =>
+          review.selectshopId === selectshop.id && review.userId === loginUser
       ) && selectshop.place_name.includes(searchTerm)
   );
 
   const currentItems = getPaginatedItems(visitedSelectshops, currentPage);
+  console.log(visitedSelectshops);
+  console.log(currentItems);
 
   return (
-    <>
+    <S.SearchResultsContainer>
       <S.SearchResultsInner>
         {currentItems.length === 0 && searchTerm === "" ? (
           <S.VisitedShopMessage>
@@ -85,13 +92,21 @@ const VisitedSelectshop = () => {
           scrollRef={scrollRef}
         />
       )}
-    </>
+    </S.SearchResultsContainer>
   );
 };
 
 export default VisitedSelectshop;
 
 const S = {
+  SearchResultsContainer: styled.div`
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  `,
   SearchResultsInner: styled.ul`
     height: 100%;
   `,
