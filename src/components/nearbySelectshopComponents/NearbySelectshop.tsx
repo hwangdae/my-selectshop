@@ -29,7 +29,7 @@ const NearbySelectshop = () => {
         searchPlaces(currentPage);
       }
     }
-  }, [currentPage]);
+  }, [currentPage, myLocation.center.lat, myLocation.center.lng]);
 
   const filteredShops = selectshops.filter((selectshop) =>
     selectshop.place_name.includes(searchTerm)
@@ -48,10 +48,7 @@ const NearbySelectshop = () => {
             >
               <SelectshopInfoContainer selectshop={selectshop} />
               {activeShopId === selectshop.id && (
-                <SelectshopDetailInfoContainer
-                  key={selectshop.id}
-                  selectshop={selectshop}
-                />
+                <SelectshopDetailInfoContainer selectshop={selectshop} />
               )}
             </li>
           ))}

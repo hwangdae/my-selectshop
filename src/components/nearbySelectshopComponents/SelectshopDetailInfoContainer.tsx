@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import SelectshopReviewContainer from "./SelectshopReviewContainer";
 import { useQuery } from "@tanstack/react-query";
-import { deleteReview, getReview } from "@/api/review";
+import { getReview } from "@/api/review";
 import useLoginUserId from "@/hook/useLoginUserId";
 import { styleFont } from "@/styles/styleFont";
 import { PlaceType } from "@/types/placeType";
@@ -25,6 +25,7 @@ const SelectshopDetailInfoContainer = ({ selectshop }: PropsType) => {
   const { deleteReviewMutate } = useReviewMutate(loginUser, id);
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
   const [isEditReview, setIsEditReview] = useState(false);
+  console.log(x,y)
   useInitializeMapState(y, x);
 
   const { data: reviewData } = useQuery({

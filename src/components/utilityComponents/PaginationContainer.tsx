@@ -9,21 +9,20 @@ interface PropsType {
   pagination: any;
   currentPage: number;
   setCurrentPage: (page: number) => void;
-  scrollRef : RefObject<HTMLDivElement>
+  scrollRef: RefObject<HTMLDivElement>;
 }
 
 const PaginationContainer = ({
   pagination,
   currentPage,
   setCurrentPage,
-  scrollRef
+  scrollRef,
 }: PropsType) => {
-
-  useEffect(()=>{
+  useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({ top: 0 });
     }
-  },[pagination])
+  }, [pagination, scrollRef]);
 
   const nextPageButtonHandler = () => {
     if (pagination && pagination.hasNextPage) {

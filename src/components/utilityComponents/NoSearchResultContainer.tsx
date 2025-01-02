@@ -11,7 +11,7 @@ const NoSearchResultContainer = () => {
   return (
     <S.NoSearchResult>
       <h2>셀렉샵 검색결과가 없습니다.</h2>
-      <span>"{searchTerm}"</span>
+      <span>&quot;{searchTerm}&quot;</span>
     </S.NoSearchResult>
   );
 };

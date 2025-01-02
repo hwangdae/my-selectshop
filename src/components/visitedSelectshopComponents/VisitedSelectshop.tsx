@@ -43,7 +43,7 @@ const VisitedSelectshop = () => {
         searchAllPlaces();
       }
     }
-  }, [currentPage]);
+  }, [currentPage, myLocation.center.lat, myLocation.center.lng]);
 
   const visitedSelectshops = selectshops?.filter(
     (selectshop: PlaceType) =>

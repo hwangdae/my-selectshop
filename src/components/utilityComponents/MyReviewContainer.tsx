@@ -24,6 +24,7 @@ const MyReviewContainer = ({
   isEditReview,
   setIsEditReview,
 }: PropsType) => {
+
   const {
     reviewImages,
     description,
@@ -33,7 +34,7 @@ const MyReviewContainer = ({
     shopInfo,
   } = review;
 
-  useInitializeMapState(shopInfo?.y, shopInfo?.x,"bestReviewerList");
+    useInitializeMapState(shopInfo?.y, shopInfo?.x);
 
   return isEditReview ? (
     <WriteReview

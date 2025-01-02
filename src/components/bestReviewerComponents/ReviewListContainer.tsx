@@ -76,7 +76,6 @@ const ReviewListContainer = ({ user, selectshops }: PropsType) => {
         <MyReviewContainer
           review={detailReview}
           nickName={nickName}
-          type={"bestReviewerList"}
         />
       ) : (
         <S.ReviewListWrap>
