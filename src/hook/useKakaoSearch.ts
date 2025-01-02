@@ -9,7 +9,6 @@ import {
   PaginationType,
   PlaceType,
 } from "@/types/placeType";
-import { Console } from "console";
 import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 

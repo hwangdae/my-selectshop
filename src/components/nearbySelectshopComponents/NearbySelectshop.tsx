@@ -37,9 +37,9 @@ const NearbySelectshop = () => {
 
   return (
     <S.SearchResultsContainer ref={scrollRef}>
-      <S.SearchResultsInner>
-        {filteredShops.length > 0 ? (
-          filteredShops?.map((selectshop: PlaceType) => (
+      {filteredShops.length > 0 ? (
+        <S.SearchResultsInner>
+          {filteredShops?.map((selectshop: PlaceType) => (
             <li
               key={selectshop.id}
               onClick={() => {
@@ -54,11 +54,12 @@ const NearbySelectshop = () => {
                 />
               )}
             </li>
-          ))
-        ) : (
-          <NoSearchResultContainer />
-        )}
-      </S.SearchResultsInner>
+          ))}
+        </S.SearchResultsInner>
+      ) : (
+        <NoSearchResultContainer />
+      )}
+
       {filteredShops.length < 15 ? (
         ""
       ) : (

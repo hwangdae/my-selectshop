@@ -57,13 +57,13 @@ const NotVisiteSelectshop = () => {
 
   return (
     <S.SearchResultsContainer ref={scrollRef}>
-      <S.SearchResultsInner>
-        {currentItems.length === 0 && searchTerm === "" ? (
-          <S.VisitedShopMessage>
-            🏬 모든 편집샵을 다 방문 했어요.
-          </S.VisitedShopMessage>
-        ) : currentItems.length > 0 ? (
-          currentItems?.map((selectshop: PlaceType) => (
+      {currentItems.length === 0 && searchTerm === "" ? (
+        <S.VisitedShopMessage>
+          🏬 모든 편집샵을 다 방문 했어요.
+        </S.VisitedShopMessage>
+      ) : currentItems.length > 0 ? (
+        <S.SearchResultsInner>
+          {currentItems?.map((selectshop: PlaceType) => (
             <li
               key={selectshop.id}
               onClick={() => setActiveShopId(selectshop.id)}
@@ -73,11 +73,12 @@ const NotVisiteSelectshop = () => {
                 <SelectshopDetailInfoContainer selectshop={selectshop} />
               )}
             </li>
-          ))
-        ) : (
-          <NoSearchResultContainer />
-        )}
-      </S.SearchResultsInner>
+          ))}
+        </S.SearchResultsInner>
+      ) : (
+        <NoSearchResultContainer />
+      )}
+
       {currentItems.length < 15 ? (
         ""
       ) : (

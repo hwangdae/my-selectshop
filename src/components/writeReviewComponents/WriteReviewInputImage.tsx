@@ -30,7 +30,7 @@ const WriteReviewInputImage = ({
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
       const compressedFiles = await Promise.all(
-        newFiles.map((file) => imageCompressionFn(file, "medium"))
+        newFiles.map((file) => imageCompressionFn(file, "small"))
       );
       setFiles(compressedFiles);
     }

@@ -23,6 +23,7 @@ import {
 } from "@/types/reviewType";
 import useReviewMutate from "@/hook/useReviewMutate";
 import { uploadReviewImages } from "@/api/storage";
+import { convertToWebP } from "@/utilityFunction/convertToWebp";
 
 interface PropsType {
   selectshopId?: string;
@@ -72,7 +73,7 @@ const WriteReview = ({
       tags: prevReview?.tags || "",
     },
   });
-  console.log(files,"파일")
+
   const {
     fields: advantageFields,
     append: advantageAppend,
@@ -104,7 +105,7 @@ const WriteReview = ({
         const fileExtension = file.name.split(".").pop();
         const randomFileName = `${shortid.generate()}.${fileExtension}`;
         try {
-          await uploadReviewImages(randomFileName, file);
+          await uploadReviewImages(randomFileName,file as File);
           imagesString.push(
             `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/reviewImages/${randomFileName}`
           );
@@ -125,7 +126,7 @@ const WriteReview = ({
       tags: tags,
       userId: loginUser,
     };
-    console.log(newReview,"뉴리뷰")
+
     try {
       if (type !== "edit") {
         addReviewMutate.mutate(newReview);

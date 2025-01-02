@@ -5,7 +5,6 @@ import MapComponent from "@/components/Map";
 const Home = () => {
   return (
     <S.Container>
-      {/* <S.SidebarContainer></S.SidebarContainer> */}
       <Sidebar />
       <S.MapContainer>
         <MapComponent />

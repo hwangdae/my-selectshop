@@ -71,7 +71,7 @@ const ShowFollowContainer = ({ showFollow }: PropsType) => {
             })
           ) : (
             <S.EmptyMessage>
-              <People fill={`${styleColor.WHITE}`} />
+              <People fill={`${styleColor.BLACK[100]}`} />
               아직 팔로워가 없습니다.
             </S.EmptyMessage>
           )
@@ -102,24 +102,25 @@ const S = {
     left: 0;
     top: 0;
     height: calc(100vh - 272.5px);
-    background-color: ${styleColor.BLACK[300]};
+    background-color: ${styleColor.GRAY[400]};
   `,
   FollowNavWrap: styled.ul`
     padding: 0px 12px;
     margin-bottom: 14px;
     display: flex;
     justify-content: start;
-    border-bottom: solid 1px ${styleColor.WHITE};
+    border-bottom: solid 1px ${styleColor.BLACK[100]};
   `,
-  Content: styled.li``,
+  Content: styled.li`
+  `,
   TabButton: styled.button<{ $isActive: boolean }>`
     cursor: pointer;
     padding: 10px 14px;
-    border-bottom: ${(props) => (props.$isActive ? "2px solid #fff" : "none")};
+    border-bottom: ${(props) => (props.$isActive ? "2px solid #111" : "none")};
     h1 {
       ${styleFont.title.tit_xs}
       font-weight: ${(props) => (props.$isActive ? "600" : "400")};
-      color: #fff;
+      color: #111;
       span {
         margin-right: 4px;
       }

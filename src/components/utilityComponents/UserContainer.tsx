@@ -46,6 +46,7 @@ const S = {
   UserName: styled.p<{ $type: string }>`
     ${styleFont.text.txt_sm}
     font-weight: 400;
-    color: ${(props) => props.$type === "follow" ? "#fff" : "#111"};
+    color:${styleColor.BLACK[100]}
+    // color: ${(props) => props.$type === "follow" ? "#fff" : "#111"};
   `,
 };

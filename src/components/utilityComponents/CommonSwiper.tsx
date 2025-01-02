@@ -1,29 +1,32 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation } from 'swiper/modules';
-import styled from 'styled-components';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+import styled from "styled-components";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 interface PropsType {
   slideImages: string | null;
 }
 
-const CommonSwiper = ({slideImages}: PropsType) => {
-
+const CommonSwiper = ({ slideImages }: PropsType) => {
+  console.log(slideImages);
   return (
     <S.SwiperWrap>
       <S.CustomSwiper
         slidesPerView={1}
-        pagination={{clickable: true,}}
+        pagination={{ clickable: true }}
         modules={[Pagination, Navigation]}
       >
-        {slideImages?.split(',').map((img,index) => {
+        {slideImages?.split(",").map((img: string, index: number) => {
           return (
-              <S.SwiperSlide key={index}>
+            <S.SwiperSlide key={index}>
+              <picture>
+                <source srcSet={`${img}`} type="image/webp" />
                 <img src={img} alt="업로드 이미지" />
-              </S.SwiperSlide>
+              </picture>
+            </S.SwiperSlide>
           );
         })}
       </S.CustomSwiper>
@@ -52,5 +55,5 @@ const S = {
       height: 100%;
       object-fit: cover;
     }
-  `
+  `,
 };

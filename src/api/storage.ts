@@ -1,18 +1,15 @@
 import supabase from "@/lib/supabaseClient";
 
-const uploadReviewImages = async (randomFileName: string, file: File) => {
+const uploadReviewImages = async (fileName: string, file: File) => {
   await supabase.storage
     .from("images")
-    .upload(`reviewImages/${randomFileName}`, file);
+    .upload(`reviewImages/${fileName}`, file);
 };
 
-const uploadProfileImage = async (
-  uploadImage: string,
-  uploadImageFile: File
-) => {
+const uploadProfileImage = async (fileName: string, file: File) => {
   const { data } = await supabase.storage
     .from("images")
-    .upload(`profileImages/${uploadImage}`, uploadImageFile);
+    .upload(`profileImages/${fileName}`, file);
   return data;
 };
 

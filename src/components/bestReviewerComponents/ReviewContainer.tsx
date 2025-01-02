@@ -41,7 +41,7 @@ const ReviewContainer = ({ review }: PropsType) => {
 export default ReviewContainer;
 
 const S = {
-  ReviewContainer: styled.li`
+  ReviewContainer: styled.div`
     cursor: pointer;
     border-radius: 4px;
     box-shadow: 0px 0px 8px 1px rgba(182, 182, 182, 0.1);

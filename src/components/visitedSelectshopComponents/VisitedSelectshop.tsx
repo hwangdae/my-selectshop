@@ -59,13 +59,13 @@ const VisitedSelectshop = () => {
 
   return (
     <S.SearchResultsContainer>
-      <S.SearchResultsInner>
-        {currentItems.length === 0 && searchTerm === "" ? (
-          <S.VisitedShopMessage>
-            🏬 아직 방문한 편집샵이 없어요.
-          </S.VisitedShopMessage>
-        ) : currentItems.length > 0 ? (
-          currentItems?.map((selectshop: PlaceType) => (
+      {currentItems.length === 0 && searchTerm === "" ? (
+        <S.VisitedShopMessage>
+          🏬 아직 방문한 편집샵이 없어요.
+        </S.VisitedShopMessage>
+      ) : currentItems.length > 0 ? (
+        <S.SearchResultsInner>
+          {currentItems?.map((selectshop: PlaceType) => (
             <li
               key={selectshop.id}
               onClick={() => {
@@ -77,11 +77,11 @@ const VisitedSelectshop = () => {
                 <SelectshopDetailInfoContainer selectshop={selectshop} />
               )}
             </li>
-          ))
-        ) : (
-          <NoSearchResultContainer />
-        )}
-      </S.SearchResultsInner>
+          ))}
+        </S.SearchResultsInner>
+      ) : (
+        <NoSearchResultContainer />
+      )}
       {currentItems.length < 15 ? (
         ""
       ) : (

@@ -12,9 +12,13 @@ const Tags = ({ tags, type }: PropsType) => {
   return (
     <S.TagList $type={type}>
       {tags !== ""
-        ? tags?.split(",").map((tag,index) => {
-            return <li key={`${tag}-${index}`}>{tag}</li>;
-          })
+        ? tags
+            ?.split(",")
+            .map(tag=>tag.trim())
+            .filter((tag) => tag !== "")
+            .map((tag, index) => {
+              return <li key={`${tag}-${index}`}>{tag}</li>;
+            })
         : "추천할 브랜드가 없어요"}
     </S.TagList>
   );
@@ -29,7 +33,7 @@ const S = {
       props.$type === "allReview" ? `${styleColor.GRAY[0]}` : ""};
     padding: ${(props) => (props.$type === "allReview" ? `10px` : "")};
     ${styleFont.text.txt_md}
-    font-size : ${(props)=> props.$type === "allReview" ? "14px" : "16px"};
+    font-size : ${(props) => (props.$type === "allReview" ? "14px" : "16px")};
     font-weight: 400;
     li {
       position: relative;
