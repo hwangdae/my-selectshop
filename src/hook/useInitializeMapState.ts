@@ -2,11 +2,12 @@ import { boundsState } from "@/globalState/recoilState";
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
-const useInitializeMapState = (y: number, x: number) => {
+const useInitializeMapState = (y: number, x: number,type:string) => {
   const [, setBounds] = useRecoilState<any>(boundsState);
 
   useEffect(() => {
     if (
+      type === "bestReviewerList" &&
       typeof window !== "undefined" &&
       window.kakao &&
       window.kakao.maps &&

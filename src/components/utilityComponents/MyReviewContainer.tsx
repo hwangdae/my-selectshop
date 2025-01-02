@@ -33,10 +33,8 @@ const MyReviewContainer = ({
     shopInfo,
   } = review;
 
-  if (type === "bestReviewerList") {
-    useInitializeMapState(shopInfo?.y, shopInfo?.x);
-  }
-  console.log(reviewImages)
+  useInitializeMapState(shopInfo?.y, shopInfo?.x,"bestReviewerList");
+
   return isEditReview ? (
     <WriteReview
       type={"edit"}
