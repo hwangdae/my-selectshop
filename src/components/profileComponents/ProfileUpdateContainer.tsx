@@ -11,6 +11,8 @@ import { ModalProps } from "../ModalMap";
 import { updateProfileType } from "@/types/authType";
 import LogoutButton from "../utilityComponents/LogoutButton";
 import ImageUploadContainer from "./ImageUploadContainer";
+import { useRouter } from "next/router";
+import useUserMutate from "@/hook/useUserMutate";
 
 const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [previewProfileImage, setPreviewProfileImage] = useState<
@@ -20,7 +22,8 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [uploadImage, setUploadImage] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
   const loginUser = useLoginUserId();
-
+  const router = useRouter()
+  const {userMutate} = useUserMutate(loginUser)
   const { data: user } = useQuery({
     queryKey: ["user", loginUser],
     queryFn: () => getUser(loginUser),
@@ -49,9 +52,10 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
           : user?.profileImage,
         nickName,
       };
-      userProfileUpdate(updateProfile, user?.id);
-      alert("수정완료");
-      window.location.reload();
+      await userProfileUpdate(updateProfile, user?.id);
+      userMutate.mutate()
+      alert("프로필 수정이 완료 되었습니다.");
+      router.push("/")
     } catch (error) {
       console.log(error);
     }
@@ -77,7 +81,7 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
             />
             <h1>{user?.email}</h1>
             <S.NickNameInput
-              value={nickName}
+              value={nickName || ""}
               type="text"
               onChange={(e) => setNickName(e.target.value)}
             />

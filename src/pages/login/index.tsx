@@ -44,12 +44,13 @@ const Login = ({ onClose }: ModalProps) => {
         email,
         password,
       });
-
+      
       if (user) {
         const userLogin = await getUser(user.id);
         setuserLogin(userLogin);
         alert("로그인이 완료 되었습니다.");
-        router.push("/");
+        router.push("/")
+        window.location.reload()
       }
       if (error) {
         alert("이메일과 비밀번호를 확인해 주세요.");

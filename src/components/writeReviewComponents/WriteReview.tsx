@@ -23,8 +23,6 @@ import {
 } from "@/types/reviewType";
 import useReviewMutate from "@/hook/useReviewMutate";
 import { uploadReviewImages } from "@/api/storage";
-import { convertToWebP } from "@/utilityFunction/convertToWebp";
-
 interface PropsType {
   selectshopId?: string;
   setIsWriteReviewOpen?: React.Dispatch<
@@ -105,7 +103,7 @@ const WriteReview = ({
         const fileExtension = file.name.split(".").pop();
         const randomFileName = `${shortid.generate()}.${fileExtension}`;
         try {
-          await uploadReviewImages(randomFileName,file as File);
+          await uploadReviewImages(randomFileName,file);
           imagesString.push(
             `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/reviewImages/${randomFileName}`
           );

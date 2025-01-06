@@ -1,33 +1,14 @@
 import supabase from "@/lib/supabaseClient";
-import {
-  NewReviewType,
-  ReviewType,
-  UploadReviewType,
-} from "@/types/reviewType";
+import { NewReviewType } from "@/types/reviewType";
 
 const getAllReview = async () => {
   const { data } = await supabase.from("reviews").select("*");
   return data;
 };
-
 const getReview = async (id: string) => {
   const { data } = await supabase
     .from("reviews")
     .select("*")
-    .eq("selectshopId", id);
-  return data;
-};
-const getMyReview = async (selectshopId: string, userId: string) => {
-  const { data } = await supabase
-    .from("reviews")
-    .select("*")
-    .eq("selectshopId", selectshopId)
-    .eq("userId", userId);
-};
-const getReviewAndUser = async (id: string) => {
-  const { data } = await supabase
-    .from("reviews")
-    .select('*,users("*")')
     .eq("selectshopId", id);
   return data;
 };
@@ -62,7 +43,10 @@ const deleteReview = async (
 };
 
 const updateReview = async (review: NewReviewType) => {
-  const { error } = await supabase.from("reviews").update(review).eq("id", review.id);
+  const { error } = await supabase
+    .from("reviews")
+    .update(review)
+    .eq("id", review.id);
   if (error) {
     console.log("supabase delete error", error);
     throw new Error(error.message);
@@ -72,8 +56,6 @@ const updateReview = async (review: NewReviewType) => {
 export {
   getAllReview,
   getReview,
-  getMyReview,
-  getReviewAndUser,
   getReviewCount,
   addReview,
   deleteReview,

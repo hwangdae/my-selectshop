@@ -56,6 +56,7 @@ const ImageUploadContainer = ({
       console.log(error);
     }
   };
+
   return (
     <S.ProfileImageContainer>
       <S.ProfileImage

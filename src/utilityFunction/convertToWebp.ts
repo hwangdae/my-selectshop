@@ -1,6 +1,5 @@
 export const convertToWebP = async (file:File) => {
     const img = new Image();
-    console.log(img)
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
   
@@ -12,7 +11,7 @@ export const convertToWebP = async (file:File) => {
         canvas.toBlob((blob) => {
             if(blob){
                 resolve(blob);
-                console.log("변 환 성공")
+
             }else{
                 reject(new Error("변환에 실패 했습니다."))
             }

@@ -29,7 +29,7 @@ const VisitedSelectshop = () => {
     enabled: !!loginUser,
     refetchOnWindowFocus: false,
   });
-  console.log(reviewData);
+
   const { searchAllPlaces, selectshops, myLocation } = useKakaoSearch();
 
   useEffect(() => {
@@ -54,8 +54,6 @@ const VisitedSelectshop = () => {
   );
 
   const currentItems = getPaginatedItems(visitedSelectshops, currentPage);
-  console.log(visitedSelectshops);
-  console.log(currentItems);
 
   return (
     <S.SearchResultsContainer>

@@ -11,7 +11,7 @@ interface PropsType {
 }
 
 const CommonSwiper = ({ slideImages }: PropsType) => {
-  console.log(slideImages);
+
   return (
     <S.SwiperWrap>
       <S.CustomSwiper
@@ -22,10 +22,7 @@ const CommonSwiper = ({ slideImages }: PropsType) => {
         {slideImages?.split(",").map((img: string, index: number) => {
           return (
             <S.SwiperSlide key={index}>
-              <picture>
-                <source srcSet={`${img}`} type="image/webp" />
-                <img src={img} alt="업로드 이미지" />
-              </picture>
+              <img src={img} alt="업로드 이미지" />
             </S.SwiperSlide>
           );
         })}

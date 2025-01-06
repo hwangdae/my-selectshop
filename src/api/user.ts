@@ -13,8 +13,8 @@ const getUserWidthFollow = async (id: string) => {
   const { data } = await supabase
     .from("users")
     .select('*,follows("*")')
-    .eq("id", id)
-    return data
+    .eq("id", id);
+  return data;
 };
 const getAllUsers = async () => {
   try {
@@ -57,9 +57,12 @@ const userProfileUpdate = async (
   updateProfile: updateProfileType,
   id: string
 ) => {
-  await supabase.from("users").update(updateProfile).eq("id", id).select();
+  try {
+    await supabase.from("users").update(updateProfile).eq("id", id)
+  } catch (error) {
+    console.log(error);
+  }
 };
-
 
 export {
   getUser,

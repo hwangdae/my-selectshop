@@ -54,14 +54,20 @@ const SelectshopInfoContainer = ({ selectshop, type }: PropsType) => {
     <S.SelectshopContainer>
       <S.SlectshopContents>
         <S.SelectshopInfo>
-          <S.SelectshopName>
-            {highlighttedText(place_name, searchTerm)}
-            <S.SelectshopDistance>
-              {distance >= 1000
-                ? `${(distance / 1000).toFixed(1)}km`
-                : `${distance}m`}
-            </S.SelectshopDistance>
-          </S.SelectshopName>
+          <S.SelectshopHeader>
+            <S.SelectshopName>
+              {highlighttedText(place_name, searchTerm)}
+            </S.SelectshopName>
+            <S.SelectshopStats>
+              <S.SelectshopDistance>
+                {distance >= 1000
+                  ? `${(distance / 1000).toFixed(1)}km`
+                  : `${distance}m`}
+              </S.SelectshopDistance>
+              <span style={{color: `${styleColor.GRAY[400]}`}}>·</span>
+              <S.ReviewCount>리뷰수 {reviewData?.length}</S.ReviewCount>
+            </S.SelectshopStats>
+          </S.SelectshopHeader>
           <S.SelectshopAddressName>{address_name}</S.SelectshopAddressName>
           <S.SelectshopPhone>{phone}</S.SelectshopPhone>
         </S.SelectshopInfo>
@@ -108,12 +114,19 @@ const S = {
   SelectshopInfo: styled.div`
     width: 85%;
   `,
-  SelectshopName: styled.h1`
+  SelectshopHeader: styled.div`
     display: flex;
     align-items: center;
+    margin-bottom: 14px;
+  `,
+  SelectshopName: styled.h1`
     ${styleFont.title.tit_md};
     font-weight: 500;
-    margin-bottom: 14px;
+  `,
+  SelectshopStats: styled.div`
+    display: flex;
+    align-items: center;
+    gap: 2px;
   `,
   SelectshopDistance: styled.span`
     ${styleFont.text.txt_sm};
@@ -121,7 +134,11 @@ const S = {
     font-weight: 400;
     margin-left: 6px;
   `,
-
+  ReviewCount: styled.span`
+    ${styleFont.text.txt_sm};
+    color: ${styleColor.GRAY[400]};
+    font-weight: 400;
+  `,
   SelectshopAddressName: styled.h2`
     ${styleFont.text.txt_sm}
     margin-bottom: 6px;
