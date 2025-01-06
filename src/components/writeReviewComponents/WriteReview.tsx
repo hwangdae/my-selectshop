@@ -25,22 +25,40 @@ import useReviewMutate from "@/hook/useReviewMutate";
 import { uploadReviewImages } from "@/api/storage";
 interface PropsType {
   selectshopId?: string;
-  setIsWriteReviewOpen?: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  setIsWriteReviewOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   type?: string;
   prevReview?: ReviewType;
-  setIsEditReview? : React.Dispatch<
-  React.SetStateAction<boolean>
->;
+  setIsEditReview?: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+const uploadImagesFn = async (files: File[]) => {
+  let imagesString: string[] = [];
+
+  if (files && files.length > 0) {
+    for (const file of files) {
+      const fileExtension = file.name.split(".").pop();
+      const randomFileName = `${shortid.generate()}.${fileExtension}`;
+      try {
+        await uploadReviewImages(randomFileName, file);
+        imagesString.push(
+          `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/reviewImages/${randomFileName}`
+        );
+      } catch (error) {
+        alert("이미지 업로드 중 오류가 발생했습니다.");
+        console.error(error);
+        return;
+      }
+    }
+  }
+  return imagesString
+};
 
 const WriteReview = ({
   selectshopId,
   setIsWriteReviewOpen,
   type,
   prevReview,
-  setIsEditReview
+  setIsEditReview,
 }: PropsType) => {
   const loginUser = useLoginUserId();
   const [files, setFiles] = useState<File[]>([]);
@@ -96,28 +114,10 @@ const WriteReview = ({
     disAdvantages,
     tags,
   }) => {
-    let imagesString: string[] = [];
-
-    if (files && files.length > 0) {
-      for (const file of files) {
-        const fileExtension = file.name.split(".").pop();
-        const randomFileName = `${shortid.generate()}.${fileExtension}`;
-        try {
-          await uploadReviewImages(randomFileName,file);
-          imagesString.push(
-            `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/reviewImages/${randomFileName}`
-          );
-        } catch (error) {
-          alert("이미지 업로드 중 오류가 발생했습니다.");
-          console.error(error);
-          return;
-        }
-      }
-    }
-
+    const uploadImages = await uploadImagesFn(files)
     const newReview: NewReviewType = {
       selectshopId,
-      reviewImages: imagesString.length > 0 ? imagesString.join(",") : null,
+      reviewImages: uploadImages!.length > 0 ? uploadImages?.join(",") : null,
       description,
       advantages: advantages?.map((item) => item.value) || null,
       disAdvantages: disAdvantages?.map((item) => item.value) || null,
@@ -132,9 +132,10 @@ const WriteReview = ({
         setIsWriteReviewOpen!(false);
       } else {
         const updateReview = {
-          ...newReview,id:prevReview?.id
-        }
-        updateReviewMutate.mutate(updateReview)
+          ...newReview,
+          id: prevReview?.id,
+        };
+        updateReviewMutate.mutate(updateReview);
         alert("수정이 완료 되었습니다.");
         setIsEditReview!(false);
       }
@@ -146,10 +147,16 @@ const WriteReview = ({
   return (
     <S.WriteReviewContainer>
       <S.WriteReviewInner onSubmit={handleSubmit(addReviewSubmit)}>
-        <S.WriteReviewTitle>✍ 후기 {type === "edit" ? "수정" : "등록"}하기</S.WriteReviewTitle>
+        <S.WriteReviewTitle>
+          ✍ 후기 {type === "edit" ? "수정" : "등록"}하기
+        </S.WriteReviewTitle>
         <S.WriteReviewUl>
           <S.InputLiRow>
-            <WriteReviewInputImage files={files} setFiles={setFiles} prevReview={prevReview?.reviewImages} />
+            <WriteReviewInputImage
+              files={files}
+              setFiles={setFiles}
+              prevReview={prevReview?.reviewImages}
+            />
           </S.InputLiRow>
           <S.InputLiRow>
             <S.Label htmlFor="description">후기</S.Label>

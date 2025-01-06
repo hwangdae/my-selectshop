@@ -20,7 +20,7 @@ const WriteReviewInputImage = ({
   id = "file-upload",
   ...props
 }: PropsType) => {
-  const [previewImages, setPreviewImages] = useState<string[]>(
+  const [previewImages,] = useState<string[]>(
     prevReview ? prevReview.split(",") : []
   );
 
@@ -43,7 +43,7 @@ const WriteReviewInputImage = ({
           <S.ImageSwiper slidesPerView={1}>
             {previewImages.map((file: string, index: number) => (
               <S.SwiperSlide key={index}>
-                <S.UploadImage src={file} alt={`preview-${index}`} />
+                <S.UploadImage src={file} alt={`${index+1}번째 업로드 이미지`} />
               </S.SwiperSlide>
             ))}
           </S.ImageSwiper>

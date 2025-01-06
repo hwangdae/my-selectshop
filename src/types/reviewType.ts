@@ -29,7 +29,7 @@ export interface UploadReviewType {
 export interface NewReviewType {
   id?:string;
   selectshopId: string | undefined;
-  reviewImages: string | null;
+  reviewImages: string | null | undefined;
   description: string;
   advantages: string[] | null | undefined;
   disAdvantages: string[] | null | undefined;

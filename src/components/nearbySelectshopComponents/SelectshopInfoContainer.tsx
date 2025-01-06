@@ -115,13 +115,12 @@ const S = {
     width: 85%;
   `,
   SelectshopHeader: styled.div`
-    display: flex;
-    align-items: center;
     margin-bottom: 14px;
   `,
   SelectshopName: styled.h1`
     ${styleFont.title.tit_md};
     font-weight: 500;
+    margin-bottom: 4px;
   `,
   SelectshopStats: styled.div`
     display: flex;
@@ -132,7 +131,6 @@ const S = {
     ${styleFont.text.txt_sm};
     color: ${styleColor.GRAY[400]};
     font-weight: 400;
-    margin-left: 6px;
   `,
   ReviewCount: styled.span`
     ${styleFont.text.txt_sm};
