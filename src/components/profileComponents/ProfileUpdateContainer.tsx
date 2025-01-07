@@ -13,6 +13,7 @@ import LogoutButton from "../utilityComponents/LogoutButton";
 import ImageUploadContainer from "./ImageUploadContainer";
 import { useRouter } from "next/router";
 import useUserMutate from "@/hook/useUserMutate";
+import { uploadProfileImage } from "@/api/storage";
 
 const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [previewProfileImage, setPreviewProfileImage] = useState<
@@ -22,8 +23,8 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
   const [uploadImage, setUploadImage] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
   const loginUser = useLoginUserId();
-  const router = useRouter()
-  const {userMutate} = useUserMutate(loginUser)
+  const router = useRouter();
+  const { userMutate } = useUserMutate(loginUser);
   const { data: user } = useQuery({
     queryKey: ["user", loginUser],
     queryFn: () => getUser(loginUser),
@@ -35,15 +36,15 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
     setNickName(user?.nickName);
   }, [user]);
 
-
   const profileUpdateHandle = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       let url: string | undefined = "";
       if (uploadImageFile) {
-        const { data } = await supabase.storage
-          .from("images")
-          .upload(`profileImages/${uploadImage}`, uploadImageFile);
+        // const { data } = await supabase.storage
+        //   .from("images")
+        //   .upload(`profileImages/${uploadImage}`, uploadImageFile);
+        const data = await uploadProfileImage(uploadImage, uploadImageFile);
         url = data?.path.split("/")[1];
       }
       const updateProfile: updateProfileType = {
@@ -53,9 +54,9 @@ const ProfileUpdateContainer = ({ onClose }: ModalProps) => {
         nickName,
       };
       await userProfileUpdate(updateProfile, user?.id);
-      userMutate.mutate()
+      userMutate.mutate();
       alert("프로필 수정이 완료 되었습니다.");
-      router.push("/")
+      router.push("/");
     } catch (error) {
       console.log(error);
     }

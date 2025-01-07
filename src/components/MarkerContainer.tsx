@@ -25,14 +25,12 @@ const MarkerContainer = ({ selectshop, index }: PropsType) => {
   return (
     <CustomOverlayMap key={`marker-${y},${x}-${index}`} position={position}>
       <S.MarkerContainer>
-        {/* <S.MarkerInner> */}
         <S.SelectshopPlaceName>{place_name}</S.SelectshopPlaceName>
         {reviewData?.length !== 0 ? (
           <S.SelectshopReviewCount>
             +{reviewData?.length}
           </S.SelectshopReviewCount>
         ) : null}
-        {/* </S.MarkerInner> */}
       </S.MarkerContainer>
     </CustomOverlayMap>
   );

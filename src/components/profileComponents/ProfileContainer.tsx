@@ -29,6 +29,9 @@ const ProfileContainer = () => {
     <div>
       {loginUser && (
         <S.ProfileContainer>
+<img src="/images/basicUserImage.png" alt="이미지"/>
+  <img src="https://ueynqiqykmvvldjuwvmj.supabase.co/storage/v1/s3/images/profileImages/basicUserImage.png" alt="Test" />
+
           <S.UserNickName>안녕하세요 {user?.nickName}님 👋</S.UserNickName>
           <S.ProfileInfoContainer>
             <S.ProfileImageContainer>

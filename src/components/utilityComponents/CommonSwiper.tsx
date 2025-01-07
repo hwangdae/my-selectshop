@@ -5,6 +5,7 @@ import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import Image from "next/image";
 
 interface PropsType {
   slideImages: string | null;
@@ -22,7 +23,7 @@ const CommonSwiper = ({ slideImages }: PropsType) => {
         {slideImages?.split(",").map((img: string, index: number) => {
           return (
             <S.SwiperSlide key={index}>
-              <img src={img} alt={`${index+1}번째 업로드 이미지 `} />
+              <img src={img} alt={`${index+1}번째 업로드 이미지 `} width={300} height={90}/>
             </S.SwiperSlide>
           );
         })}

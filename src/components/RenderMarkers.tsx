@@ -13,13 +13,14 @@ import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import React from "react";
 import MarkerContainer from "./MarkerContainer";
+import useLoginUserId from "@/hook/useLoginUserId";
 
 const RenderMarkers = () => {
   const selectshops = useRecoilValue(selectShopsState);
   const searchTerm = useRecoilValue(searchTermState);
   const currentPage = useRecoilValue<number>(currentPageState);
   const shopCoordinates = useRecoilValue(shopCoordinatesState);
-
+  const loginUser = useLoginUserId();
   const router = useRouter();
   const { tab } = router.query;
 
@@ -36,14 +37,16 @@ const RenderMarkers = () => {
   const visitedSelectshops = selectshops?.filter(
     (selectshop: PlaceType) =>
       reviewData?.some(
-        (review: ReviewType) => review.selectshopId === selectshop.id
+        (review: ReviewType) =>
+          review.selectshopId === selectshop.id && review.userId === loginUser
       ) && selectshop.place_name.includes(searchTerm)
   );
 
   const notVisitedSelectshops = selectshops?.filter(
     (selectshop: PlaceType) =>
       !reviewData?.some(
-        (review: ReviewType) => review.selectshopId === selectshop.id
+        (review: ReviewType) =>
+          review.selectshopId === selectshop.id && review.userId === loginUser
       ) && selectshop.place_name.includes(searchTerm)
   );
 
@@ -54,17 +57,21 @@ const RenderMarkers = () => {
       return getPaginatedItems(visitedSelectshops, currentPage);
     } else if (tab === "notVisiteSelectshop") {
       return getPaginatedItems(notVisitedSelectshops, currentPage);
-    } else if(tab === "bestReviewer") {
+    } else if (tab === "bestReviewer") {
       return shopCoordinates;
     } else {
-      return []
+      return [];
     }
   };
 
   return (
     <>
       {renderContent().map((selectshop, index) => (
-        <MarkerContainer key={selectshop.id} selectshop={selectshop} index={index} />
+        <MarkerContainer
+          key={selectshop.id}
+          selectshop={selectshop}
+          index={index}
+        />
       ))}
     </>
   );
